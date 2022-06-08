@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Названия стиля текста формируется по шаблону:
+  ШрифтНачертание.Цвет.Размер, например, FactorAMedium.Accent.20.
+
+  Шрифты:
+      - Kopenhagen
+      - Mariupol
+  Начертания:
+      - Regular.
+  Цвета:
+      - PrimaryText;
+      - SecondaryText;
+  Размеры:
+      -
+
+  Можно брать не конечные стили исключая последующие, например: FactorAMedium, FactorAMedium.Accent;
+  -->
+
+    <!--______________________________TYPEFACE_____________________________________-->
+    <!--______________________________FactorA______________________________________-->
+
+    <style name="KopenhagenMedium">
+        <item name="android:fontFamily">@font/kopenhagen</item>
+    </style>
+
+    <style name="MariupolRegular">
+        <item name="android:fontFamily">@font/mariupol_regular</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+    </style>
+
+    <!--______________________________SIZE_________________________________________-->
+    <!--______________________________30SP_________________________________________-->
+    <!--______________________________Kopenhagen____________________________________-->
+
+    <style name="KopenhagenMedium.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+
+    <!--______________________________Color_________________________________________-->
+    <!--______________________________Kopenhagen____________________________________-->
+    <style name="KopenhagenMedium.30.Primary">
+        <item name="android:textColor">@color/primary_light_text</item>
+    </style>
+
+</resources>
