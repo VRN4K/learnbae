@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Learnbae</string>
+
+<!--______________________Titles___________________-->
+    <string name="word_of_a_day_title">Слово дня</string>
+    <string name="last_five_word_title">Последние добавленные слова</string>
+    <string name="transcription_pattern">[%s]</string>
+</resources>
