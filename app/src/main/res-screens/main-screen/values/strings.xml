@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen_title">Hi, Какое слово\nбудем искать\nсегодня?</string>
+    <string name="words_list_item_pattern_bold">%s. %s</string>
+    <string name="words_list_item_pattern_regular"> — %s</string>
+</resources>

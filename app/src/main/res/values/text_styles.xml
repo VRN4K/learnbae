@@ -18,11 +18,13 @@
   -->
 
     <!--______________________________TYPEFACE_____________________________________-->
-    <!--______________________________FactorA______________________________________-->
+    <!--______________________________Kopenhagen___________________________________-->
 
     <style name="KopenhagenMedium">
         <item name="android:fontFamily">@font/kopenhagen</item>
     </style>
+
+    <!--______________________________Mariupol_____________________________________-->
 
     <style name="MariupolRegular">
         <item name="android:fontFamily">@font/mariupol_regular</item>
@@ -30,19 +32,136 @@
         <item name="android:lineSpacingExtra">0dp</item>
     </style>
 
+    <style name="MariupolMedium">
+        <item name="android:fontFamily">@font/mariupol_medium</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+    </style>
+
+    <!--______________________________Color_________________________________________-->
+    <!--______________________________Primary_________________________________-->
+
+    <style name="KopenhagenMedium.Primary">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="MariupolRegular.Primary">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="MariupolMedium.Primary">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <!--______________________________Primary_light__________________________________-->
+
+    <style name="KopenhagenMedium.PrimaryLight">
+        <item name="android:textColor">@color/primary_light_text</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryLight">
+        <item name="android:textColor">@color/primary_light_text</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryLight">
+        <item name="android:textColor">@color/primary_light_text</item>
+    </style>
+
+    <!--______________________________Secondary__________________________________-->
+
+    <style name="KopenhagenMedium.Secondary">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+    <style name="MariupolRegular.Secondary">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
+    <style name="MariupolMedium.Secondary">
+        <item name="android:textColor">@color/secondary_text</item>
+    </style>
+
     <!--______________________________SIZE_________________________________________-->
     <!--______________________________30SP_________________________________________-->
     <!--______________________________Kopenhagen____________________________________-->
 
-    <style name="KopenhagenMedium.30">
+    <style name="KopenhagenMedium.Primary.30">
         <item name="android:textSize">30sp</item>
     </style>
 
-
-    <!--______________________________Color_________________________________________-->
-    <!--______________________________Kopenhagen____________________________________-->
-    <style name="KopenhagenMedium.30.Primary">
-        <item name="android:textColor">@color/primary_light_text</item>
+    <style name="KopenhagenMedium.PrimaryLight.30">
+        <item name="android:textSize">30sp</item>
     </style>
 
+    <style name="MariupolRegular.PrimaryLight.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryLight.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+    <!--______________________________17SP_________________________________________-->
+    <!--______________________________Mariupol_____________________________________-->
+
+    <style name="MariupolRegular.Primary.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolMedium.Primary.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryLight.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryLight.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolRegular.Secondary.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolMedium.Secondary.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <!--______________________________15SP_________________________________________-->
+    <!--______________________________Mariupol_____________________________________-->
+
+    <style name="MariupolRegular.Primary.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MariupolMedium.Primary.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MariupolRegular.Secondary.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MariupolMedium.Secondary.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--______________________________20SP_________________________________________-->
+    <!--______________________________Mariupol_____________________________________-->
+
+    <style name="MariupolRegular.Primary.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MariupolMedium.Primary.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MariupolRegular.Secondary.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MariupolMedium.Secondary.20">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>
