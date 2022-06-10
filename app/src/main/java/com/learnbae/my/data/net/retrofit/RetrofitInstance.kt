@@ -1,4 +1,4 @@
-package com.learnbae.my.data.retrofit
+package com.learnbae.my.data.net.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

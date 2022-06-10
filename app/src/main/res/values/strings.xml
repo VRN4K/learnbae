@@ -5,4 +5,8 @@
     <string name="word_of_a_day_title">Слово дня</string>
     <string name="last_five_word_title">Последние добавленные слова</string>
     <string name="transcription_pattern">[%s]</string>
+    <string name="text_field_word">Слово</string>
+    <string name="text_field_translation">Перевод</string>
+    <string name="add_new_word_button_title">Добавить слово</string>
+    <string name="show_more_button">Еще</string>
 </resources>

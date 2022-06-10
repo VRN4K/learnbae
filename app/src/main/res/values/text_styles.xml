@@ -81,6 +81,20 @@
         <item name="android:textColor">@color/secondary_text</item>
     </style>
 
+    <!--______________________________Primary_yellow__________________________________-->
+
+    <style name="KopenhagenMedium.PrimaryYellow">
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryYellow">
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryYellow">
+        <item name="android:textColor">@color/primary_dark</item>
+    </style>
+
     <!--______________________________SIZE_________________________________________-->
     <!--______________________________30SP_________________________________________-->
     <!--______________________________Kopenhagen____________________________________-->
@@ -124,6 +138,14 @@
     </style>
 
     <style name="MariupolMedium.Secondary.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryYellow.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryYellow.17">
         <item name="android:textSize">17sp</item>
     </style>
 

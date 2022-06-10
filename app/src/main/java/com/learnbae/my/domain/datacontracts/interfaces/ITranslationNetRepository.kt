@@ -1,7 +1,7 @@
 package com.learnbae.my.domain.datacontracts.interfaces
 
-import com.learnbae.my.data.model.TranslationModel
-import com.learnbae.my.data.model.WordMinicardModel
+import com.learnbae.my.data.net.model.TranslationModel
+import com.learnbae.my.data.net.model.WordMinicardModel
 
 interface ITranslationNetRepository {
     suspend fun getMinicard(

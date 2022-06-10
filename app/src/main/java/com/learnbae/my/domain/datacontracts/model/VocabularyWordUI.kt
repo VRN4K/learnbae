@@ -1,8 +1,8 @@
 package com.learnbae.my.domain.datacontracts.model
 
-class WordMinicardUI(
+class VocabularyWordUI(
+    val id: String,
     val title: String,
     val transcription: String,
-    val translation: List<String>,
-    val soundName: String
+    val translation: String
 )
