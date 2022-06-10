@@ -1,7 +1,6 @@
 package com.learnbae.my.di
 
 import com.github.terrakok.cicerone.Cicerone
-import com.learnbae.my.data.model.Translation
 import com.learnbae.my.data.repository.TranslationNetRepository
 import com.learnbae.my.data.retrofit.RetrofitInstance
 import com.learnbae.my.data.retrofit.TranslationService

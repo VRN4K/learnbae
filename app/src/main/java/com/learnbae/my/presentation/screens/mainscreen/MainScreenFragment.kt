@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.learnbae.my.data.model.WordMinicardModel
 import com.learnbae.my.databinding.MainScreenBinding
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
+import com.learnbae.my.presentation.common.livedata.StateData
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
-class MainScreenFragment: Fragment() {
+class MainScreenFragment : Fragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
     private val mainScreenViewModel by lazy { ViewModelProvider(this).get(MainScreenViewModel::class.java) }
 
@@ -29,17 +30,28 @@ class MainScreenFragment: Fragment() {
         setObservers()
     }
 
-    private fun setObservers(){
-        mainScreenViewModel.wordOfADay.observe(viewLifecycleOwner){
-            showWordOfADay(it)
+    private fun setObservers() {
+        mainScreenViewModel.wordOfADay.observe(viewLifecycleOwner) {
+            when (it.status) {
+                StateData.DataStatus.LOADING -> showLoading(true)
+                StateData.DataStatus.COMPLETE -> with(it.data) {
+                    showLoading(false)
+                    showWordOfADay(this!!)
+                }
+                else -> return@observe
+            }
         }
     }
 
-    private fun showWordOfADay(minicard: WordMinicardUI){
-        binding.apply {
-            wordOfADayTitle.text = minicard.title
-            wordOfADayTranscription.text = minicard.transcription
-            wordOfADayTranslation.text = minicard.translation.first()
+    private fun showLoading(isLoading: Boolean) {
+        binding.wordOfADayBlock.changeLoadingState(isLoading)
+    }
+
+    private fun showWordOfADay(minicard: WordMinicardUI) {
+        binding.wordOfADayBlock.apply {
+            wordTitle = minicard.title
+            wordTranscription = minicard.transcription
+            setTranslationsItems(minicard.translation)
         }
     }
 }
