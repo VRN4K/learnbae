@@ -8,6 +8,7 @@ import com.learnbae.my.data.retrofit.RetrofitInstance
 import com.learnbae.my.data.retrofit.TranslationService
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
+import com.learnbae.my.presentation.common.extensions.splitTranslation
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -40,7 +41,7 @@ fun WordMinicardModel.toUI(resources: Resources, translation: TranslationModel):
             R.string.transcription_pattern,
             translation.Body.first().Markup.first().Text
         ),
-        listOf(this.translation.translation),
+        this.translation.translation.splitTranslation(),
         this.translation.soundName
     )
 }
