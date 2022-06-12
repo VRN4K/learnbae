@@ -7,12 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.textfield.TextInputLayout
+import com.learnbae.my.R
 import com.learnbae.my.databinding.AddWordDialogBinding
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class AddWordDialog : DialogFragment() {
     private var binding by onDestroyNullable<AddWordDialogBinding>()
     private var listener: AddButtonClickListener? = null
+    private val inputFields by lazy {
+        listOf(
+            binding.textFieldWord,
+            binding.textFieldTranslation
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,18 +36,40 @@ class AddWordDialog : DialogFragment() {
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        setListeners()
+    }
+
+    private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener {
-                listener!!.onClickWordAdd(
-                    textFieldWord.editText!!.text.toString(),
-                    textFieldTranslation.editText!!.text.toString()
-                )
-                dialog?.dismiss()
+//                inputFields.onEach {
+//                    if()
+//                }
+                if (textFieldWord.editText!!.text.isNotEmpty() && textFieldTranslation.editText!!.text.isNotEmpty()) {
+                    listener!!.onClickWordAdd(
+                        textFieldWord.editText!!.text.toString(),
+                        textFieldTranslation.editText!!.text.toString()
+                    )
+                    dialog?.dismiss()
+                } else {
+                    if (textFieldWord.editText!!.text.isEmpty()) textFieldWord.showError(Errors.EMPTY_TEXT_INPUT) else textFieldWord.hideError()
+                    if (textFieldTranslation.editText!!.text.isEmpty()) textFieldTranslation.showError(
+                        Errors.EMPTY_TEXT_INPUT
+                    ) else textFieldTranslation.hideError()
+                }
             }
         }
         dialog!!.setOnCancelListener {
             dialog?.dismiss()
         }
+    }
+
+    private fun TextInputLayout.showError(error: Errors) {
+        this.error = getString(error.errorText)
+    }
+
+    private fun TextInputLayout.hideError() {
+        this.error = ""
     }
 
     fun setActionListener(listener: AddButtonClickListener) {
@@ -49,4 +79,8 @@ class AddWordDialog : DialogFragment() {
     interface AddButtonClickListener {
         fun onClickWordAdd(wordText: String, wordTranslation: String) {}
     }
+}
+
+enum class Errors(val errorText: Int) {
+    EMPTY_TEXT_INPUT(R.string.empty_input_error_text)
 }

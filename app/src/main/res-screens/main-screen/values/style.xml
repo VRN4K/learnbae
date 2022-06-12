@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-    <item name="boxCornerRadiusBottomStart">15dp</item>
-    <item name="boxCornerRadiusBottomEnd">15dp</item>
-    <item name="boxCornerRadiusTopStart">15dp</item>
-    <item name="boxCornerRadiusTopEnd">15dp</item>
-    <item name="android:layout_marginVertical">10dp</item>
-    <item name="android:layout_marginHorizontal">15dp</item>
-    <item name="boxStrokeWidth">2dp</item>
-    <item name="boxStrokeWidthFocused">2dp</item>
-</style>
+
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusBottomStart">15dp</item>
+        <item name="boxCornerRadiusBottomEnd">15dp</item>
+        <item name="boxCornerRadiusTopStart">15dp</item>
+        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:layout_marginHorizontal">15dp</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+    </style>
+
+    <style name="expandedBarTextStyle" parent="KopenhagenMedium.PrimaryLight.30">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
+    <style name="collapsedBarTextStyle" parent="KopenhagenMedium.PrimaryLight.30">
+    </style>
 </resources>

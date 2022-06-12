@@ -108,6 +108,7 @@ class MainScreenFragment : Fragment() {
         AddWordDialog().apply {
             setActionListener(object : AddWordDialog.AddButtonClickListener {
                 override fun onClickWordAdd(wordText: String, wordTranslation: String) {
+
                     mainScreenViewModel.addWordToVocabulary(
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),
