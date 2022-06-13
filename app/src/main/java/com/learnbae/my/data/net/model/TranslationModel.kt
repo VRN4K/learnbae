@@ -1,4 +1,4 @@
-package com.learnbae.my.data.model
+package com.learnbae.my.data.net.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,7 +1,7 @@
-package com.learnbae.my.data.retrofit
+package com.learnbae.my.data.net.retrofit
 
-import com.learnbae.my.data.model.TranslationModel
-import com.learnbae.my.data.model.WordMinicardModel
+import com.learnbae.my.data.net.model.TranslationModel
+import com.learnbae.my.data.net.model.WordMinicardModel
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST

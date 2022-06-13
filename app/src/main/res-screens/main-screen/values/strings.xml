@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="main_screen_title">Hi, Какое слово\nбудем искать\nсегодня?</string>
-    <string name="words_list_item_pattern_bold">%s. %s</string>
+    <string name="words_list_item_pattern_bold">%s. %s\t</string>
     <string name="words_list_item_pattern_regular"> — %s</string>
+    <string name="words_list_item_pattern_number">0%s</string>
+
+    <string name="words_list_empty_text">В вашем словаре отсутсвуют \nслова.Хотите добавить новые?</string>
+    <string name="words_list_not_empty_text">В вашем словаре %s %s.\nХотите добавить новые?</string>
+
+    <string name="add_word_dialog_title">Какое слово хотите добавить?</string>
+
+    <string name="empty_input_error_text">Поле не может быть пустым</string>
+
+    <plurals name="words_plurals" >
+        <item quantity="one">слово</item>
+        <item quantity="few">слова</item>
+        <item quantity="other">слов</item>
+    </plurals>
 </resources>

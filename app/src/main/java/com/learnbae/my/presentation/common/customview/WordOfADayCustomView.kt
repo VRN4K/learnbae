@@ -27,6 +27,7 @@ class WordOfADayCustomView @JvmOverloads constructor(
     }
 
     init {
+        binding.wordTranslationRecycler.adapter = translationAdapter
         attrs.apply {
             val typedArray = context.obtainStyledAttributes(
                 this,
@@ -59,7 +60,7 @@ class WordOfADayCustomView @JvmOverloads constructor(
 
     fun setTranslationsItems(items: List<String>) {
         translationAdapter.swapItems(items)
-        binding.wordTranslationRecycler.adapter = translationAdapter
+
     }
 
     fun changeLoadingState(isLoading: Boolean) {
