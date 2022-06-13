@@ -35,30 +35,26 @@ class AddWordDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         setListeners()
     }
 
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener {
-//                inputFields.onEach {
-//                    if()
-//                }
-                if (textFieldWord.editText!!.text.isNotEmpty() && textFieldTranslation.editText!!.text.isNotEmpty()) {
-                    listener!!.onClickWordAdd(
+                when {
+                    inputFields.all { it.editText!!.text.isNotEmpty() } -> listener!!.onClickWordAdd(
                         textFieldWord.editText!!.text.toString(),
                         textFieldTranslation.editText!!.text.toString()
-                    )
-                    dialog?.dismiss()
-                } else {
-                    if (textFieldWord.editText!!.text.isEmpty()) textFieldWord.showError(Errors.EMPTY_TEXT_INPUT) else textFieldWord.hideError()
-                    if (textFieldTranslation.editText!!.text.isEmpty()) textFieldTranslation.showError(
-                        Errors.EMPTY_TEXT_INPUT
-                    ) else textFieldTranslation.hideError()
+                    ).also {
+                        dialog?.dismiss()
+                    }
+                    else -> inputFields.onEach {
+                        if (it.editText!!.text.isEmpty()) it.showError(Errors.EMPTY_TEXT_INPUT) else it.hideError()
+                    }
                 }
             }
         }
+
         dialog!!.setOnCancelListener {
             dialog?.dismiss()
         }

@@ -19,6 +19,7 @@ import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolde
 import com.learnbae.my.presentation.screens.mainscreen.holder.WordMinicardHolder
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import java.util.*
+import kotlin.math.roundToInt
 
 class MainScreenFragment : Fragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
@@ -99,7 +100,13 @@ class MainScreenFragment : Fragment() {
             binding.vocabularyTitle.text = if (isEmpty) {
                 getString(R.string.words_list_empty_text)
             } else {
-                getString(R.string.words_list_not_empty_text, wordsCount.toString())
+                getString(
+                    R.string.words_list_not_empty_text, wordsCount.toString(),
+                    resources.getQuantityString(
+                        R.plurals.words_plurals,
+                        wordsCount
+                    )
+                )
             }
         }
     }
@@ -108,7 +115,6 @@ class MainScreenFragment : Fragment() {
         AddWordDialog().apply {
             setActionListener(object : AddWordDialog.AddButtonClickListener {
                 override fun onClickWordAdd(wordText: String, wordTranslation: String) {
-
                     mainScreenViewModel.addWordToVocabulary(
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),

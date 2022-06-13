@@ -58,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/text_field_word"
+
                     app:hintTextAppearance="@style/MariupolMedium.Primary.17">
 
                     <com.google.android.material.textfield.TextInputEditText
