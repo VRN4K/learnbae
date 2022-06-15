@@ -11,6 +11,8 @@ import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
 import com.learnbae.my.domain.interactors.TranslationInteractor
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -25,6 +27,22 @@ val interactorModule = module {
     single<ITranslationNetRepository> { TranslationNetRepository() }
     single<IVocabularyDBRepository> { VocabularyDBRepository() }
     single<ITranslationInteractor> { TranslationInteractor(get(), get(), get()) }
+    single {
+        OkHttpClient.Builder()
+            .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BASIC)
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            })
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader(
+                        "Authorization",
+                        "Bearer " + "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxlSEFpT2pFMk5UVXpOamMwTWpRc0lrMXZaR1ZzSWpwN0lrTm9ZWEpoWTNSbGNuTlFaWEpFWVhraU9qVXdNREF3TENKVmMyVnlTV1FpT2pZMk1qWXNJbFZ1YVhGMVpVbGtJam9pTnpGbE1URXpNbVV0Tm1GaE55MDBNbUV6TFdFME1Ea3RNV1kxTlRJd1l6UmhabUZtSW4xOS4zYi1ZQ1oxOWpWNmloeEV1ZXBlZlJqdXpNeGpLbVJfcTd1NGE1SUpVdFBV"
+                    )
+                    .build()
+                chain.proceed(request)
+            }.build()
+    }
 }
 
 val dataBaseModule = module {

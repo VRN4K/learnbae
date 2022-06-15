@@ -10,8 +10,9 @@ interface ITranslationInteractor {
     ): WordMinicardUI
 
     suspend fun getTranslation(text: String): TranslationModel
-
     suspend fun addWordToVocabulary(word: VocabularyWordUI)
     suspend fun deleteWordById(wordId: String)
     suspend fun getAllWords(): List<VocabularyWordUI>
+
+    suspend fun getWordSound(dictionaryName: String, fileName: String): String
 }

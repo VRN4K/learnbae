@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.*
 import com.learnbae.my.R
+import com.learnbae.my.data.net.retrofit.RetrofitInstance.BASE_URL
 import com.learnbae.my.databinding.MainScreenBinding
-import com.learnbae.my.databinding.TranslationItemBinding
 import com.learnbae.my.databinding.WordsListItemBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
@@ -16,10 +21,10 @@ import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
-import com.learnbae.my.presentation.screens.mainscreen.holder.WordMinicardHolder
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
+import okhttp3.OkHttpClient
 import java.util.*
-import kotlin.math.roundToInt
+import java.util.concurrent.TimeUnit
 
 class MainScreenFragment : Fragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
@@ -84,8 +89,17 @@ class MainScreenFragment : Fragment() {
                     else -> return@observe
                 }
             }
+
+            mediaSourceData.observe(viewLifecycleOwner) {
+                ExoPlayer.Builder(requireContext()).build().apply {
+                    addMediaSource(it)
+                    prepare()
+                    play()
+                }
+            }
         }
     }
+
 
     private fun showLoading(isLoading: Boolean) {
         binding.wordOfADayBlock.changeLoadingState(isLoading)
@@ -133,6 +147,8 @@ class MainScreenFragment : Fragment() {
             wordTitle = minicard.title
             wordTranscription = minicard.transcription
             setTranslationsItems(minicard.translation)
+            setOnPlayButtonClickListener { mainScreenViewModel.onPlaySoundButtonCLick() }
         }
     }
 }
+

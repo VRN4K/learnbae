@@ -15,7 +15,6 @@ interface TranslationService {
 
     @GET("Translation")
     suspend fun getTranslation(
-        @Header("Authorization") token:String,
         @Query("text") text: String,
         @Query("srcLang") srcLang: String,
         @Query("dstLang") dstLang: String,
@@ -23,11 +22,16 @@ interface TranslationService {
 
     @GET("Minicard")
     suspend fun getMinicard(
-        @Header("Authorization") token:String,
         @Query("text") text: String,
         @Query("srcLang") srcLang: String,
         @Query("dstLang") dstLang: String
     ): WordMinicardModel
+
+    @GET("Sound")
+    suspend fun getWordSound(
+    @Query("dictionaryName") dictionaryName: String,
+    @Query("fileName") fileName: String,
+    ): String
 }
 
 object LanguagesCodes {
