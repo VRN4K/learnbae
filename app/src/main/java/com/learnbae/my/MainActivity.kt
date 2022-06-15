@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.learnbae.my.databinding.ActivityMainBinding
+import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navHolder.setNavigator(AppNavigator(this, R.id.fragmentContainerView))
-
         mainActivityViewModel.openRootScreen()
     }
 }
