@@ -18,10 +18,8 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:elevation="5dp"
         app:itemIconTint="@color/nav_item_color_selector"
         app:itemTextAppearanceActive="@style/MariupolMedium.Primary.15"
