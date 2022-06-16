@@ -20,6 +20,8 @@ val ciceroneModule = module {
     val cicerone = Cicerone.create()
     single { cicerone.router }
     single { cicerone.getNavigatorHolder() }
+
+
 }
 
 val interactorModule = module {
