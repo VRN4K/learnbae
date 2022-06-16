@@ -162,7 +162,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="19dp"
                 android:layout_marginTop="15dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+               >
 
                 <TextView
                     style="@style/MariupolMedium.Primary.20"
@@ -177,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="1dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="15dp"
                     app:cardCornerRadius="15dp">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -189,15 +190,6 @@
                         tools:itemCount="5"
                         tools:listitem="@layout/words_list_item" />
                 </androidx.cardview.widget.CardView>
-
-                <TextView
-                    style="@style/MariupolMedium.PrimaryYellow.17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/show_more_button" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
