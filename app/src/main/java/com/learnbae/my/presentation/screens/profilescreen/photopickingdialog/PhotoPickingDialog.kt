@@ -1,20 +1,21 @@
 package com.learnbae.my.presentation.screens.profilescreen.photopickingdialog
 
+import android.content.Intent
+import android.content.Intent.EXTRA_TEXT
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.google.gson.Gson
 import com.learnbae.my.databinding.PhotoPickingDialogBinding
 import com.learnbae.my.domain.datacontracts.model.ActionType
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class PhotoPickingDialog : DialogFragment() {
-    companion object {
-        const val DATA_KEY = "Intent data key"
-    }
     private var binding by onDestroyNullable<PhotoPickingDialogBinding>()
     private var listener: PickPhotoButtonClickListener? = null
 
@@ -24,7 +25,6 @@ class PhotoPickingDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = PhotoPickingDialogBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -38,27 +38,16 @@ class PhotoPickingDialog : DialogFragment() {
     private fun setListeners() {
         binding.apply {
             pickFromGalleryButton.setOnClickListener {
-                listener!!.onPickPhotoClick(ActionType.LOAD_IMAGE_GALLERY)
+                listener!!.onPickGalleryClick(
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                )
+                dialog!!.dismiss()
             }
 
             pickFromCameraButton.setOnClickListener {
-                listener!!.onPickPhotoClick(ActionType.LOAD_IMAGE_CAMERA)
+                listener!!.onPickCameraClick(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+                dialog!!.dismiss()
             }
-
-//            requireContext().startActivity(
-//                Intent(
-//                    ACTION_PICK,
-//                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//                ).apply {
-//                    putExtra(
-//                        DATA_KEY, Gson().toJson(
-//                            IntentDataModel(
-//                                ActionType.LOAD_IMAGE_CAMERA
-//                            )
-//                        )
-//                    )
-//                }
-//            )
         }
     }
 
@@ -67,6 +56,7 @@ class PhotoPickingDialog : DialogFragment() {
     }
 
     interface PickPhotoButtonClickListener {
-        fun onPickPhotoClick(actionType: ActionType) {}
+        fun onPickGalleryClick(intent: Intent) {}
+        fun onPickCameraClick(intent: Intent) {}
     }
 }

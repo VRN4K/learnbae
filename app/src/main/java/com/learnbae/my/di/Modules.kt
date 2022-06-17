@@ -11,7 +11,6 @@ import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
 import com.learnbae.my.domain.interactors.TranslationInteractor
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
-import com.learnbae.my.presentation.common.ActionLauncher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -44,7 +43,6 @@ val interactorModule = module {
                 chain.proceed(request)
             }.build()
     }
-    single { ActionLauncher(get()) }
 }
 
 val dataBaseModule = module {

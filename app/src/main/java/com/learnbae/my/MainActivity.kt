@@ -1,6 +1,5 @@
 package com.learnbae.my
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.forEach
@@ -9,14 +8,12 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.learnbae.my.databinding.ActivityMainBinding
-import com.learnbae.my.presentation.common.ActionLauncher
 import com.learnbae.my.presentation.screens.Screens
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
     private var binding by onDestroyNullable<ActivityMainBinding>()
-    private val actionLauncher: ActionLauncher by inject()
     private val mainActivityViewModel by lazy { ViewModelProvider(this).get(MainActivityViewModel::class.java) }
     private val navHolder: NavigatorHolder by inject()
 
