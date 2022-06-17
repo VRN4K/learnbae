@@ -3,6 +3,9 @@
     package="com.learnbae.my">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:name="com.learnbae.my.di.App"
@@ -23,5 +26,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -8,7 +8,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface TranslationService {
-    @POST("authenticate")
+    @POST("Authenticate")
     suspend fun getAuthKey(
         @Header("Authorization") token:String,
     ): String

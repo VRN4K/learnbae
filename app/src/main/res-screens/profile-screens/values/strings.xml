@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pick_photo_from_gallery">Выбрать фото из галереи</string>
+    <string name="pick_photo_from_camera">Сделать фото</string>
+</resources>

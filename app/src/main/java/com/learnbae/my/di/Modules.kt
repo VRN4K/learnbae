@@ -11,6 +11,7 @@ import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
 import com.learnbae.my.domain.interactors.TranslationInteractor
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
+import com.learnbae.my.presentation.common.ActionLauncher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -20,8 +21,6 @@ val ciceroneModule = module {
     val cicerone = Cicerone.create()
     single { cicerone.router }
     single { cicerone.getNavigatorHolder() }
-
-
 }
 
 val interactorModule = module {
@@ -39,12 +38,13 @@ val interactorModule = module {
                 val request = chain.request().newBuilder()
                     .addHeader(
                         "Authorization",
-                        "Bearer " + "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxlSEFpT2pFMk5UVXpOamMwTWpRc0lrMXZaR1ZzSWpwN0lrTm9ZWEpoWTNSbGNuTlFaWEpFWVhraU9qVXdNREF3TENKVmMyVnlTV1FpT2pZMk1qWXNJbFZ1YVhGMVpVbGtJam9pTnpGbE1URXpNbVV0Tm1GaE55MDBNbUV6TFdFME1Ea3RNV1kxTlRJd1l6UmhabUZtSW4xOS4zYi1ZQ1oxOWpWNmloeEV1ZXBlZlJqdXpNeGpLbVJfcTd1NGE1SUpVdFBV"
+                        "Bearer " + "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxlSEFpT2pFMk5UVTFNelE0TVRFc0lrMXZaR1ZzSWpwN0lrTm9ZWEpoWTNSbGNuTlFaWEpFWVhraU9qVXdNREF3TENKVmMyVnlTV1FpT2pZMk1qWXNJbFZ1YVhGMVpVbGtJam9pTnpGbE1URXpNbVV0Tm1GaE55MDBNbUV6TFdFME1Ea3RNV1kxTlRJd1l6UmhabUZtSW4xOS50WVBOZG5MSkN3cG4zU0RWdlAxUWx5TDlYc2NBZGxDQ1VFRi1rMkhuSHd3"
                     )
                     .build()
                 chain.proceed(request)
             }.build()
     }
+    single { ActionLauncher(get()) }
 }
 
 val dataBaseModule = module {

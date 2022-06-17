@@ -1,5 +1,6 @@
 package com.learnbae.my
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.forEach
@@ -8,12 +9,14 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.learnbae.my.databinding.ActivityMainBinding
+import com.learnbae.my.presentation.common.ActionLauncher
 import com.learnbae.my.presentation.screens.Screens
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
     private var binding by onDestroyNullable<ActivityMainBinding>()
+    private val actionLauncher: ActionLauncher by inject()
     private val mainActivityViewModel by lazy { ViewModelProvider(this).get(MainActivityViewModel::class.java) }
     private val navHolder: NavigatorHolder by inject()
 
@@ -35,10 +38,9 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
             NavBarItems.values().onEach { navBarItem ->
                 if (menuItem.itemId == navBarItem.menuId) menuItem.setOnMenuItemClickListener {
-                    println(navBarItem.name)
-//                    mainActivityViewModel.openFragment(
-//                        NavBarItems.HOME.screen
-//                    )
+                    mainActivityViewModel.openFragment(
+                        navBarItem.screen
+                    )
                     true
                 }
             }
@@ -48,6 +50,6 @@ class MainActivity : AppCompatActivity() {
 
 enum class NavBarItems(val menuId: Int, val screen: FragmentScreen) {
     HOME(R.id.navigation_item_main, Screens.getMainScreen()),
-    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getMainScreen()), //TODO() add vocabulary screen
-    PROFILE(R.id.navigation_item_profile, Screens.getMainScreen()) //TODO() add profile screen
+    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getMainScreen()),
+    PROFILE(R.id.navigation_item_profile, Screens.getProfileScreen()) //TODO() add profile screen
 }

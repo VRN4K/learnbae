@@ -29,8 +29,7 @@
     <com.learnbae.my.presentation.common.animator.LoadingViewAnimator
         android:id="@+id/loading_animator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:visible_child="true">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/word_of_a_day_content"
