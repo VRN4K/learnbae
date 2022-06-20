@@ -17,6 +17,7 @@ class TranslationInteractor(
     private val dbRepository: IVocabularyDBRepository,
     private val resources: Resources
 ) : ITranslationInteractor {
+    private var authKey: String = ""
 
     override suspend fun getWordMinicard(
         text: String
@@ -43,5 +44,9 @@ class TranslationInteractor(
 
     override suspend fun getWordSound(dictionaryName: String, fileName: String): String {
         return netRepository.getWordSound(dictionaryName, fileName)
+    }
+
+    override suspend fun getAuthKey(): String {
+        return netRepository.getAuthKey()
     }
 }

@@ -11,6 +11,7 @@ import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
+import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
 import ltst.nibirualert.my.domain.withIO
 import org.koin.core.component.inject
@@ -21,18 +22,19 @@ class MainScreenViewModel : BaseViewModel() {
     }
 
     private val translationInteractor: ITranslationInteractor by inject()
-
-
     val wordOfADay = StateLiveData<WordMinicardUI>()
     val vocabulary = StateLiveData<List<VocabularyWordUI>>()
     val mediaSourceData = MutableLiveData<MediaSource>()
     val countTitle = MutableLiveData<Int>()
 
     init {
+        val handler = CoroutineExceptionHandler { _, exception ->
+            wordOfADay.postLoading()
+        }
         wordOfADay.postLoading()
-        launchIO {
+        launchIO(handler) {
             getLastFiveWords()
-            withIO { wordOfADay.postComplete(translationInteractor.getWordMinicard("tree")) }
+            withIO() { wordOfADay.postComplete(translationInteractor.getWordMinicard("tree")) }
         }
     }
 

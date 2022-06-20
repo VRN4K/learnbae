@@ -23,4 +23,6 @@ interface ITranslationNetRepository {
         dictionaryName: String,
         fileName: String,
     ): String
+
+    suspend fun getAuthKey(): String
 }

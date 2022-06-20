@@ -13,6 +13,9 @@ import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
+    companion object{
+
+    }
     private var binding by onDestroyNullable<ActivityMainBinding>()
     private val mainActivityViewModel by lazy { ViewModelProvider(this).get(MainActivityViewModel::class.java) }
     private val navHolder: NavigatorHolder by inject()
@@ -23,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         navHolder.setNavigator(AppNavigator(this, binding.fragmentContainerView.id))
         mainActivityViewModel.openRootScreen()
+
     }
 
     override fun onStart() {
@@ -30,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         setListeners()
     }
 
-    //TODO() add navigation
     private fun setListeners() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
             NavBarItems.values().onEach { navBarItem ->
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
 
 enum class NavBarItems(val menuId: Int, val screen: FragmentScreen) {
