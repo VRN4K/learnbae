@@ -13,9 +13,6 @@ import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
-    companion object{
-
-    }
     private var binding by onDestroyNullable<ActivityMainBinding>()
     private val mainActivityViewModel by lazy { ViewModelProvider(this).get(MainActivityViewModel::class.java) }
     private val navHolder: NavigatorHolder by inject()
@@ -41,17 +38,15 @@ class MainActivity : AppCompatActivity() {
                     mainActivityViewModel.openFragment(
                         navBarItem.screen
                     )
-                    true
+                    false
                 }
             }
         }
     }
-
-
 }
 
 enum class NavBarItems(val menuId: Int, val screen: FragmentScreen) {
     HOME(R.id.navigation_item_main, Screens.getMainScreen()),
-    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getMainScreen()),
+    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getVocabularyScreen()),
     PROFILE(R.id.navigation_item_profile, Screens.getProfileScreen()) //TODO() add profile screen
 }
