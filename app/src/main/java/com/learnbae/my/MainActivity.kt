@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         navHolder.setNavigator(AppNavigator(this, binding.fragmentContainerView.id))
         mainActivityViewModel.openRootScreen()
+        mainActivityViewModel.setNewAuthKey()
     }
 
     override fun onStart() {
@@ -47,5 +48,5 @@ class MainActivity : AppCompatActivity() {
 enum class NavBarItems(val menuId: Int, val screen: FragmentScreen) {
     HOME(R.id.navigation_item_main, Screens.getMainScreen()),
     VOCABULARY(R.id.navigation_item_vocabulary, Screens.getVocabularyScreen()),
-    PROFILE(R.id.navigation_item_profile, Screens.getMainScreen()) //TODO() add profile screen
+    PROFILE(R.id.navigation_item_profile, Screens.getProfileScreen()) //TODO() add profile screen
 }

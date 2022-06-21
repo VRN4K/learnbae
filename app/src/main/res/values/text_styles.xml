@@ -114,6 +114,17 @@
     <style name="MariupolMedium.PrimaryLight.30">
         <item name="android:textSize">30sp</item>
     </style>
+
+    <!--______________________________20SP_________________________________________-->
+    <!--______________________________Mariupol_____________________________________-->
+    <style name="MariupolMedium.PrimaryLight.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryLight.20">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <!--______________________________17SP_________________________________________-->
     <!--______________________________Mariupol_____________________________________-->
 
@@ -165,6 +176,14 @@
     </style>
 
     <style name="MariupolMedium.Secondary.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MariupolRegular.PrimaryLight.15">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="MariupolMedium.PrimaryLight.15">
         <item name="android:textSize">15sp</item>
     </style>
 

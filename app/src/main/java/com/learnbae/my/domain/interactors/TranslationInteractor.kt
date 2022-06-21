@@ -2,7 +2,7 @@ package com.learnbae.my.domain.interactors
 
 import android.content.res.Resources
 import com.learnbae.my.data.net.model.TranslationModel
-import com.learnbae.my.data.net.repository.toUI
+import com.learnbae.my.data.net.model.toUI
 import com.learnbae.my.data.net.retrofit.LanguagesCodes
 import com.learnbae.my.data.storage.entities.toEntity
 import com.learnbae.my.data.storage.entities.toUI
@@ -17,6 +17,7 @@ class TranslationInteractor(
     private val dbRepository: IVocabularyDBRepository,
     private val resources: Resources
 ) : ITranslationInteractor {
+    private var authKey: String = ""
 
     override suspend fun getWordMinicard(
         text: String
@@ -39,5 +40,13 @@ class TranslationInteractor(
 
     override suspend fun getAllWords(): List<VocabularyWordUI> {
         return dbRepository.getAllWords()?.map { it.toUI() } ?: emptyList()
+    }
+
+    override suspend fun getWordSound(dictionaryName: String, fileName: String): String {
+        return netRepository.getWordSound(dictionaryName, fileName)
+    }
+
+    override suspend fun getAuthKey(): String {
+        return netRepository.getAuthKey()
     }
 }

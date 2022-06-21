@@ -5,13 +5,11 @@ import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 
 interface ITranslationInteractor {
-    suspend fun getWordMinicard(
-        text: String
-    ): WordMinicardUI
-
+    suspend fun getWordMinicard(text: String): WordMinicardUI
     suspend fun getTranslation(text: String): TranslationModel
-
     suspend fun addWordToVocabulary(word: VocabularyWordUI)
     suspend fun deleteWordById(wordId: String)
     suspend fun getAllWords(): List<VocabularyWordUI>
+    suspend fun getWordSound(dictionaryName: String, fileName: String): String
+    suspend fun getAuthKey(): String
 }

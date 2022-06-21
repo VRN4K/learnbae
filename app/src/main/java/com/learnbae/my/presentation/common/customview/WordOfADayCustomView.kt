@@ -3,6 +3,7 @@ package com.learnbae.my.presentation.common.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import com.learnbae.my.R
 import com.learnbae.my.databinding.TranslationItemBinding
@@ -65,5 +66,9 @@ class WordOfADayCustomView @JvmOverloads constructor(
 
     fun changeLoadingState(isLoading: Boolean) {
         binding.loadingAnimator.changeLoadingState(isLoading, binding.wordOfADayContent.id)
+    }
+
+    fun setOnPlayButtonClickListener(action: () -> Unit) {
+        binding.soundPlayButton.setOnClickListener { action() }
     }
 }

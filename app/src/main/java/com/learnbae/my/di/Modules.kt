@@ -1,16 +1,23 @@
 package com.learnbae.my.di
 
+import android.content.Context
 import androidx.room.Room
 import com.github.terrakok.cicerone.Cicerone
 import com.learnbae.my.data.net.repository.TranslationNetRepository
 import com.learnbae.my.data.net.retrofit.RetrofitInstance
 import com.learnbae.my.data.net.retrofit.TranslationService
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor.Companion.authKeyPair
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor.Companion.authKeyStore
 import com.learnbae.my.data.storage.VocabularyDataBase
+import com.learnbae.my.data.storage.preferences.StringPreference
 import com.learnbae.my.data.storage.repositories.VocabularyDBRepository
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
 import com.learnbae.my.domain.interactors.TranslationInteractor
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -25,6 +32,21 @@ val interactorModule = module {
     single<ITranslationNetRepository> { TranslationNetRepository() }
     single<IVocabularyDBRepository> { VocabularyDBRepository() }
     single<ITranslationInteractor> { TranslationInteractor(get(), get(), get()) }
+    single {
+        OkHttpClient.Builder()
+            .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            })
+            .addInterceptor(VocabularyInterceptor()).build()
+    }
+    single {
+        StringPreference(
+            androidContext().getSharedPreferences(
+                authKeyStore,
+                Context.MODE_PRIVATE
+            ), authKeyPair
+        )
+    }
 }
 
 val dataBaseModule = module {

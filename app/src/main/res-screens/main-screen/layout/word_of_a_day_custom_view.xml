@@ -49,29 +49,41 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/word_of_a_day_title"
                         style="@style/MariupolMedium.Primary.20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
                         tools:text="Green" />
 
-                    <TextView
-                        android:id="@+id/word_of_a_day_transcription"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        tools:text="[griːn]" />
+                        android:layout_marginTop="2dp">
+
+                        <TextView
+                            android:id="@+id/word_of_a_day_transcription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="[griːn]" />
+
+                        <ImageButton
+                            android:id="@+id/soundPlayButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_baseline_volume_up_24"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/word_translation_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/translation_item" />

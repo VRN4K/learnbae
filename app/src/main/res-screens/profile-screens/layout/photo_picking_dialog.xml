@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="2dp"
+        android:layout_marginHorizontal="20dp"
+        android:elevation="2dp"
+        app:cardCornerRadius="16dp">
+        <LinearLayout
+            android:paddingVertical="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pickFromGalleryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                style="@style/MariupolMedium.Primary.17"
+                android:text="@string/pick_photo_from_gallery"/>
+            <TextView
+                android:id="@+id/pickFromCameraButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                style="@style/MariupolMedium.Primary.17"
+                android:text="@string/pick_photo_from_camera"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
