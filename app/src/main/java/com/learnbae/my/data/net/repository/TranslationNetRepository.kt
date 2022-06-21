@@ -2,7 +2,6 @@ package com.learnbae.my.data.net.repository
 
 import com.learnbae.my.data.net.model.TranslationModel
 import com.learnbae.my.data.net.model.WordMinicardModel
-import com.learnbae.my.data.net.retrofit.RetrofitInstance.BASE_API_KEY
 import com.learnbae.my.data.net.retrofit.TranslationService
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import org.koin.core.component.KoinComponent
@@ -32,7 +31,7 @@ class TranslationNetRepository : ITranslationNetRepository, KoinComponent {
     }
 
     override suspend fun getAuthKey(): String {
-       return mService.getAuthKey(BASE_API_KEY)
+       return mService.getAuthKey()
     }
 }
 

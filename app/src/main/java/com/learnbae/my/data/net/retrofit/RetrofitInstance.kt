@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance : KoinComponent {
     const val BASE_URL = "https://developers.lingvolive.com/api/v1/"
     const val BASE_API_KEY =
-        "Basic NzFlMTEzMmUtNmFhNy00MmEzLWE0MDktMWY1NTIwYzRhZmFmOmNkYzcyMjMwOTBmMzQ3OTdhOTdiNzhkZWM4NmI4YjYz"
+        "NzFlMTEzMmUtNmFhNy00MmEzLWE0MDktMWY1NTIwYzRhZmFmOmNkYzcyMjMwOTBmMzQ3OTdhOTdiNzhkZWM4NmI4YjYz"
     private val okHttpClient: OkHttpClient by inject()
 
     private val retrofit by lazy {

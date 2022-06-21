@@ -3,15 +3,12 @@ package com.learnbae.my.data.net.retrofit
 import com.learnbae.my.data.net.model.TranslationModel
 import com.learnbae.my.data.net.model.WordMinicardModel
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface TranslationService {
     @POST("authenticate")
-    suspend fun getAuthKey(
-        @Header("Authorization") token:String,
-    ): String
+    suspend fun getAuthKey(): String
 
     @GET("Translation")
     suspend fun getTranslation(

@@ -3,12 +3,12 @@ package com.learnbae.my.di
 import android.content.Context
 import androidx.room.Room
 import com.github.terrakok.cicerone.Cicerone
-import com.learnbae.my.MainActivityViewModel.Companion.AUTH_KEY
-import com.learnbae.my.MainActivityViewModel.Companion.authKeyPair
-import com.learnbae.my.MainActivityViewModel.Companion.authKeyStore
 import com.learnbae.my.data.net.repository.TranslationNetRepository
 import com.learnbae.my.data.net.retrofit.RetrofitInstance
 import com.learnbae.my.data.net.retrofit.TranslationService
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor.Companion.authKeyPair
+import com.learnbae.my.data.net.retrofit.VocabularyInterceptor.Companion.authKeyStore
 import com.learnbae.my.data.storage.VocabularyDataBase
 import com.learnbae.my.data.storage.preferences.StringPreference
 import com.learnbae.my.data.storage.repositories.VocabularyDBRepository
@@ -37,15 +37,7 @@ val interactorModule = module {
             .addNetworkInterceptor(HttpLoggingInterceptor().apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             })
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader(
-                        "Authorization",
-                        "Bearer ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxlSEFpT2pFMk5UVTNPVFl4TWpRc0lrMXZaR1ZzSWpwN0lrTm9ZWEpoWTNSbGNuTlFaWEpFWVhraU9qVXdNREF3TENKVmMyVnlTV1FpT2pZMk1qWXNJbFZ1YVhGMVpVbGtJam9pTnpGbE1URXpNbVV0Tm1GaE55MDBNbUV6TFdFME1Ea3RNV1kxTlRJd1l6UmhabUZtSW4xOS4tWkYxbjZwaHZqTzg1MjZ4eHlwNFpJQ1JUU3k0NTlrYlBYaDZDWUszTnk4"
-                    )
-                    .build()
-                chain.proceed(request)
-            }.build()
+            .addInterceptor(VocabularyInterceptor()).build()
     }
     single {
         StringPreference(

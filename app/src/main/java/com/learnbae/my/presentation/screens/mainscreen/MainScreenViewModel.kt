@@ -13,7 +13,6 @@ import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
-import ltst.nibirualert.my.domain.withIO
 import org.koin.core.component.inject
 
 class MainScreenViewModel : BaseViewModel() {
