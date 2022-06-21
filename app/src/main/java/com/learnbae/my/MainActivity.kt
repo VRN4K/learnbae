@@ -30,16 +30,14 @@ class MainActivity : AppCompatActivity() {
         setListeners()
     }
 
-    //TODO() add navigation
     private fun setListeners() {
         binding.bottomNavigationView.menu.forEach { menuItem ->
             NavBarItems.values().onEach { navBarItem ->
                 if (menuItem.itemId == navBarItem.menuId) menuItem.setOnMenuItemClickListener {
-                    println(navBarItem.name)
-//                    mainActivityViewModel.openFragment(
-//                        NavBarItems.HOME.screen
-//                    )
-                    true
+                    mainActivityViewModel.openFragment(
+                        navBarItem.screen
+                    )
+                    false
                 }
             }
         }
@@ -48,6 +46,6 @@ class MainActivity : AppCompatActivity() {
 
 enum class NavBarItems(val menuId: Int, val screen: FragmentScreen) {
     HOME(R.id.navigation_item_main, Screens.getMainScreen()),
-    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getMainScreen()), //TODO() add vocabulary screen
+    VOCABULARY(R.id.navigation_item_vocabulary, Screens.getVocabularyScreen()),
     PROFILE(R.id.navigation_item_profile, Screens.getMainScreen()) //TODO() add profile screen
 }

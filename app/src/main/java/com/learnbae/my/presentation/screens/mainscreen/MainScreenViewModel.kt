@@ -25,7 +25,7 @@ class MainScreenViewModel : BaseViewModel() {
         wordOfADay.postLoading()
         launchIO {
             getLastFiveWords()
-            withIO { wordOfADay.postComplete(translationInteractor.getWordMinicard("tree")) }
+            wordOfADay.postComplete(translationInteractor.getWordMinicard("tree"))
         }
     }
 
@@ -37,14 +37,12 @@ class MainScreenViewModel : BaseViewModel() {
     }
 
     private suspend fun getLastFiveWords() {
-        withIO {
-            translationInteractor.getAllWords().apply {
-                if (this.isNotEmpty()) {
-                    countTitle.postValue(this.size)
-                    vocabulary.postComplete(this.take(LAST_ADDED_WORDS_COUNT))
-                } else {
-                    vocabulary.postEmpty()
-                }
+        translationInteractor.getAllWords().apply {
+            if (this.isNotEmpty()) {
+                countTitle.postValue(this.size)
+                vocabulary.postComplete(this.take(LAST_ADDED_WORDS_COUNT))
+            } else {
+                vocabulary.postEmpty()
             }
         }
     }

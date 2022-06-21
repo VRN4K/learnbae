@@ -36,7 +36,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res-screens\\main-screen'
+                srcDirs 'src\\main\\res', 'src\\main\\res-screens\\main-screen', 'src\\main\\res-screens\\vocabulary-screen'
             }
         }
     }
@@ -45,7 +45,7 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.6.0'
+    implementation "com.google.android.material:material:1.6.1"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
@@ -81,5 +81,6 @@ dependencies {
     //charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    implementation "com.google.android.material:material:1.6.1"
+    //swipe layout
+    implementation 'ru.rambler.android:swipe-layout:1.1.0'
 }
