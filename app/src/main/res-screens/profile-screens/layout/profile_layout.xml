@@ -26,6 +26,7 @@
                 android:layout_marginTop="50dp"
                 android:src="@color/primary_light_text" />
 
+            <!--add tool text-->
             <TextView
                 style="@style/MariupolMedium.PrimaryLight.20"
                 android:layout_width="wrap_content"
@@ -56,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:text="Изменить"
+                android:text="@string/profile_account_level_change_button"
                 android:textAppearance="@style/MariupolMedium.PrimaryYellow.17"
                 android:textColor="@color/primary" />
 
@@ -66,6 +67,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:orientation="horizontal">
 
+                <!--add tool text-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,7 +84,6 @@
                     android:text="Уровень \nанглиского" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
     </FrameLayout>
 
     <LinearLayout
@@ -97,16 +98,52 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:layout_marginVertical="15dp"
-            android:text="Информация об аккаунте" />
+            android:text="@string/profile_account_info" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="210dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginVertical="5dp"
             app:cardCornerRadius="15dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="15dp"
+                android:orientation="vertical"
+                android:paddingVertical="20dp">
+
+                <!--add tool text-->
+                <TextView
+                    style="@style/MariupolMedium.Primary.17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Капитанова Вероничка" />
+
+                <TextView
+                    style="@style/MariupolRegular.Secondary.15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Дата регистрации: 21.06.22" />
+
+                <TextView
+                    style="@style/MariupolRegular.Secondary.15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Слов в словаре: 6" />
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/profile_account_login_button"
+            android:textAppearance="@style/MariupolMedium.PrimaryYellow.17"
+            android:textColor="@color/primary" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
