@@ -35,7 +35,6 @@ val interactorModule = module {
     single {
         OkHttpClient.Builder()
             .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                setLevel(HttpLoggingInterceptor.Level.BASIC)
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             })
             .addInterceptor { chain ->
