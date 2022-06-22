@@ -14,23 +14,24 @@ data class WordMinicardModel(
 data class Translation(
     @SerializedName("Heading")
     val heading: String,
-    @SerializedName("DictionaryName")
-    val dictionaryName: String,
     @SerializedName("Translation")
-    val translation: String,
-    @SerializedName("SoundName")
-    val soundName: String
+    val translation: String
 )
 
-fun WordMinicardModel.toUI(resources: Resources, translation: TranslationModel): WordMinicardUI {
+fun WordMinicardModel.toUI(
+    resources: Resources,
+    translation: TranslationModel,
+    partOfSpeech: String,
+    soundURL: String?
+): WordMinicardUI {
     return WordMinicardUI(
         this.translation.heading.replaceFirstChar { it.uppercase() },
-        this.translation.dictionaryName,
+        partOfSpeech,
         resources.getString(
             R.string.transcription_pattern,
             translation.Body.first().Markup.first().Text
         ),
         this.translation.translation.splitTranslation(),
-        this.translation.soundName
+        soundURL
     )
 }

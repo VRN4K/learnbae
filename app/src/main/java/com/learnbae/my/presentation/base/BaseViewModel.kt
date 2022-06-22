@@ -9,13 +9,14 @@ import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), KoinComponent, CoroutineScope {
     protected val router: Router by inject()
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = Dispatchers.IO + job
-    protected val okHttpClient: OkHttpClient by inject()
+    protected val okHttpClient: OkHttpClient by inject(qualifier = named("DefaultClient"))
 
     open fun navigateToMainPage() {
         router.navigateTo(Screens.getMainScreen())

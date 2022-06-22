@@ -64,6 +64,10 @@ class WordOfADayCustomView @JvmOverloads constructor(
 
     }
 
+    fun showPlayButton(isShow: Boolean) {
+        binding.soundPlayButton.visibility = if (isShow) VISIBLE else GONE
+    }
+
     fun changeLoadingState(isLoading: Boolean) {
         binding.loadingAnimator.changeLoadingState(isLoading, binding.wordOfADayContent.id)
     }
