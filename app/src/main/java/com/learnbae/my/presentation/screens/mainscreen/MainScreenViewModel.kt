@@ -3,9 +3,6 @@ package com.learnbae.my.presentation.screens.mainscreen
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
@@ -15,7 +12,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.regex.Pattern
 
 @SuppressLint("SimpleDateFormat")
 class MainScreenViewModel : BaseViewModel() {
@@ -36,6 +33,7 @@ class MainScreenViewModel : BaseViewModel() {
             exception.printStackTrace()
             wordOfADay.postLoading()
         }
+
         wordOfADay.postLoading()
         launchIO(handler) {
             getLastFiveWords()

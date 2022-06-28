@@ -95,6 +95,20 @@
         <item name="android:textColor">@color/primary_dark</item>
     </style>
 
+    <!--______________________________Error_text__________________________________-->
+
+    <style name="KopenhagenMedium.Error">
+        <item name="android:textColor">@color/error_text</item>
+    </style>
+
+    <style name="MariupolRegular.Error">
+        <item name="android:textColor">@color/error_text</item>
+    </style>
+
+    <style name="MariupolMedium.Error">
+        <item name="android:textColor">@color/error_text</item>
+    </style>
+
     <!--______________________________SIZE_________________________________________-->
     <!--______________________________30SP_________________________________________-->
     <!--______________________________Kopenhagen____________________________________-->
@@ -160,6 +174,13 @@
         <item name="android:textSize">17sp</item>
     </style>
 
+    <style name="MariupolRegular.Error.17">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="MariupolMedium.Error.17">
+        <item name="android:textSize">17sp</item>
+    </style>
     <!--______________________________15SP_________________________________________-->
     <!--______________________________Mariupol_____________________________________-->
 

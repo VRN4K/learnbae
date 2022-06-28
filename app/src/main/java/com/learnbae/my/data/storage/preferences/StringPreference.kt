@@ -2,7 +2,7 @@ package com.learnbae.my.data.storage.preferences
 
 import android.content.SharedPreferences
 
-class StringPreference(
+open class StringPreference(
     private val preference: SharedPreferences,
     private val key: String
 ) {
@@ -20,7 +20,7 @@ class StringPreference(
         return requireNotNull(preference.getString(key, DEFAULT_VALUE))
     }
 
-    fun set(value: String) = preference.edit().putString(key, value).apply()
+    fun set(value: String?) = preference.edit().putString(key, value).apply()
 
     fun delete() {
         preference.edit().remove(key).apply()

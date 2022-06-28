@@ -10,7 +10,7 @@ import org.koin.core.component.inject
 class VocabularyNetRepository : IVocabularyNetRepository, KoinComponent {
     companion object {
         private const val LIMIT = "5"
-        private const val USE_CANONICAL = "false"
+        private const val USE_CANONICAL = "true"
     }
 
     private val mService: VocabularyService by inject()

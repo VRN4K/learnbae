@@ -13,6 +13,7 @@
     <color name="primary_light">#FFECB3</color>
     <color name="accent">#607D8B</color>
     <color name="primary_text">#212121</color>
+    <color name="error_text">#F44336</color>
     <color name="primary_light_text">#FFFFFFFF</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#212121</color>

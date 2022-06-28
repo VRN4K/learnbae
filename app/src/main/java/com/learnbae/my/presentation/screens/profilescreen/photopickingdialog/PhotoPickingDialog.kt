@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.google.gson.Gson
 import com.learnbae.my.databinding.PhotoPickingDialogBinding
-import com.learnbae.my.domain.datacontracts.model.ActionType
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class PhotoPickingDialog : DialogFragment() {
