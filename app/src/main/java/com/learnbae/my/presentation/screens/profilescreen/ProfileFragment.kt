@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
+import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.screens.profilescreen.photopickingdialog.PhotoPickingDialog
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
@@ -57,7 +58,10 @@ class ProfileFragment : Fragment() {
             userInformation.observe(viewLifecycleOwner) {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showScreenContent(true)
-                    StateData.DataStatus.COMPLETE -> showScreenContent(false)
+                    StateData.DataStatus.COMPLETE -> with(it.data!!) {
+                        showProfileInfo(this)
+                        showScreenContent(false)
+                    }
                     else -> return@observe
                 }
             }
@@ -82,7 +86,22 @@ class ProfileFragment : Fragment() {
         }.show(requireActivity().supportFragmentManager, "PhotoPickingDialogFragmentTag")
     }
 
+    private fun showProfileInfo(info: UserProfileInfoUIModel) {
+        binding.apply {
+            userName.text = info.username
+            englishLevelValue.text = info.englishLevel
+            userFullName.text = info.userFullName
+            userEmail.text = info.email
+            userSingUpDate.text = info.singUpDate
+            wordsCount.text = info.wordsCount
+            info.profilePhoto?.let {
+                Glide.with(requireContext()).load(it).into(binding.profileImage)
+            }
+        }
+    }
+
     private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
+        profileViewModel.addUserProfilePhoto(uri, bitmap)
         Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
     }
 

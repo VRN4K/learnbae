@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loading_animator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:visible_child="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/screenContent"
@@ -25,28 +26,52 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="50dp"
-                    android:src="@color/primary_light_text" />
+                    android:gravity="center">
 
-                <!--add tool text-->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/editPencil"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:elevation="1dp"
+                        android:src="@drawable/edit_pencil"
+                        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/profile_avatar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.501"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <TextView
+                    android:id="@+id/userName"
                     style="@style/MariupolMedium.PrimaryLight.20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="\@vero4ka" />
+                    tools:text="\@vero4ka" />
 
                 <TextView
-                    android:id="@+id/mail_view"
+                    android:id="@+id/userEmail"
                     style="@style/MariupolRegular.PrimaryLight.15"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="60dp"
-                    android:text="brigmore.w@gmail.com" />
+                    tools:text="brigmore.w@gmail.com" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -75,12 +100,13 @@
 
                     <!--add tool text-->
                     <TextView
+                        android:id="@+id/englishLevelValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="A1"
                         android:textColor="@color/secondary_text"
-                        android:textSize="50sp" />
+                        android:textSize="50sp"
+                        tools:text="A1" />
 
                     <TextView
                         style="@style/MariupolRegular.Secondary.17"
@@ -122,24 +148,27 @@
 
                     <!--add tool text-->
                     <TextView
+                        android:id="@+id/userFullName"
                         style="@style/MariupolMedium.Primary.17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Капитанова Вероничка" />
+                        tools:text="Капитанова Вероничка" />
 
                     <TextView
+                        android:id="@+id/userSingUpDate"
                         style="@style/MariupolRegular.Secondary.15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Дата регистрации: 21.06.22" />
+                        tools:text="Дата регистрации: 21.06.22" />
 
                     <TextView
+                        android:id="@+id/wordsCount"
                         style="@style/MariupolRegular.Secondary.15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="Слов в словаре: 6" />
+                        tools:text="Слов в словаре: 6" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -152,6 +181,33 @@
                 android:text="@string/profile_account_login_button"
                 android:textAppearance="@style/MariupolMedium.PrimaryYellow.17"
                 android:textColor="@color/primary" />
+
+
+            <TextView
+                style="@style/MariupolMedium.Primary.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="15dp"
+                android:text="Настройки" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="15dp">
+
+                <TextView
+                    android:id="@+id/statistics"
+                    style="@style/MariupolMedium.Primary.17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    tools:text="Статистика" />
+            </androidx.cardview.widget.CardView>
+
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.learnbae.my.presentation.common.animator.LoadingViewAnimator>

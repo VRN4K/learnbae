@@ -12,16 +12,22 @@ class VocabularyViewModel : BaseViewModel() {
     val vocabulary = StateLiveData<List<VocabularyWordUI>>()
 
     init {
-        vocabulary.postLoading()
-        launchIO { getAllVocabularyWords()}
+        getAllVocabularyWords()
     }
 
     fun removeWordFromVocabulary(wordUI: VocabularyWordUI) {
         launchIO { translationInteractor.deleteWordById(wordUI.id) }
     }
 
-    private suspend fun getAllVocabularyWords() {
-        vocabulary.postComplete(translationInteractor.getAllWords())
+    fun addWordToVocabulary(wordUI: VocabularyWordUI) {
+        launchIO {
+            translationInteractor.addWordToVocabulary(wordUI)
+            getAllVocabularyWords()
+        }
     }
 
+    private fun getAllVocabularyWords() {
+        vocabulary.postLoading()
+        launchIO { vocabulary.postComplete(translationInteractor.getAllWords()) }
+    }
 }

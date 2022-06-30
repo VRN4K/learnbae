@@ -6,7 +6,9 @@ import com.github.terrakok.cicerone.Cicerone
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.learnbae.my.data.net.repository.AuthRepository
+import com.learnbae.my.data.net.repository.FirebaseStorageRepository
 import com.learnbae.my.data.net.repository.TranslationNetRepository
 import com.learnbae.my.data.net.repository.VocabularyNetRepository
 import com.learnbae.my.data.net.retrofit.RetrofitInstance
@@ -31,17 +33,18 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import kotlin.math.sin
 
 val ciceroneModule = module {
     val cicerone = Cicerone.create()
     single { cicerone.router }
     single { cicerone.getNavigatorHolder() }
+    single { androidContext().resources }
 }
 
 val firebaseModule = module {
     single { Firebase.auth }
     single { Firebase.database }
+    single { Firebase.storage }
 
     single {
         TokenPreference(
@@ -54,11 +57,12 @@ val firebaseModule = module {
     single<IAuthorizationStorageRepository> { AuthorizationPreferenceRepository(get()) }
     single<IAuthRepository> { AuthRepository(get()) }
     single<IUserDBRepository> { UserDBRepository(get()) }
-    single<IUserInteractor> { UserInteractor(get(), get(), get()) }
+    single<IStorageRepository> { FirebaseStorageRepository(get()) }
+    single<IUserInteractor> { UserInteractor(get(), get(), get(), get(), get()) }
+
 }
 
 val interactorModule = module {
-    single { androidContext().resources }
     single<ITranslationNetRepository> { TranslationNetRepository() }
     single<IVocabularyDBRepository> { VocabularyDBRepository() }
     single<IVocabularyNetRepository> { VocabularyNetRepository() }

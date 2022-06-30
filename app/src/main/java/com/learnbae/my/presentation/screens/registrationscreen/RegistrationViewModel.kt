@@ -1,12 +1,12 @@
 package com.learnbae.my.presentation.screens.registrationscreen
 
-import android.annotation.SuppressLint
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.RegisterRequestData
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.screens.Screens
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
 
@@ -16,7 +16,6 @@ class RegistrationViewModel : BaseViewModel() {
     }
 
     private val userInteractor: IUserInteractor by inject()
-
 
     val userError = MutableLiveData<Int?>()
     val emailError = MutableLiveData<Int?>()
@@ -34,7 +33,10 @@ class RegistrationViewModel : BaseViewModel() {
         )
 
         if (validationResult.all { true }) {
-            launchIO { userInteractor.registerNewUser(registerRequestData) }
+            launchIO {
+                userInteractor.registerNewUser(registerRequestData)
+                openFragment(Screens.getProfileScreen())
+            }
         }
     }
 

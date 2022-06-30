@@ -1,5 +1,7 @@
 package com.learnbae.my.presentation.screens.profilescreen
 
+import android.graphics.Bitmap
+import android.net.Uri
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
@@ -16,10 +18,16 @@ class ProfileViewModel : BaseViewModel() {
         userInformation.postLoading()
         launchIO {
             if (userInteractor.isUserAuthorized()) {
-                //userInformation.postComplete(UserProfileInfoUIModel())
+                userInformation.postComplete(userInteractor.getUserInfo())
             } else {
                 openFragment(Screens.getAuthScreen())
             }
+        }
+    }
+
+    fun addUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
+        launchIO {
+            userInteractor.uploadUserProfilePhoto(uri,bitmap)
         }
     }
 

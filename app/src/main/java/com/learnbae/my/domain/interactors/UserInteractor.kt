@@ -1,10 +1,16 @@
 package com.learnbae.my.domain.interactors
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.net.Uri
 import com.learnbae.my.data.storage.entities.RegisterRequestData
+import com.learnbae.my.data.storage.entities.toUI
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthorizationStorageRepository
+import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
+import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,10 +19,12 @@ import java.util.*
 class UserInteractor(
     private val authRepository: IAuthRepository,
     private val authPreferenceRepository: IAuthorizationStorageRepository,
-    private val userDBRepository: IUserDBRepository
+    private val storageRepository: IStorageRepository,
+    private val userDBRepository: IUserDBRepository,
+    private val resources: Resources
 ) : IUserInteractor {
+    private val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
     override suspend fun loginByEmailAndPassword(email: String, password: String) {
         val token = authRepository.loginByEmailAndPassword(email, password)
         authPreferenceRepository.saveToken(token)
@@ -27,15 +35,29 @@ class UserInteractor(
     }
 
     override suspend fun registerNewUser(registerRequestData: RegisterRequestData) {
-        val isCreated = authRepository.registerNewUser(registerRequestData.registerUserInfo)
-        if (isCreated) {
+        val userToken = authRepository.registerNewUser(registerRequestData.registerUserInfo)
+        if (!userToken.isNullOrEmpty()) {
             registerRequestData.userInfo.singUpDate = dateFormat.format(Calendar.getInstance().time)
-            userDBRepository.addUser(registerRequestData.userInfo)
+            userDBRepository.addUser(
+                authRepository.getUserId(),
+                registerRequestData.userInfo
+            )
         }
+        authPreferenceRepository.saveToken(userToken)
+    }
+
+    override suspend fun uploadUserProfilePhoto(uri: Uri?, bitmap: Bitmap?) {
+        storageRepository.uploadProfilePhoto(authRepository.getUserId(), uri, bitmap)
     }
 
     override suspend fun logout() {
         authRepository.logout()
         authPreferenceRepository.saveToken(null)
+    }
+
+    override suspend fun getUserInfo(): UserProfileInfoUIModel {
+        val userId = authRepository.getUserId()
+        val photo = storageRepository.getProfilePhoto(userId)
+        return userDBRepository.getUserInfo(userId)!!.toUI(resources, "6", photo)
     }
 }

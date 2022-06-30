@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
 import java.text.SimpleDateFormat
-import java.util.regex.Pattern
 
 @SuppressLint("SimpleDateFormat")
 class MainScreenViewModel : BaseViewModel() {

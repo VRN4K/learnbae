@@ -11,8 +11,10 @@ import com.learnbae.my.databinding.VocabularyScreenBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
+import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.vocabularyscreen.holder.VocabularyHolder
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
+import java.util.*
 
 class VocabularyFragment : Fragment() {
     private var binding by onDestroyNullable<VocabularyScreenBinding>()
@@ -41,15 +43,30 @@ class VocabularyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.vocabularyWordsRecycler.adapter = wordsListAdapter
         setObservers()
+        setListeners()
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.loadingAnimator.changeLoadingState(isLoading, binding.vocabularyWordsRecycler.id)
+        binding.loadingAnimator.changeLoadingState(isLoading, binding.viewAnimator.id)
     }
 
     private fun removeItemFromScreen(wordUI: VocabularyWordUI, pos: Int) {
         wordsListAdapter.removeItemByIndex(pos)
         vocabularyViewModel.removeWordFromVocabulary(wordUI)
+        if (wordsListAdapter.items.isEmpty()) showContent(false)
+    }
+
+    private fun showContent(isShow: Boolean) {
+        binding.apply {
+            viewAnimator.visibleChildId =
+                if (isShow) vocabularyWordsRecycler.id else emptyListState.id
+        }
+    }
+
+    private fun setListeners() {
+        binding.apply {
+            vocabularyAddButton.setOnClickListener { showAddDialog() }
+        }
     }
 
     private fun setObservers() {
@@ -58,12 +75,34 @@ class VocabularyFragment : Fragment() {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showLoading(true)
                     StateData.DataStatus.COMPLETE -> with(it.data) {
-                        wordsListAdapter.swapItems(this!!)
                         showLoading(false)
+                        if (this.isNullOrEmpty()) {
+                            showContent(false)
+                        } else {
+                            showContent(true)
+                            wordsListAdapter.swapItems(this)
+                        }
                     }
                     else -> return@observe
                 }
             }
         }
+    }
+
+    private fun showAddDialog() {
+        AddWordDialog().apply {
+            setActionListener(object : AddWordDialog.AddButtonClickListener {
+                override fun onClickWordAdd(wordText: String, wordTranslation: String) {
+                    vocabularyViewModel.addWordToVocabulary(
+                        VocabularyWordUI(
+                            UUID.randomUUID().toString(),
+                            wordText,
+                            "",
+                            wordTranslation
+                        )
+                    )
+                }
+            })
+        }.show(requireActivity().supportFragmentManager, "AddWordDialogFragmentTag")
     }
 }
