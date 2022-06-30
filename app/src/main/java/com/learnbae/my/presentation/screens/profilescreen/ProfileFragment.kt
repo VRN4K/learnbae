@@ -11,13 +11,17 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
+import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.screens.profilescreen.photopickingdialog.PhotoPickingDialog
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class ProfileFragment : Fragment() {
     private var binding by onDestroyNullable<ProfileLayoutBinding>()
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 
@@ -45,7 +49,27 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.profileImage.setOnClickListener { onAddPhotoButtonClick() }
+        setListeners()
+        setObservers()
+    }
+
+    private fun setObservers() {
+        profileViewModel.apply {
+            userInformation.observe(viewLifecycleOwner) {
+                when (it.status) {
+                    StateData.DataStatus.LOADING -> showScreenContent(true)
+                    StateData.DataStatus.COMPLETE -> with(it.data!!) {
+                        showProfileInfo(this)
+                        showScreenContent(false)
+                    }
+                    else -> return@observe
+                }
+            }
+        }
+    }
+
+    private fun showScreenContent(isShow: Boolean) {
+        binding.loadingAnimator.changeLoadingState(isShow, binding.screenContent.id)
     }
 
     private fun onAddPhotoButtonClick() {
@@ -62,7 +86,29 @@ class ProfileFragment : Fragment() {
         }.show(requireActivity().supportFragmentManager, "PhotoPickingDialogFragmentTag")
     }
 
+    private fun showProfileInfo(info: UserProfileInfoUIModel) {
+        binding.apply {
+            userName.text = info.username
+            englishLevelValue.text = info.englishLevel
+            userFullName.text = info.userFullName
+            userEmail.text = info.email
+            userSingUpDate.text = info.singUpDate
+            wordsCount.text = info.wordsCount
+            info.profilePhoto?.let {
+                Glide.with(requireContext()).load(it).into(binding.profileImage)
+            }
+        }
+    }
+
     private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
+        profileViewModel.addUserProfilePhoto(uri, bitmap)
         Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
+    }
+
+    private fun setListeners() {
+        binding.apply {
+            profileImage.setOnClickListener { onAddPhotoButtonClick() }
+            logoutButton.setOnClickListener { profileViewModel.logout() }
+        }
     }
 }

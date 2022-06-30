@@ -23,15 +23,15 @@ class TranslationNetRepository : ITranslationNetRepository, KoinComponent {
         srcLang: String,
         dstLang: String
     ): TranslationModel {
-        return mService.getTranslation( text, srcLang, dstLang).first()
+        return mService.getTranslation(text, srcLang, dstLang).first()
     }
 
     override suspend fun getWordSound(dictionaryName: String, fileName: String): String {
-        return mService.getWordSound(dictionaryName,fileName)
+        return mService.getWordSound(dictionaryName, fileName)
     }
 
     override suspend fun getAuthKey(): String {
-       return mService.getAuthKey()
+        return mService.getAuthKey()
     }
 }
 

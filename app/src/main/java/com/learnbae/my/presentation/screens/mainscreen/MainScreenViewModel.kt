@@ -1,11 +1,8 @@
 package com.learnbae.my.presentation.screens.mainscreen
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.learnbae.my.data.net.retrofit.RetrofitInstance
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
@@ -14,26 +11,33 @@ import com.learnbae.my.presentation.common.livedata.StateLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
+import java.text.SimpleDateFormat
 
+@SuppressLint("SimpleDateFormat")
 class MainScreenViewModel : BaseViewModel() {
     companion object {
         private const val LAST_ADDED_WORDS_COUNT = 5
     }
 
     private val translationInteractor: ITranslationInteractor by inject()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
     val wordOfADay = StateLiveData<WordMinicardUI>()
     val vocabulary = StateLiveData<List<VocabularyWordUI>>()
-    val mediaSourceData = MutableLiveData<MediaSource>()
+    val mediaSourceData = MutableLiveData<MediaItem>()
     val countTitle = MutableLiveData<Int>()
 
     init {
         val handler = CoroutineExceptionHandler { _, exception ->
+            exception.printStackTrace()
             wordOfADay.postLoading()
         }
+
         wordOfADay.postLoading()
         launchIO(handler) {
             getLastFiveWords()
-            wordOfADay.postComplete(translationInteractor.getWordMinicard("tree"))
+            //dateFormat.format(Calendar.getInstance().time
+            wordOfADay.postComplete(translationInteractor.getWordOfADay("2022-06-21"))
         }
     }
 
@@ -44,12 +48,9 @@ class MainScreenViewModel : BaseViewModel() {
         }
     }
 
-    fun onPlaySoundButtonCLick() {
-        val dataSourceFactory = OkHttpDataSource.Factory(okHttpClient)
-        val mediaSource =
-            ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri("${RetrofitInstance.BASE_URL}Sound?dictionaryName=LingvoUniversal%20(En-Ru)&fileName=mother.wav"))
-        mediaSourceData.postValue(mediaSource)
+    fun onPlaySoundButtonCLick(minicard: WordMinicardUI) {
+        println(minicard.soundURL)
+        mediaSourceData.postValue(MediaItem.fromUri(minicard.soundURL!!))
     }
 
     private suspend fun getLastFiveWords() {

@@ -1,7 +1,7 @@
 package com.learnbae.my.data.net.retrofit
 
 import com.google.gson.Gson
-import com.learnbae.my.data.net.retrofit.RetrofitInstance.BASE_API_KEY
+import com.learnbae.my.data.net.retrofit.RetrofitInstance.BASIC_API_KEY
 import com.learnbae.my.data.storage.preferences.StringPreference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ class VocabularyInterceptor : Interceptor, KoinComponent, CoroutineScope {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = if (chain.request().url.toString().contains("authenticate")) {
             chain.request().newBuilder()
-                .addHeader("Authorization", "Basic $BASE_API_KEY").build()
+                .addHeader("Authorization", "Basic $BASIC_API_KEY").build()
         } else {
             val authKey = Gson().fromJson(
                 sharedPreferences.getValue(),
@@ -42,35 +42,4 @@ class VocabularyInterceptor : Interceptor, KoinComponent, CoroutineScope {
 
         return chain.proceed(request)
     }
-
-//    private fun getAuthKey() {
-//        launchIO {
-//
-//        }
-//        val authPair: Pair<String, Long>? = null
-//        val currentDateTime = Calendar.getInstance().time.time
-//
-//        Gson().fromJson(
-//            sharedPreferences.getValue(),
-//            Pair::class.java
-//        )
-////добавить + сутки
-//        authPair?.let {
-//            if (it.second < currentDateTime) {
-//                AUTH_KEY =
-//                    sharedPreferences.set(
-//                        Gson().toJson(
-//                            Pair(
-//                                interactor.getAuthKey(),
-//                                currentDateTime
-//                            )
-//                        )
-//                    )
-//            } else {
-//                AUTH_KEY = it.first
-//            }
-//        } ?: with(interactor.getAuthKey()) {
-//            sharedPreferences.set(Gson().toJson(Pair(this, currentDateTime)))
-//        }
-//    }
 }

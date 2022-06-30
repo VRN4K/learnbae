@@ -9,7 +9,7 @@
     <string name="words_list_item_pattern_regular"> — %s</string>
     <string name="words_list_item_pattern_number">0%s</string>
 
-    <string name="words_list_empty_text">В вашем словаре отсутсвуют \nслова.Хотите добавить новые?</string>
+    <string name="words_list_empty_text">В вашем словаре отсутсвуют \nслова. Хотите добавить новые?</string>
     <string name="words_list_not_empty_text">В вашем словаре %s %s.\nХотите добавить новые?</string>
 
     <string name="add_word_dialog_title">Какое слово хотите добавить?</string>

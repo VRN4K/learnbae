@@ -9,25 +9,65 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/MariupolMedium.PrimaryLight.30"
-        app:titleTextColor="@color/primary_light_text"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="center_horizontal"
         android:background="@color/primary"
-        app:title="@string/vocabulary_title"/>
+        app:title="@string/vocabulary_title"
+        app:titleTextColor="@color/primary_light_text" />
 
     <com.learnbae.my.presentation.common.animator.LoadingViewAnimator
         android:id="@+id/loading_animator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:visible_child="true">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/vocabulary_words_recycler"
+        <com.learnbae.my.presentation.common.animator.BetterViewAnimator
+            android:id="@+id/view_animator"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/vocabulary_item" />
-    </com.learnbae.my.presentation.common.animator.LoadingViewAnimator>
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
 
+            <LinearLayout
+                android:id="@+id/empty_list_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/croodsfeedback" />
+
+                <TextView
+                    style="@style/MariupolMedium.Primary.17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/words_list_empty_text"
+                    android:textAlignment="center" />
+
+                <Button
+                    android:id="@+id/vocabulary_add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="10dp"
+                    android:backgroundTint="@color/black"
+                    android:text="Добавить новое слово"
+                    android:textAppearance="@style/MariupolMedium.PrimaryLight.17"
+                    android:textColor="@color/primary_light_text" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/vocabulary_words_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/vocabulary_item" />
+        </com.learnbae.my.presentation.common.animator.BetterViewAnimator>
+    </com.learnbae.my.presentation.common.animator.LoadingViewAnimator>
 </LinearLayout>

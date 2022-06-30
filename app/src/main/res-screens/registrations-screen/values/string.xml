@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authorization_mail_form">Почта</string>
+    <string name="authorization_password_form">Пароль</string>
+
+    <string name="authorization_large_title">Hello</string>
+    <string name="authorization_small_title">Войдите в свой аккаунт</string>
+
+    <string name="authorization_login_button_text">Войти</string>
+    <string name="registration_button_text">Зарегистрироваться</string>
+
+    <string name="registration_button_text_title">Создайте аккаунт</string>
+    <string name="registration_username">Имя пользователя</string>
+    <string name="registration_fullname_text">Полное имя</string>
+    <string name="registration_english_level">Уровень</string>
+
+    <string name="authorization_registration_text_button">Зарегистрируйтесь сейчас</string>
+    <string name="authorization_registration_text">Нет аккаунта?</string>
+
+    <string name="user_error_text">Пользователь с указанной почтой отсутсвует в базе</string>
+    <string name="user_wrong_password_or_email">Неверное имя пользователя или пароль</string>
+    <string name="email_not_match_mask_text">Почта не соответствует маске</string>
+    <string name="fullname_error_text">Поле должно содержать только символы кириллицы, дефиса или пробела</string>
+    <string name="username_error_text">Поле должно содержать только цифры, символы латиницы или нижнего подчеркивания</string>
+    <string name="username_already_exist_error_text">Пользователь с таким именем уже существует</string>
+    <string name="password_text_error">Пароль должен содержать только цифры и символы латиницы, и быть не менее 5 символов</string>
+    <string name="wrong_password">Пароль </string>
+
+</resources>

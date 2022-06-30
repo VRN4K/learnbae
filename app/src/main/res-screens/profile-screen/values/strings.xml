@@ -7,4 +7,8 @@
     <string name="profile_account_another">Другое</string>
     <string name="profile_account_level_change_button">Изменить</string>
     <string name="profile_account_login_button">Выйти из профиля</string>
+
+    <string name="profile_account_username_pattern">\@%s</string>
+    <string name="profile_account_register_date_pattern">Дата регистрации: %s</string>
+    <string name="profile_account_words_count_pattern">Слов в словаре: %s</string>
 </resources>

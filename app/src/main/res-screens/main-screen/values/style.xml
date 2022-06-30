@@ -2,13 +2,13 @@
 <resources>
 
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusBottomStart">15dp</item>
-        <item name="boxCornerRadiusBottomEnd">15dp</item>
-        <item name="boxCornerRadiusTopStart">15dp</item>
-        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="boxCornerRadiusBottomStart">26dp</item>
+        <item name="boxCornerRadiusBottomEnd">26dp</item>
+        <item name="boxCornerRadiusTopStart">26dp</item>
+        <item name="boxCornerRadiusTopEnd">26dp</item>
         <item name="android:layout_marginVertical">10dp</item>
         <item name="android:layout_marginHorizontal">15dp</item>
-        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="errorIconDrawable">@null</item>
     </style>
