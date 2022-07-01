@@ -1,7 +1,6 @@
-package com.learnbae.my.presentation.screens.profilescreen.photopickingdialog
+package com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog
 
 import android.content.Intent
-import android.content.Intent.EXTRA_TEXT
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

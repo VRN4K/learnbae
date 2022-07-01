@@ -45,8 +45,8 @@ class AuthRepository(private val firebaseAuth: FirebaseAuth) :
         }
     }
 
-    override suspend fun getUserId(): String {
-        return firebaseAuth.currentUser!!.uid
+    override suspend fun getUserId(): String? {
+        return firebaseAuth.currentUser?.uid
     }
 
     override suspend fun logout() {

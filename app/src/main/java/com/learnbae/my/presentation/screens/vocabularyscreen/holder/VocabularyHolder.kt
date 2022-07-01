@@ -13,9 +13,13 @@ class VocabularyHolder(private val binding: VocabularyItemBinding) :
         onClickCallback: ((VocabularyWordUI, Int) -> Unit)?
     ) {
         binding.apply {
+
             wordValue.text = item.title
             wordTranslation.text = item.translation
-            swipeDelete.setOnClickListener { onClickCallback?.invoke(item, pos) }
+            swipeDelete.setOnClickListener {
+                root.reset()
+                onClickCallback?.invoke(item, pos)
+            }
         }
     }
 }

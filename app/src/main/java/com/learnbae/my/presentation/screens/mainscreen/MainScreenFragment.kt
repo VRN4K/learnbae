@@ -126,7 +126,6 @@ class MainScreenFragment : Fragment() {
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),
                             wordText,
-                            "",
                             wordTranslation
                         )
                     )

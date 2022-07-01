@@ -7,5 +7,5 @@ interface IAuthRepository {
     suspend fun loginByEmailAndPassword(email: String, password: String): String?
     suspend fun logout()
     suspend fun registerNewUser(user: RegisterUserInfo): String?
-    suspend fun getUserId(): String
+    suspend fun getUserId(): String?
 }

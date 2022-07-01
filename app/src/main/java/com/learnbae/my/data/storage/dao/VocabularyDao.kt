@@ -17,6 +17,9 @@ interface VocabularyDao {
     @Query("DELETE FROM vocabulary WHERE id = :wordId")
     fun deleteWordById(wordId: String)
 
+    @Query("SELECT COUNT(*) FROM vocabulary")
+    fun getWordsCount(): Int
+
     //TODO()
 //    @Query("UPDATE vocabulary SET WHERE id = :wordId")
 //    fun updateWordById(wordId: String)

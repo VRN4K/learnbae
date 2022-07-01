@@ -7,8 +7,23 @@
     <string name="profile_account_another">Другое</string>
     <string name="profile_account_level_change_button">Изменить</string>
     <string name="profile_account_login_button">Выйти из профиля</string>
-
     <string name="profile_account_username_pattern">\@%s</string>
     <string name="profile_account_register_date_pattern">Дата регистрации: %s</string>
     <string name="profile_account_words_count_pattern">Слов в словаре: %s</string>
+    <string name="profile_account_change_level_pattern">Выберите ваш уровень владения английским языком</string>
+
+    <string name="a1_level_value">A1</string>
+    <string name="a2_level_value">A2</string>
+    <string name="b1_level_value">B1</string>
+    <string name="b2_level_value">B2</string>
+    <string name="c1_level_value">C1</string>
+    <string name="c2_level_value">C2</string>
+
+    <string name="a1_level_description">Elementary</string>
+    <string name="a2_level_description">Pre-\nIntermediate</string>
+    <string name="b1_level_description">Intermediate</string>
+    <string name="b2_level_description">Upper-\nIntermediate</string>
+    <string name="c1_level_description">Advanced</string>
+    <string name="c2_level_description">Proficiency</string>
+
 </resources>

@@ -13,4 +13,6 @@ interface IUserInteractor {
     suspend fun getUserInfo(): UserProfileInfoUIModel
     suspend fun registerNewUser(registerRequestData: RegisterRequestData)
     suspend fun uploadUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null)
+    suspend fun updateEnglishLevel(levelValue: String)
+    suspend fun getUserId(): String?
 }

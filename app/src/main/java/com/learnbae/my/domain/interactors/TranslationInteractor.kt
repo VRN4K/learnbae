@@ -9,6 +9,7 @@ import com.learnbae.my.data.storage.entities.toEntity
 import com.learnbae.my.data.storage.entities.toUI
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
+import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyNetRepository
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
@@ -18,6 +19,7 @@ class TranslationInteractor(
     private val netRepository: ITranslationNetRepository,
     private val dbRepository: IVocabularyDBRepository,
     private val vocabularyNetRepository: IVocabularyNetRepository,
+    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository,
     private val resources: Resources
 ) : ITranslationInteractor {
 
@@ -45,12 +47,14 @@ class TranslationInteractor(
         return netRepository.getTranslation(text, LanguagesCodes.EN, LanguagesCodes.RU)
     }
 
-    override suspend fun addWordToVocabulary(word: VocabularyWordUI) {
+    override suspend fun addWordToVocabulary(userId: String?, word: VocabularyWordUI) {
         dbRepository.addWordToVocabulary(word.toEntity())
+        userId?.let { vocabularyFirebaseRepository.addNewWord(userId, word) }
     }
 
-    override suspend fun deleteWordById(wordId: String) {
+    override suspend fun deleteWordById(userId: String?, wordId: String) {
         dbRepository.deleteWordById(wordId)
+        userId?.let { vocabularyFirebaseRepository.removeWord(userId, wordId) }
     }
 
     override suspend fun getAllWords(): List<VocabularyWordUI> {

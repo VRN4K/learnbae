@@ -27,7 +27,13 @@ class ProfileViewModel : BaseViewModel() {
 
     fun addUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
         launchIO {
-            userInteractor.uploadUserProfilePhoto(uri,bitmap)
+            userInteractor.uploadUserProfilePhoto(uri, bitmap)
+        }
+    }
+
+    fun updateEnglishLevel(englishLevel: String) {
+        launchIO {
+            userInteractor.updateEnglishLevel(englishLevel)
         }
     }
 

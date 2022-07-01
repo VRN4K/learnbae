@@ -39,7 +39,7 @@ class UserInteractor(
         if (!userToken.isNullOrEmpty()) {
             registerRequestData.userInfo.singUpDate = dateFormat.format(Calendar.getInstance().time)
             userDBRepository.addUser(
-                authRepository.getUserId(),
+                authRepository.getUserId()!!,
                 registerRequestData.userInfo
             )
         }
@@ -47,7 +47,15 @@ class UserInteractor(
     }
 
     override suspend fun uploadUserProfilePhoto(uri: Uri?, bitmap: Bitmap?) {
-        storageRepository.uploadProfilePhoto(authRepository.getUserId(), uri, bitmap)
+        storageRepository.uploadProfilePhoto(authRepository.getUserId()!!, uri, bitmap)
+    }
+
+    override suspend fun updateEnglishLevel(levelValue: String) {
+        userDBRepository.updateUser(authRepository.getUserId()!!, levelValue)
+    }
+
+    override suspend fun getUserId(): String? {
+        return authRepository.getUserId()
     }
 
     override suspend fun logout() {
@@ -57,7 +65,7 @@ class UserInteractor(
 
     override suspend fun getUserInfo(): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
-        val photo = storageRepository.getProfilePhoto(userId)
+        val photo = storageRepository.getProfilePhoto(userId!!)
         return userDBRepository.getUserInfo(userId)!!.toUI(resources, "6", photo)
     }
 }

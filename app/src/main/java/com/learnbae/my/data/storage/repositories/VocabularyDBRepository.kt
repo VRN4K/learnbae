@@ -18,6 +18,10 @@ class VocabularyDBRepository : IVocabularyDBRepository, KoinComponent {
     }
 
     override fun getAllWords(): List<WordEntity>? {
-       return dbVocabulary.VocabularyDao().getAllWords()
+        return dbVocabulary.VocabularyDao().getAllWords()
+    }
+
+    override fun getWordsCount(): Int {
+        return dbVocabulary.VocabularyDao().getWordsCount()
     }
 }
