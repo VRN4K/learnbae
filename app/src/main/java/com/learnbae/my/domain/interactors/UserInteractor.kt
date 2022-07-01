@@ -63,9 +63,9 @@ class UserInteractor(
         authPreferenceRepository.saveToken(null)
     }
 
-    override suspend fun getUserInfo(): UserProfileInfoUIModel {
+    override suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
         val photo = storageRepository.getProfilePhoto(userId!!)
-        return userDBRepository.getUserInfo(userId)!!.toUI(resources, "6", photo)
+        return userDBRepository.getUserInfo(userId)!!.toUI(resources, wordsCount.toString(), photo)
     }
 }

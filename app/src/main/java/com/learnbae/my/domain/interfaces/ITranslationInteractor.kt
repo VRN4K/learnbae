@@ -14,4 +14,5 @@ interface ITranslationInteractor {
     suspend fun getWordOfADay(date: String): WordMinicardUI
     suspend fun getAuthKey(): String
     suspend fun addWordToVocabulary(userId: String? = null, word: VocabularyWordUI)
+    suspend fun getWordsCount(userId: String): Int
 }

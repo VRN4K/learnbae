@@ -11,6 +11,7 @@
     <string name="profile_account_register_date_pattern">Дата регистрации: %s</string>
     <string name="profile_account_words_count_pattern">Слов в словаре: %s</string>
     <string name="profile_account_change_level_pattern">Выберите ваш уровень владения английским языком</string>
+    <string name="profile_account_english_level_text">Уровень \nанглиского</string>
 
     <string name="a1_level_value">A1</string>
     <string name="a2_level_value">A2</string>

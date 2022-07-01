@@ -5,6 +5,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.learnbae.my.data.storage.entities.toFareBaseEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
     IVocabularyFirebaseRepository {
@@ -33,6 +35,19 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
                 Log.d("Vocabulary", "user:$userId  word:$wordId")
             } else {
                 Log.d("Vocabulary", "removeWord:success:failure", task.exception)
+            }
+        }
+    }
+
+    override suspend fun getWordsCount(UserId: String): Int {
+        return suspendCoroutine {
+            dataBaseReference.child(UserId).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Vocabulary", "getWordCount:success")
+                    it.resume(task.result.childrenCount.toInt())
+                } else {
+                    Log.d("Vocabulary", "getWordCount:success:failure", task.exception)
+                }
             }
         }
     }

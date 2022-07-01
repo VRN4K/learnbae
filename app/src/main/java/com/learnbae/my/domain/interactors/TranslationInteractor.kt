@@ -61,6 +61,10 @@ class TranslationInteractor(
         return dbRepository.getAllWords()?.map { it.toUI() } ?: emptyList()
     }
 
+    override suspend fun getWordsCount(userId: String): Int {
+       return vocabularyFirebaseRepository.getWordsCount(userId)
+    }
+
     override suspend fun getAuthKey(): String {
         return netRepository.getAuthKey()
     }
