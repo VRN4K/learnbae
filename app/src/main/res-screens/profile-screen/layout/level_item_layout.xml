@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    style="@style/LevelCardsStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:elevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/level_item_selector"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/englishLevelValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:textColor="@color/secondary_text"
+            android:textSize="50sp"
+            tools:text="B2" />
+
+        <TextView
+            android:id="@+id/englishLevelDescription"
+            android:layout_width="105dp"
+            android:layout_height="45dp"
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="8dp"
+            android:textAlignment="center"
+            android:textColor="@color/secondary_text"
+            android:textSize="15sp"
+            tools:text="@string/b2_level_description" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+

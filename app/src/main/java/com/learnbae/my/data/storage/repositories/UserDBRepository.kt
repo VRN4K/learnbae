@@ -45,4 +45,15 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
             }
         }
     }
+
+    override fun updateUser(userId: String, levelValue: String) {
+        dataBaseReference.child(userId).child("englishLevel").setValue(levelValue)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Reg", "addUserInfo:success")
+                } else {
+                    Log.d("Reg", "addUserInfo:success:failure", task.exception)
+                }
+            }
+    }
 }

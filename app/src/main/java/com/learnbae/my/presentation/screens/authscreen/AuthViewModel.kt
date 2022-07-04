@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.common.exceptions.WrongEmailOrPasswordException
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
 import ltst.nibirualert.my.domain.launchIO
@@ -23,15 +24,11 @@ class AuthViewModel : BaseViewModel() {
         if (emailValidationResult && passwordValidationResult) {
             launchIO(createExceptionHandler {
                 onException(it)
-                println("Loh")
-//                if (it is FirebaseAuthInvalidUserException){
-//                    userError.postValue(R.string.user_error_text)
-//                }
-//                if (it is FirebaseAuthException){
-//                    userError.postValue(R.string.user_wrong_password_or_email)
-//                }
-            }
-            ) {
+                if (it is WrongEmailOrPasswordException) {
+                    userError.postValue(R.string.user_wrong_password_or_email)
+                }
+            }) {
+                userError.postValue(null)
                 userInteractor.loginByEmailAndPassword(email, password)
                 openFragment(Screens.getProfileScreen())
             }

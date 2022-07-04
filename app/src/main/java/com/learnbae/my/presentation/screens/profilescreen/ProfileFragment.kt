@@ -16,7 +16,8 @@ import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.common.livedata.StateData
-import com.learnbae.my.presentation.screens.profilescreen.photopickingdialog.PhotoPickingDialog
+import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
+import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class ProfileFragment : Fragment() {
@@ -86,6 +87,17 @@ class ProfileFragment : Fragment() {
         }.show(requireActivity().supportFragmentManager, "PhotoPickingDialogFragmentTag")
     }
 
+    private fun onChangeLevelButtonClick() {
+        LevelPickingDialog().apply {
+            setActionListener(object : LevelPickingDialog.PickEnglishLevelClickListener {
+                override fun onLevelClick(levelValue: String) {
+                    binding.englishLevelValue.text = levelValue
+                    profileViewModel.updateEnglishLevel(levelValue)
+                }
+            })
+        }.show(requireActivity().supportFragmentManager, "LevelPickingDialogFragmentTag")
+    }
+
     private fun showProfileInfo(info: UserProfileInfoUIModel) {
         binding.apply {
             userName.text = info.username
@@ -109,6 +121,7 @@ class ProfileFragment : Fragment() {
         binding.apply {
             profileImage.setOnClickListener { onAddPhotoButtonClick() }
             logoutButton.setOnClickListener { profileViewModel.logout() }
+            updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
         }
     }
 }

@@ -46,22 +46,24 @@ class AuthFragment : Fragment() {
     private fun setObservers() {
         authViewModel.apply {
             userError.observe(viewLifecycleOwner) {
-                showUserError(true, it?.let { textId -> resources.getString(textId) } ?: "")
+                it?.let { showUserError(true, resources.getString(it)) } ?: showUserError(false)
             }
 
             emailError.observe(viewLifecycleOwner) {
-                binding.textEmailField.showError(it?.let { textId -> resources.getString(textId) } ?: "")
+                binding.textEmailField.showError(it?.let { textId -> resources.getString(textId) }
+                    ?: "")
             }
 
             passwordError.observe(viewLifecycleOwner) {
-                binding.textPasswordField.showError(it?.let { textId -> resources.getString(textId) } ?: "")
+                binding.textPasswordField.showError(it?.let { textId -> resources.getString(textId) }
+                    ?: "")
             }
         }
     }
 
-    private fun showUserError(isShow: Boolean, errorText: String) {
-        binding.userErrorText.text = errorText
+    private fun showUserError(isShow: Boolean, errorText: String? = null) {
         binding.userErrorText.setVisibility(isShow)
+        errorText?.let { binding.userErrorText.text = it }
     }
 
 }

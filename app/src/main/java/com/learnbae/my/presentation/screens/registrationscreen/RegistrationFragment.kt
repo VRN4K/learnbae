@@ -89,6 +89,11 @@ class RegistrationFragment : Fragment() {
     }
 }
 
-enum class EnglishLevelsList {
-    A1, A2, B1, B2, C1, C2
+enum class EnglishLevelsList(val description: Int) {
+    A1(R.string.a1_level_description),
+    A2(R.string.a2_level_description),
+    B1(R.string.b1_level_description),
+    B2(R.string.b2_level_description),
+    C1(R.string.c1_level_description),
+    C2(R.string.c2_level_description)
 }

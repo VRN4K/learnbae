@@ -23,6 +23,7 @@ import com.learnbae.my.data.storage.preferences.StringPreference
 import com.learnbae.my.data.storage.preferences.TokenPreference
 import com.learnbae.my.data.storage.repositories.UserDBRepository
 import com.learnbae.my.data.storage.repositories.VocabularyDBRepository
+import com.learnbae.my.data.storage.repositories.VocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.interfaces.*
 import com.learnbae.my.domain.interactors.TranslationInteractor
 import com.learnbae.my.domain.interactors.UserInteractor
@@ -58,15 +59,15 @@ val firebaseModule = module {
     single<IAuthRepository> { AuthRepository(get()) }
     single<IUserDBRepository> { UserDBRepository(get()) }
     single<IStorageRepository> { FirebaseStorageRepository(get()) }
+    single<IVocabularyFirebaseRepository> { VocabularyFirebaseRepository(get()) }
     single<IUserInteractor> { UserInteractor(get(), get(), get(), get(), get()) }
-
 }
 
 val interactorModule = module {
     single<ITranslationNetRepository> { TranslationNetRepository() }
     single<IVocabularyDBRepository> { VocabularyDBRepository() }
     single<IVocabularyNetRepository> { VocabularyNetRepository() }
-    single<ITranslationInteractor> { TranslationInteractor(get(), get(), get(), get()) }
+    single<ITranslationInteractor> { TranslationInteractor(get(), get(), get(), get(), get()) }
 
     single(named("DefaultClient")) {
         OkHttpClient.Builder()

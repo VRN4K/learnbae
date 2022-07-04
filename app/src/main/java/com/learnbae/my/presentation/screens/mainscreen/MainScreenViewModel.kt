@@ -6,6 +6,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
+import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -20,6 +21,7 @@ class MainScreenViewModel : BaseViewModel() {
     }
 
     private val translationInteractor: ITranslationInteractor by inject()
+    private val userInteractor: IUserInteractor by inject()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     val wordOfADay = StateLiveData<WordMinicardUI>()
@@ -43,7 +45,7 @@ class MainScreenViewModel : BaseViewModel() {
 
     fun addWordToVocabulary(wordUI: VocabularyWordUI) {
         launchIO {
-            translationInteractor.addWordToVocabulary(wordUI)
+            translationInteractor.addWordToVocabulary(userInteractor.getUserId(), wordUI)
             getLastFiveWords()
         }
     }

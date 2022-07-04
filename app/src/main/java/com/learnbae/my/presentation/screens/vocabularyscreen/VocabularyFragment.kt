@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.learnbae.my.databinding.VocabularyItemBinding
 import com.learnbae.my.databinding.VocabularyScreenBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
@@ -51,7 +52,7 @@ class VocabularyFragment : Fragment() {
     }
 
     private fun removeItemFromScreen(wordUI: VocabularyWordUI, pos: Int) {
-        wordsListAdapter.removeItemByIndex(pos)
+        wordsListAdapter.removeItem(wordUI)
         vocabularyViewModel.removeWordFromVocabulary(wordUI)
         if (wordsListAdapter.items.isEmpty()) showContent(false)
     }
@@ -59,13 +60,20 @@ class VocabularyFragment : Fragment() {
     private fun showContent(isShow: Boolean) {
         binding.apply {
             viewAnimator.visibleChildId =
-                if (isShow) vocabularyWordsRecycler.id else emptyListState.id
+                if (isShow) content.id else emptyListState.id
         }
     }
 
     private fun setListeners() {
         binding.apply {
             vocabularyAddButton.setOnClickListener { showAddDialog() }
+            vocabularyWordsRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (dy > 0) fabAddWord.hide() else fabAddWord.show()
+                    super.onScrolled(recyclerView, dx, dy)
+                }
+            })
+            fabAddWord.setOnClickListener { showAddDialog() }
         }
     }
 
@@ -75,19 +83,20 @@ class VocabularyFragment : Fragment() {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showLoading(true)
                     StateData.DataStatus.COMPLETE -> with(it.data) {
-                        showLoading(false)
                         if (this.isNullOrEmpty()) {
                             showContent(false)
                         } else {
+                            wordsListAdapter.swapItems(this.toMutableList())
                             showContent(true)
-                            wordsListAdapter.swapItems(this)
                         }
+                        showLoading(false)
                     }
                     else -> return@observe
                 }
             }
         }
     }
+
 
     private fun showAddDialog() {
         AddWordDialog().apply {
@@ -97,7 +106,6 @@ class VocabularyFragment : Fragment() {
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),
                             wordText,
-                            "",
                             wordTranslation
                         )
                     )
