@@ -39,6 +39,19 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
         }
     }
 
+    override suspend fun getAllWordsId(userId: String): List<String> {
+        return suspendCoroutine {
+            dataBaseReference.child(userId).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Vocabulary", "getWordsId:success")
+                    it.resume(task.result.children.map { it.key.toString() })
+                } else {
+                    Log.d("Vocabulary", "getWordsId:failure", task.exception)
+                }
+            }
+        }
+    }
+
     override suspend fun getWordsCount(UserId: String): Int {
         return suspendCoroutine {
             dataBaseReference.child(UserId).get().addOnCompleteListener { task ->
@@ -46,7 +59,30 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
                     Log.d("Vocabulary", "getWordCount:success")
                     it.resume(task.result.childrenCount.toInt())
                 } else {
-                    Log.d("Vocabulary", "getWordCount:success:failure", task.exception)
+                    Log.d("Vocabulary", "getWordCount:failure", task.exception)
+                }
+            }
+        }
+    }
+
+    override suspend fun synchronizeWords(UserId: String, wordsList: List<VocabularyWordUI>) {
+
+    }
+
+    override suspend fun getAllWords(UserId: String): List<VocabularyWordUI> {
+        return suspendCoroutine {
+            dataBaseReference.child(UserId).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Vocabulary", "getAllWords:success")
+                    it.resume(task.result.children.map {
+                        VocabularyWordUI(
+                            it.key!!,
+                            it.children.find { word -> word.key == "word" }!!.value.toString(),
+                            it.children.find { word -> word.key == "translation" }!!.value.toString()
+                        )
+                    })
+                } else {
+                    Log.d("Vocabulary", "getAllWords:failure", task.exception)
                 }
             }
         }

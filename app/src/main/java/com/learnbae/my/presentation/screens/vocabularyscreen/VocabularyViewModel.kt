@@ -32,6 +32,9 @@ class VocabularyViewModel : BaseViewModel() {
 
     private fun getAllVocabularyWords() {
         vocabulary.postLoading()
-        launchIO { vocabulary.postComplete(translationInteractor.getAllWords()) }
+        launchIO {
+            vocabulary.postComplete(translationInteractor.getAllWords())
+            userInteractor.getUserId()?.let { println("isSynchronize: " + translationInteractor.isWordsSynchronize(it)) }
+        }
     }
 }

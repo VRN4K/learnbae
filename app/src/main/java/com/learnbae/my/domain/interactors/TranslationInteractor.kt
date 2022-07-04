@@ -61,8 +61,31 @@ class TranslationInteractor(
         return dbRepository.getAllWords()?.map { it.toUI() } ?: emptyList()
     }
 
+    override suspend fun getAllRemoteWords(userId: String): List<VocabularyWordUI> {
+        vocabularyFirebaseRepository.getAllWords(userId)
+        return emptyList()
+    }
+
     override suspend fun getWordsCount(userId: String): Int {
-       return vocabularyFirebaseRepository.getWordsCount(userId)
+        return vocabularyFirebaseRepository.getWordsCount(userId)
+    }
+
+    override suspend fun isWordsSynchronize(userId: String): Boolean {
+        val localWord = getAllWords()
+        val remoteWords = vocabularyFirebaseRepository.getAllWordsId(userId)
+
+        if (!localWord.isNullOrEmpty() && !remoteWords.isNullOrEmpty()){
+            remoteWords.minus(localWord.map { word -> word.id })
+
+            }
+        return false
+    }
+
+    override suspend fun synchronizeWords(userId: String) {
+        val localWord = getAllWords()
+        val remoteWords = vocabularyFirebaseRepository.getAllWords(userId)
+
+        localWord.union(remoteWords)
     }
 
     override suspend fun getAuthKey(): String {
