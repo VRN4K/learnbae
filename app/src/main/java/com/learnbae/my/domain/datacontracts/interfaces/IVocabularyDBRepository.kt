@@ -7,4 +7,5 @@ interface IVocabularyDBRepository {
     fun deleteWordById(wordId: String)
     fun getAllWords(): List<WordEntity>?
     fun getWordsCount(): Int
+    fun synchronizeWords(wordsList: List<WordEntity>)
 }

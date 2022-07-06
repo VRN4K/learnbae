@@ -23,7 +23,7 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
                     Log.d("Vocabulary", "addWord:success")
                     Log.d("Vocabulary", "addWordId:${word.id}")
                 } else {
-                    Log.d("Vocabulary", "addWord:success:failure", task.exception)
+                    Log.d("Vocabulary", "addWord:failure", task.exception)
                 }
             }
     }
@@ -34,7 +34,17 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
                 Log.d("Vocabulary", "removeWord:success")
                 Log.d("Vocabulary", "user:$userId  word:$wordId")
             } else {
-                Log.d("Vocabulary", "removeWord:success:failure", task.exception)
+                Log.d("Vocabulary", "removeWord:failure", task.exception)
+            }
+        }
+    }
+
+    override fun removeAllWords(userId: String) {
+        dataBaseReference.child(userId).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Vocabulary", "removeAllWord:success")
+            } else {
+                Log.d("Vocabulary", "removeAll:failure", task.exception)
             }
         }
     }
@@ -52,9 +62,9 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
         }
     }
 
-    override suspend fun getWordsCount(UserId: String): Int {
+    override suspend fun getWordsCount(userId: String): Int {
         return suspendCoroutine {
-            dataBaseReference.child(UserId).get().addOnCompleteListener { task ->
+            dataBaseReference.child(userId).get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("Vocabulary", "getWordCount:success")
                     it.resume(task.result.childrenCount.toInt())
@@ -65,13 +75,13 @@ class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
         }
     }
 
-    override suspend fun synchronizeWords(UserId: String, wordsList: List<VocabularyWordUI>) {
-
+    override suspend fun synchronizeWords(userId: String, wordsList: List<VocabularyWordUI>) {
+        wordsList.onEach { addNewWord(userId, it) }
     }
 
-    override suspend fun getAllWords(UserId: String): List<VocabularyWordUI> {
+    override suspend fun getAllWords(userId: String): List<VocabularyWordUI> {
         return suspendCoroutine {
-            dataBaseReference.child(UserId).get().addOnCompleteListener { task ->
+            dataBaseReference.child(userId).get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("Vocabulary", "getAllWords:success")
                     it.resume(task.result.children.map {

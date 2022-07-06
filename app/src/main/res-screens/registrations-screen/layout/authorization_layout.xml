@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="15dp"
-                android:text="@string/user_error_text"
+                tools:text="@string/user_error_text"
                 android:textAlignment="center"
                 android:visibility="gone"
                 tools:visibility="visible" />

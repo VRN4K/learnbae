@@ -24,4 +24,10 @@ class VocabularyDBRepository : IVocabularyDBRepository, KoinComponent {
     override fun getWordsCount(): Int {
         return dbVocabulary.VocabularyDao().getWordsCount()
     }
+
+    override fun synchronizeWords(wordsList: List<WordEntity>) {
+        wordsList.onEach {
+            addWordToVocabulary(it)
+        }
+    }
 }

@@ -17,9 +17,9 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
     override suspend fun addUser(userId: String, userInfo: UserEntity) {
         dataBaseReference.child(userId).setValue(userInfo).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("Reg", "addUserInfo:success")
+                Log.d("USER", "addUserInfo:success")
             } else {
-                Log.d("Reg", "addUserInfo:success:failure", task.exception)
+                Log.d("USER", "addUserInfo:failure", task.exception)
             }
         }
     }
@@ -41,7 +41,26 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
                     )
                 )
             }.addOnFailureListener {
-                Log.d("Login", "Error getting data", it)
+                Log.d("USER", "Error getting data", it)
+            }
+        }
+    }
+
+    override suspend fun isUsernameAvailable(username: String): Boolean {
+        return suspendCoroutine { continuation ->
+            dataBaseReference.get().addOnCompleteListener { task ->
+                task.result.children.find { it.key == "username" && it.value == username }
+                    ?.let {
+                        continuation.resume(true).also {
+                            println(
+                                "answer: $it"
+                            )
+                        }
+                    } ?: continuation.resume(false).also {
+                    println(
+                        "answer: $it"
+                    )
+                }
             }
         }
     }
@@ -50,10 +69,20 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
         dataBaseReference.child(userId).child("englishLevel").setValue(levelValue)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("Reg", "addUserInfo:success")
+                    Log.d("USER", "addUserInfo:success")
                 } else {
-                    Log.d("Reg", "addUserInfo:success:failure", task.exception)
+                    Log.d("USER", "addUserInfo:failure", task.exception)
                 }
             }
+    }
+
+    override fun deleteUserInfo(userId: String) {
+        dataBaseReference.child(userId).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("USER", "removeUserInfo:success")
+            } else {
+                Log.d("USER", "removeUser:failure", task.exception)
+            }
+        }
     }
 }

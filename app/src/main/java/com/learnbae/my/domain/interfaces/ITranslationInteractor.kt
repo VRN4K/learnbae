@@ -17,5 +17,6 @@ interface ITranslationInteractor {
     suspend fun addWordToVocabulary(userId: String? = null, word: VocabularyWordUI)
     suspend fun getWordsCount(userId: String): Int
     suspend fun isWordsSynchronize(userId: String): Boolean
-    suspend fun synchronizeWords(UserId: String)
+    suspend fun synchronizeWords(userId: String)
+    suspend fun deleteAllWordsFromAccount(userId: String)
 }

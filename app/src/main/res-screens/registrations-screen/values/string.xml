@@ -20,6 +20,7 @@
     <string name="user_error_text">Пользователь с указанной почтой отсутсвует в базе</string>
     <string name="user_wrong_password_or_email">Неверное имя пользователя или пароль</string>
     <string name="email_not_match_mask_text">Почта не соответствует маске</string>
+    <string name="email_already_exists">Пользователь с данной почтой уже существует</string>
     <string name="fullname_error_text">Поле должно содержать только символы кириллицы, дефиса или пробела</string>
     <string name="username_error_text">Поле должно содержать только цифры, символы латиницы или нижнего подчеркивания</string>
     <string name="username_already_exist_error_text">Пользователь с таким именем уже существует</string>

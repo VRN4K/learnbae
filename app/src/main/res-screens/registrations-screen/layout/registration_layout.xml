@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_dark">
@@ -71,10 +72,10 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/englishLevelsDropdown"
-                        android:text="A1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none" />
+                        android:inputType="none"
+                        android:text="A1" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -121,6 +122,18 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/userErrorText"
+                style="@style/MariupolMedium.Error.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="15dp"
+                tools:text="@string/user_error_text"
+                android:textAlignment="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <Button
                 android:id="@+id/addButton"

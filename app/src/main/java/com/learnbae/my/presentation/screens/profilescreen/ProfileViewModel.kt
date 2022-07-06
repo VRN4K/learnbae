@@ -2,8 +2,10 @@ package com.learnbae.my.presentation.screens.profilescreen
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
@@ -13,8 +15,10 @@ import org.koin.core.component.inject
 
 class ProfileViewModel : BaseViewModel() {
     private val userInteractor: IUserInteractor by inject()
+    private val translationInteractor: ITranslationInteractor by inject()
     private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository by inject()
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
+    val isSynchronizing = MutableLiveData<Boolean>()
 
     init {
         userInformation.postLoading()
@@ -25,7 +29,17 @@ class ProfileViewModel : BaseViewModel() {
                         vocabularyFirebaseRepository.getWordsCount(userInteractor.getUserId()!!)
                     )
                 )
-            } else { openFragment(Screens.getAuthScreen()) }
+            } else {
+                openFragment(Screens.getAuthScreen())
+            }
+        }
+    }
+
+    fun synchronizeWords() {
+        isSynchronizing.postValue(true)
+        launchIO {
+            translationInteractor.synchronizeWords(userInteractor.getUserId()!!)
+            isSynchronizing.postValue(false)
         }
     }
 
@@ -35,6 +49,16 @@ class ProfileViewModel : BaseViewModel() {
 
     fun updateEnglishLevel(englishLevel: String) {
         launchIO { userInteractor.updateEnglishLevel(englishLevel) }
+    }
+
+    fun deleteAccount() {
+        userInformation.postLoading()
+        launchIO {
+            userInteractor.deleteAccount()?.let {
+                translationInteractor.deleteAllWordsFromAccount(it)
+            }
+            openFragment(Screens.getAuthScreen())
+        }
     }
 
     fun logout() {

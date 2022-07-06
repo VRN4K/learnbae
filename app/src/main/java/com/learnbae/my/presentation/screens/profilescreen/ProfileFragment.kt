@@ -50,6 +50,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showSynchronizeLoading(false)
         setListeners()
         setObservers()
     }
@@ -66,8 +67,12 @@ class ProfileFragment : Fragment() {
                     else -> return@observe
                 }
             }
+            isSynchronizing.observe(viewLifecycleOwner) {
+                showSynchronizeLoading(it)
+            }
         }
     }
+
 
     private fun showScreenContent(isShow: Boolean) {
         binding.loadingAnimator.changeLoadingState(isShow, binding.screenContent.id)
@@ -98,6 +103,10 @@ class ProfileFragment : Fragment() {
         }.show(requireActivity().supportFragmentManager, "LevelPickingDialogFragmentTag")
     }
 
+    private fun showSynchronizeLoading(isShow: Boolean) {
+        binding.synchronizationLoading.changeLoadingState(isShow, binding.synchronizeWordsButton.id)
+    }
+
     private fun showProfileInfo(info: UserProfileInfoUIModel) {
         binding.apply {
             userName.text = info.username
@@ -122,6 +131,8 @@ class ProfileFragment : Fragment() {
             profileImage.setOnClickListener { onAddPhotoButtonClick() }
             logoutButton.setOnClickListener { profileViewModel.logout() }
             updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
+            synchronizeWordsButton.setOnClickListener { profileViewModel.synchronizeWords() }
+            deleteButton.setOnClickListener { profileViewModel.deleteAccount() }
         }
     }
 }

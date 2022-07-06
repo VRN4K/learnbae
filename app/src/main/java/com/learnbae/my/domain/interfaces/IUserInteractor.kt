@@ -9,9 +9,12 @@ interface IUserInteractor {
     suspend fun loginByEmailAndPassword(email: String, password: String)
     suspend fun isUserAuthorized(): Boolean
     suspend fun logout()
+    suspend fun deleteAccount():String?
+    suspend fun isUsernameAvailable(username: String): Boolean
     suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel
     suspend fun registerNewUser(registerRequestData: RegisterRequestData)
     suspend fun uploadUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null)
     suspend fun updateEnglishLevel(levelValue: String)
     suspend fun getUserId(): String?
+
 }

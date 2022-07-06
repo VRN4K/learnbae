@@ -6,6 +6,8 @@ import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.RegisterRequestData
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
+import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
@@ -25,6 +27,12 @@ class RegistrationViewModel : BaseViewModel() {
 
 
     fun registerNewUser(registerRequestData: RegisterRequestData) {
+        launchIO(createExceptionHandler {
+            onException(it)
+            if (it is UsernameOrEmailAlreadyExistException){
+                emailError.postValue(R.string.email_already_exists)
+            }
+        }) {
         val validationResult = mutableListOf(
             registerRequestData.userInfo.email.getValidationEmailResult(),
             registerRequestData.registerUserInfo.password.getValidationPasswordResult(),
@@ -32,8 +40,7 @@ class RegistrationViewModel : BaseViewModel() {
             registerRequestData.userInfo.userFullName.getValidationFullNameResult(),
         )
 
-        if (validationResult.all { true }) {
-            launchIO {
+            if (validationResult.all { true }) {
                 userInteractor.registerNewUser(registerRequestData)
                 openFragment(Screens.getProfileScreen())
             }
@@ -54,13 +61,15 @@ class RegistrationViewModel : BaseViewModel() {
         return isValid
     }
 
-    private fun String.getValidationUsernameResult(): Boolean {
+    private suspend fun String.getValidationUsernameResult(): Boolean {
         var isValid = true
         when {
             this.isEmpty() -> usernameError.postValue(R.string.empty_input_error_text)
                 .also { isValid = false }
             !this.any { (it in 'a'..'z' || it in 'A'..'Z') || it in '0'..'9' || it == '_' }
             -> usernameError.postValue(R.string.username_error_text).also { isValid = false }
+            !userInteractor.isUsernameAvailable(this) -> usernameError.postValue(R.string.username_already_exist_error_text)
+                .also { isValid = false }
             else -> usernameError.postValue(null)
         }
         return isValid

@@ -63,6 +63,20 @@ class UserInteractor(
         authPreferenceRepository.saveToken(null)
     }
 
+    override suspend fun deleteAccount(): String? {
+        authRepository.deleteUser()?.let {
+            userDBRepository.deleteUserInfo(it)
+            storageRepository.removeProfilePhoto(it)
+            authPreferenceRepository.saveToken(null)
+            return it
+        }
+        return null
+    }
+
+    override suspend fun isUsernameAvailable(username: String): Boolean {
+        return userDBRepository.isUsernameAvailable(username)
+    }
+
     override suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
         val photo = storageRepository.getProfilePhoto(userId!!)

@@ -27,14 +27,28 @@ class FirebaseStorageRepository(private val storage: FirebaseStorage) : IStorage
         }
     }
 
+    override suspend fun removeProfilePhoto(userId: String) {
+        getProfilePhoto(userId)?.let {
+            storage.reference.child("images/$userId").delete().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Profile", "removePhoto:success")
+                } else {
+                    Log.d("Profile", "removePhoto:failure", task.exception)
+                }
+            }
+        }
+    }
+
     override suspend fun getProfilePhoto(userId: String): Uri? {
         return suspendCoroutine {
-            storage.reference.child("images/$userId/profile.jpg").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+            storage.reference.child("images/$userId").list(1).addOnCompleteListener { task ->
+                if (task.result.items.size > 0) {
                     Log.d("Profile", "downloadPhoto:success")
-                    it.resume(task.result)
+                    storage.reference.child("images/$userId/profile.jpg").downloadUrl.addOnCompleteListener { task ->
+                        it.resume(task.result)
+                    }
                 } else {
-                    Log.d("Profile", "downloadPhoto:failure", task.exception)
+                    Log.d("Profile", "downloadPhoto:failure")
                     it.resume(null)
                 }
             }
