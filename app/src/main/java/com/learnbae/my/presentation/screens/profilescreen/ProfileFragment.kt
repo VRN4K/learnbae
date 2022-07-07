@@ -11,18 +11,22 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private var binding by onDestroyNullable<ProfileLayoutBinding>()
-    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val profileViewModel: ProfileViewModel by viewModels()
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 

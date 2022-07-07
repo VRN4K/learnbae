@@ -9,15 +9,17 @@ import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
+import javax.inject.Inject
 
-class RegistrationViewModel : BaseViewModel() {
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(val userInteractor: IUserInteractor) :
+    BaseViewModel() {
     companion object {
         private const val PASSWORD_LENGTH = 5
     }
-
-    private val userInteractor: IUserInteractor by inject()
 
     val userError = MutableLiveData<Int?>()
     val emailError = MutableLiveData<Int?>()
@@ -29,16 +31,16 @@ class RegistrationViewModel : BaseViewModel() {
     fun registerNewUser(registerRequestData: RegisterRequestData) {
         launchIO(createExceptionHandler {
             onException(it)
-            if (it is UsernameOrEmailAlreadyExistException){
+            if (it is UsernameOrEmailAlreadyExistException) {
                 emailError.postValue(R.string.email_already_exists)
             }
         }) {
-        val validationResult = mutableListOf(
-            registerRequestData.userInfo.email.getValidationEmailResult(),
-            registerRequestData.registerUserInfo.password.getValidationPasswordResult(),
-            registerRequestData.userInfo.username.getValidationUsernameResult(),
-            registerRequestData.userInfo.userFullName.getValidationFullNameResult(),
-        )
+            val validationResult = mutableListOf(
+                registerRequestData.userInfo.email.getValidationEmailResult(),
+                registerRequestData.registerUserInfo.password.getValidationPasswordResult(),
+                registerRequestData.userInfo.username.getValidationUsernameResult(),
+                registerRequestData.userInfo.userFullName.getValidationFullNameResult(),
+            )
 
             if (validationResult.all { true }) {
                 userInteractor.registerNewUser(registerRequestData)

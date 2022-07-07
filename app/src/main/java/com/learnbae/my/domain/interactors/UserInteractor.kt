@@ -14,9 +14,10 @@ import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
 @SuppressLint("SimpleDateFormat")
-class UserInteractor(
+class UserInteractor @Inject constructor(
     private val authRepository: IAuthRepository,
     private val authPreferenceRepository: IAuthorizationStorageRepository,
     private val storageRepository: IStorageRepository,

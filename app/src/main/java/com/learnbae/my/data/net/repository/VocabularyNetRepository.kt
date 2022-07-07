@@ -1,19 +1,19 @@
 package com.learnbae.my.data.net.repository
 
 import com.learnbae.my.data.net.model.WordOfADayModel
-import com.learnbae.my.data.net.retrofit.RetrofitInstance.VOCABULARY_API_KEY
+import com.learnbae.my.data.net.retrofit.RetrofitInstance.Companion.VOCABULARY_API_KEY
 import com.learnbae.my.data.net.retrofit.VocabularyService
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyNetRepository
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class VocabularyNetRepository : IVocabularyNetRepository, KoinComponent {
+@Singleton
+class VocabularyNetRepository @Inject constructor(private val mService: VocabularyService) : IVocabularyNetRepository{
     companion object {
         private const val LIMIT = "5"
         private const val USE_CANONICAL = "true"
     }
 
-    private val mService: VocabularyService by inject()
     override suspend fun getWordOfADay(date: String): WordOfADayModel {
         return mService.getWordOfADay(date, VOCABULARY_API_KEY)
     }

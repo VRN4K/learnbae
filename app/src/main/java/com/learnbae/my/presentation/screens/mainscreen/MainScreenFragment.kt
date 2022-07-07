@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
@@ -16,12 +17,16 @@ import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import java.util.*
 
+@AndroidEntryPoint
 class MainScreenFragment : Fragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
-    private val mainScreenViewModel by lazy { ViewModelProvider(this).get(MainScreenViewModel::class.java) }
+    private val mainScreenViewModel: MainScreenViewModel by viewModels()
 
     private val wordsListAdapter by lazy {
         SimpleAdapter(

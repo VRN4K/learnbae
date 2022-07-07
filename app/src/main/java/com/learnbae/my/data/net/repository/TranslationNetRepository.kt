@@ -6,9 +6,12 @@ import com.learnbae.my.data.net.retrofit.TranslationService
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TranslationNetRepository : ITranslationNetRepository, KoinComponent {
-    private val mService: TranslationService by inject()
+@Singleton
+class TranslationNetRepository @Inject constructor(private val mService: TranslationService) :
+    ITranslationNetRepository {
 
     override suspend fun getMinicard(
         text: String,

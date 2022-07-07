@@ -6,10 +6,15 @@ import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirebaseStorageRepository(private val storage: FirebaseStorage) : IStorageRepository {
+@Singleton
+class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) :
+    IStorageRepository {
+
     override fun uploadProfilePhoto(userId: String, uri: Uri?, bitmap: Bitmap?) {
         with(storage.reference.child("images").child(userId).child("profile.jpg")) {
             bitmap?.let {

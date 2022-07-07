@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.learnbae.my.databinding.VocabularyItemBinding
 import com.learnbae.my.databinding.VocabularyScreenBinding
@@ -14,12 +14,14 @@ import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.vocabularyscreen.holder.VocabularyHolder
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import java.util.*
 
+@AndroidEntryPoint
 class VocabularyFragment : Fragment() {
     private var binding by onDestroyNullable<VocabularyScreenBinding>()
-    private val vocabularyViewModel by lazy { ViewModelProvider(this).get(VocabularyViewModel::class.java) }
+    private val vocabularyViewModel: VocabularyViewModel by viewModels()
 
     private val wordsListAdapter by lazy {
         SimpleAdapter(

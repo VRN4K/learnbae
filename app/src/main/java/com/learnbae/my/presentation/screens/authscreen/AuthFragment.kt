@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.learnbae.my.databinding.AuthorizationLayoutBinding
 import com.learnbae.my.presentation.common.setVisibility
 import com.learnbae.my.presentation.common.showError
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
+@AndroidEntryPoint
 class AuthFragment : Fragment() {
     private var binding by onDestroyNullable<AuthorizationLayoutBinding>()
-    private val authViewModel by lazy { ViewModelProvider(this).get(AuthViewModel::class.java) }
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

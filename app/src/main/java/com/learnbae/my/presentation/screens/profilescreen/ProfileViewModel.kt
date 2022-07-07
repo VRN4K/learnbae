@@ -10,13 +10,17 @@ import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
-import org.koin.core.component.inject
+import javax.inject.Inject
 
-class ProfileViewModel : BaseViewModel() {
-    private val userInteractor: IUserInteractor by inject()
-    private val translationInteractor: ITranslationInteractor by inject()
-    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository by inject()
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    val userInteractor: IUserInteractor,
+    private val translationInteractor: ITranslationInteractor,
+    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository
+    ) : BaseViewModel() {
+
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
     val isSynchronizing = MutableLiveData<Boolean>()
 

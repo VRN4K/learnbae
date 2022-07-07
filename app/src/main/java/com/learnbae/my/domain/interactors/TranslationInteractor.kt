@@ -14,8 +14,9 @@ import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyNetRepository
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
+import javax.inject.Inject
 
-class TranslationInteractor(
+class TranslationInteractor @Inject constructor(
     private val netRepository: ITranslationNetRepository,
     private val dbRepository: IVocabularyDBRepository,
     private val vocabularyNetRepository: IVocabularyNetRepository,

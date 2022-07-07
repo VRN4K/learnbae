@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.RegisterRequestData
@@ -13,11 +14,15 @@ import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.databinding.RegistrationLayoutBinding
 import com.learnbae.my.presentation.common.showError
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
+@AndroidEntryPoint
 class RegistrationFragment : Fragment() {
     private var binding by onDestroyNullable<RegistrationLayoutBinding>()
-    private val registrationViewModel by lazy { ViewModelProvider(this).get(RegistrationViewModel::class.java) }
+    private val registrationViewModel: RegistrationViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

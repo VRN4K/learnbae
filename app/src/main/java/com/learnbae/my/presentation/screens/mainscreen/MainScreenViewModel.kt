@@ -9,19 +9,22 @@ import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
-import org.koin.core.component.inject
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
 @SuppressLint("SimpleDateFormat")
-class MainScreenViewModel : BaseViewModel() {
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
+    private val translationInteractor: ITranslationInteractor,
+    val userInteractor: IUserInteractor
+) : BaseViewModel() {
     companion object {
         private const val LAST_ADDED_WORDS_COUNT = 5
     }
 
-    private val translationInteractor: ITranslationInteractor by inject()
-    private val userInteractor: IUserInteractor by inject()
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     val wordOfADay = StateLiveData<WordMinicardUI>()

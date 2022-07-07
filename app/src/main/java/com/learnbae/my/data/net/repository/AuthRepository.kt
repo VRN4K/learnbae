@@ -9,11 +9,14 @@ import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
 import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
 import com.learnbae.my.presentation.common.exceptions.WrongEmailOrPasswordException
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class AuthRepository(private val firebaseAuth: FirebaseAuth) :
+@Singleton
+class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth) :
     IAuthRepository {
     override suspend fun loginByEmailAndPassword(email: String, password: String): String? {
         return suspendCoroutine {

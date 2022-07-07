@@ -3,11 +3,12 @@ package com.learnbae.my.data.storage.repositories
 import com.learnbae.my.data.storage.VocabularyDataBase
 import com.learnbae.my.data.storage.entities.WordEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class VocabularyDBRepository : IVocabularyDBRepository, KoinComponent {
-    private val dbVocabulary: VocabularyDataBase by inject()
+@Singleton
+class VocabularyDBRepository @Inject constructor(private val dbVocabulary: VocabularyDataBase) :
+    IVocabularyDBRepository {
 
     override fun addWordToVocabulary(word: WordEntity) {
         dbVocabulary.VocabularyDao().addWordToVocabulary(word)

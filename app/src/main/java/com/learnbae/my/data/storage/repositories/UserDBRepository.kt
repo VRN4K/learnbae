@@ -4,10 +4,14 @@ import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class UserDBRepository(private val database: FirebaseDatabase) : IUserDBRepository {
+@Singleton
+class UserDBRepository @Inject constructor(private val database: FirebaseDatabase) :
+    IUserDBRepository {
     companion object {
         private const val DB_USER_REF_NAME = "USER"
     }

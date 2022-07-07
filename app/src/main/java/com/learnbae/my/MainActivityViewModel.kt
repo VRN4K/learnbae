@@ -5,13 +5,17 @@ import com.learnbae.my.data.net.retrofit.VocabularyInterceptor.Companion.MILLIS_
 import com.learnbae.my.data.storage.preferences.StringPreference
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
 import org.koin.core.component.inject
 import java.util.*
+import javax.inject.Inject
 
-class MainActivityViewModel : BaseViewModel() {
-    private val interactor: ITranslationInteractor by inject()
-    private val sharedPreferences: StringPreference by inject()
+@HiltViewModel
+class MainActivityViewModel @Inject constructor(
+    private val interactor: ITranslationInteractor,
+    private val sharedPreferences: StringPreference
+) : BaseViewModel() {
 
     fun setNewAuthKey() {
         val currentDateTime = Calendar.getInstance().time.time

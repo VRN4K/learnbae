@@ -3,29 +3,31 @@ package com.learnbae.my.presentation.base
 import androidx.lifecycle.ViewModel
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import com.learnbae.my.data.storage.preferences.AuthorizationPreferenceRepository
+import com.learnbae.my.di.InteractorModule
+import com.learnbae.my.domain.datacontracts.interfaces.IAuthorizationStorageRepository
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel : ViewModel(), KoinComponent, CoroutineScope {
-    private val router: Router by inject()
-    private val authPreferenceRepository: AuthorizationPreferenceRepository by inject(
-        qualifier = named(
-            "TokenPreference"
-        )
-    )
+@HiltViewModel
+open class BaseViewModel @Inject constructor() : ViewModel(), CoroutineScope {
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var authPreferenceRepository: IAuthorizationStorageRepository
+
+    @Inject
+    @InteractorModule.DefaultClient lateinit var okHttpClient: OkHttpClient
+
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = Dispatchers.IO + job
     protected val handler by lazy { createExceptionHandler(::onException) }
-    protected val okHttpClient: OkHttpClient by inject(qualifier = named("DefaultClient"))
 
     open fun openRootScreen() {
         router.newRootScreen(Screens.getMainScreen())

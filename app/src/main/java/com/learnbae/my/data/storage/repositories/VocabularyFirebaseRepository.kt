@@ -5,10 +5,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.learnbae.my.data.storage.entities.toFareBaseEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class VocabularyFirebaseRepository(private val database: FirebaseDatabase) :
+@Singleton
+class VocabularyFirebaseRepository @Inject constructor(private val database: FirebaseDatabase) :
     IVocabularyFirebaseRepository {
     companion object {
         private const val DB_VOCABULARY_REF_NAME = "VOCABULARY"
