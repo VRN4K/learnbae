@@ -18,7 +18,7 @@ import javax.inject.Inject
 class RegistrationViewModel @Inject constructor(val userInteractor: IUserInteractor) :
     BaseViewModel() {
     companion object {
-        private const val PASSWORD_LENGTH = 5
+        private const val PASSWORD_LENGTH = 6
     }
 
     val userError = MutableLiveData<Int?>()

@@ -38,12 +38,12 @@ class MainScreenViewModel @Inject constructor(
             wordOfADay.postLoading()
         }
 
-        wordOfADay.postLoading()
-        launchIO(handler) {
-            getLastFiveWords()
-            //dateFormat.format(Calendar.getInstance().time
-            wordOfADay.postComplete(translationInteractor.getWordOfADay("2022-06-21"))
-        }
+//        wordOfADay.postLoading()
+//        launchIO(handler) {
+//            getLastFiveWords()
+//            //dateFormat.format(Calendar.getInstance().time
+//            wordOfADay.postComplete(translationInteractor.getWordOfADay("2022-06-21"))
+//        }
     }
 
     fun addWordToVocabulary(wordUI: VocabularyWordUI) {

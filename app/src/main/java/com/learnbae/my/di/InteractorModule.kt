@@ -4,10 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import com.learnbae.my.data.net.repository.TranslationNetRepository
 import com.learnbae.my.data.net.repository.VocabularyNetRepository
-import com.learnbae.my.data.net.retrofit.RetrofitInstance
-import com.learnbae.my.data.net.retrofit.TranslationService
-import com.learnbae.my.data.net.retrofit.VocabularyInterceptor
-import com.learnbae.my.data.net.retrofit.VocabularyService
+import com.learnbae.my.data.net.retrofit.*
 import com.learnbae.my.data.storage.VocabularyDataBase
 import com.learnbae.my.data.storage.preferences.StringPreference
 import com.learnbae.my.data.storage.repositories.VocabularyDBRepository
@@ -93,6 +90,10 @@ class InteractorModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class VocabularyClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class DictionaryClient
+
     @Provides
     @Singleton
     @DefaultClient
@@ -116,6 +117,17 @@ class InteractorModule {
 
     @Provides
     @Singleton
+    @DictionaryClient
+    fun provideDictionaryClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            })
+            .addInterceptor(DictionaryInterceptor()).build()
+    }
+
+    @Provides
+    @Singleton
     @VocabularyClient
     fun provideVocabularyClient(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -128,14 +140,15 @@ class InteractorModule {
     @Singleton
     fun provideRetrofitInstance(
         @TranslatorClient translatorClient: OkHttpClient,
-        @VocabularyClient vocabularyClient: OkHttpClient
+        @VocabularyClient vocabularyClient: OkHttpClient,
+        @DictionaryClient translatorDictionary: OkHttpClient,
     ): RetrofitInstance =
-        RetrofitInstance(translatorClient, vocabularyClient)
+        RetrofitInstance(translatorClient, vocabularyClient, translatorDictionary)
 
     @Provides
     @Singleton
     fun provideRetrofitTranslationService(retrofitInstance: RetrofitInstance): TranslationService {
-        return retrofitInstance.retrofitTranslator.create(TranslationService::class.java)
+        return retrofitInstance.retrofitNewTranslator.create(TranslationService::class.java)
     }
 
     @Provides

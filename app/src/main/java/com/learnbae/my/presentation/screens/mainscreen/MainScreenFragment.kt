@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
@@ -15,6 +15,7 @@ import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
+import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +54,17 @@ class MainScreenFragment : BaseFragment() {
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener { showAddDialog() }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.navigateToScreen(Screens.getSearchResultFragment("en", "ru", query!!))
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
         }
     }
 

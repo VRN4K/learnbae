@@ -145,17 +145,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/change_password_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/round_button"
-                android:text="@string/profile_account_change_password_button"
-                android:textAppearance="@style/MariupolMedium.PrimaryLight.17"
-                android:textColor="@color/primary_dark" />
-
-            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

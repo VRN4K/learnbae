@@ -5,7 +5,9 @@ import com.google.firebase.auth.*
 import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
 import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
+import com.learnbae.my.presentation.common.exceptions.WrongCurrentPasswordException
 import com.learnbae.my.presentation.common.exceptions.WrongEmailOrPasswordException
+import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -38,28 +40,32 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-    override fun updateUserPassword(currentPassword: String, newPassword: String) {
-        firebaseAuth.currentUser!!.reauthenticate(
-            EmailAuthProvider.getCredential(
-                firebaseAuth.currentUser!!.email!!,
-                currentPassword
-            )
-        ).addOnCompleteListener {
-            Log.d("Auth", "changePassword: user re-authenticate")
-        }
+    override suspend fun updateUserPassword(currentPassword: String, newPassword: String) {
+        suspendCoroutine<Unit> {
+            firebaseAuth.currentUser!!.reauthenticate(
+                EmailAuthProvider.getCredential(
+                    firebaseAuth.currentUser!!.email!!,
+                    currentPassword
+                )
+            ).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Auth", "changePassword: user re-authenticate")
+                } else {
+                    Log.d("Auth", "changePassword: user re-authentication failed")
+                    it.resumeWithException(WrongCurrentPasswordException())
+                }
+            }
 
-        firebaseAuth.currentUser!!.updatePassword(newPassword).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d("Auth", "changePassword:success")
-                Log.d("Auth", "user: ${firebaseAuth.currentUser!!.email}")
-            } else {
-                Log.d("Auth", "changePassword:failure", task.exception)
+            firebaseAuth.currentUser!!.updatePassword(newPassword).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Auth", "changePassword:success")
+                    Log.d("Auth", "user: ${firebaseAuth.currentUser!!.email}")
+                    it.resume(Unit)
+                } else {
+                    Log.d("Auth", "changePassword:failure", task.exception)
+                }
             }
         }
-    }
-
-    override fun sendResetPasswordCode() {
-        firebaseAuth.currentUser
     }
 
 

@@ -11,8 +11,10 @@ import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyDBRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyNetRepository
+import com.learnbae.my.domain.datacontracts.model.SearchResultUIModel
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
+import com.learnbae.my.domain.datacontracts.model.toUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import javax.inject.Inject
 
@@ -94,6 +96,14 @@ class TranslationInteractor @Inject constructor(
 
     override suspend fun deleteAllWordsFromAccount(userId: String) {
         vocabularyFirebaseRepository
+    }
+
+    override suspend fun getWordTranslation(
+        sourceLang: String,
+        targetLang: String,
+        word: String
+    ): SearchResultUIModel {
+        return netRepository.getWordTranslation(sourceLang, targetLang, word).toUI()
     }
 
     override suspend fun getAuthKey(): String {

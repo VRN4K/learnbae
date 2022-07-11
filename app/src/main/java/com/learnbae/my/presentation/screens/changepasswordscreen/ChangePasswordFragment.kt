@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.databinding.ChangePasswordLayoutBinding
 import com.learnbae.my.presentation.base.BaseFragment
+import com.learnbae.my.presentation.common.showError
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
@@ -27,7 +28,23 @@ class ChangePasswordFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setListeners()
+        setObservers()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun setObservers() {
+        binding.apply {
+            viewModel.apply {
+                currentPasswordError.observe(viewLifecycleOwner) {
+                    textCurrentPassword.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+                newPasswordError.observe(viewLifecycleOwner) {
+                    textNewPassword.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+            }
+        }
     }
 
     private fun setListeners() {

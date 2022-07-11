@@ -18,7 +18,7 @@ interface IUserInteractor {
     suspend fun uploadUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null)
     suspend fun updateEnglishLevel(levelValue: String)
     fun getUserId(): String?
-    fun changeUserPassword(passwordChangeModel: PasswordChangeModel)
+    suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel)
     suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity)
 
 }

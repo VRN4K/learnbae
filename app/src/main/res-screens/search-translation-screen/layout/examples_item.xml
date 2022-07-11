@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="4dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/example_value"
+        style="@style/MariupolMedium.Primary.20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="01. necessity is the mother of invention" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/examples_items_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="5"
+        tools:listitem="@layout/example_translation_item" />
+</LinearLayout>

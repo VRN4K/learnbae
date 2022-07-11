@@ -24,7 +24,7 @@
     <string name="fullname_error_text">Поле должно содержать только символы кириллицы, дефиса или пробела</string>
     <string name="username_error_text">Поле должно содержать только цифры, символы латиницы или нижнего подчеркивания</string>
     <string name="username_already_exist_error_text">Пользователь с таким именем уже существует</string>
-    <string name="password_text_error">Пароль должен содержать только цифры и символы латиницы, и быть не менее 5 символов</string>
+    <string name="password_text_error">Пароль должен содержать только цифры и символы латиницы, и быть не менее 6 символов</string>
     <string name="wrong_password">Пароль </string>
 
 </resources>

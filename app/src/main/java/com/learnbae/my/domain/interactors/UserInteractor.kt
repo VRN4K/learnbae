@@ -63,7 +63,7 @@ class UserInteractor @Inject constructor(
         return authRepository.getUserId()
     }
 
-    override fun changeUserPassword(passwordChangeModel: PasswordChangeModel) {
+    override suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel) {
         authRepository.updateUserPassword(
             passwordChangeModel.currentPassword,
             passwordChangeModel.newPassword

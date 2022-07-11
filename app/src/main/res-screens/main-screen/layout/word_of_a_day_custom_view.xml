@@ -29,7 +29,8 @@
     <com.learnbae.my.presentation.common.animator.LoadingViewAnimator
         android:id="@+id/loading_animator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:visible_child="true">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/word_of_a_day_content"
@@ -66,6 +67,7 @@
 
                         <TextView
                             android:id="@+id/word_of_a_day_transcription"
+                            style="@style/MariupolRegular.Secondary.20"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="[griːn]" />

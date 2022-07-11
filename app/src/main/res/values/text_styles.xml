@@ -273,4 +273,23 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <!--______________________________30SP_________________________________________-->
+    <!--______________________________Mariupol_____________________________________-->
+
+    <style name="MariupolRegular.Primary.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="MariupolMedium.Primary.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="MariupolRegular.Secondary.30">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MariupolMedium.Secondary.30">
+        <item name="android:textSize">30sp</item>
+    </style>
+
 </resources>
