@@ -8,15 +8,17 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.learnbae.my.databinding.ActivityMainBinding
+import com.learnbae.my.presentation.base.BaseView
+import com.learnbae.my.presentation.common.setVisibility
 import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private var binding by onDestroyNullable<ActivityMainBinding>()
+class MainActivity : AppCompatActivity(), BaseView{
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
+    private var binding by onDestroyNullable<ActivityMainBinding>()
 
     @Inject
     lateinit var navHolder: NavigatorHolder
@@ -46,6 +48,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun setNavigationVisibility(isVisible: Boolean) {
+        binding.bottomNavigationView.setVisibility(isVisible)
     }
 }
 

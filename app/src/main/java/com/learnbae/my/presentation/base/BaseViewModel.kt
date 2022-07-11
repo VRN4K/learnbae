@@ -15,8 +15,7 @@ import okhttp3.OkHttpClient
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-@HiltViewModel
-open class BaseViewModel @Inject constructor() : ViewModel(), CoroutineScope {
+abstract class BaseViewModel: ViewModel(), CoroutineScope {
     @Inject
     lateinit var router: Router
     @Inject
@@ -41,7 +40,7 @@ open class BaseViewModel @Inject constructor() : ViewModel(), CoroutineScope {
         router.replaceScreen(screen)
     }
 
-    open fun navigateToPreviousScreen(screen: FragmentScreen) {
+    open fun navigateToScreen(screen: FragmentScreen) {
         router.navigateTo(screen)
     }
 

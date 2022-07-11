@@ -15,18 +15,18 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
+import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
     private var binding by onDestroyNullable<ProfileLayoutBinding>()
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private val viewModel by viewModels<ProfileViewModel>()
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 
@@ -42,6 +42,7 @@ class ProfileFragment : Fragment() {
                     showProfilePhoto(uri = result.data!!.data!!)
                 }
             }
+
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -60,7 +61,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setObservers() {
-        profileViewModel.apply {
+        viewModel.apply {
             userInformation.observe(viewLifecycleOwner) {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showScreenContent(true)
@@ -101,7 +102,7 @@ class ProfileFragment : Fragment() {
             setActionListener(object : LevelPickingDialog.PickEnglishLevelClickListener {
                 override fun onLevelClick(levelValue: String) {
                     binding.englishLevelValue.text = levelValue
-                    profileViewModel.updateEnglishLevel(levelValue)
+                    viewModel.updateEnglishLevel(levelValue)
                 }
             })
         }.show(requireActivity().supportFragmentManager, "LevelPickingDialogFragmentTag")
@@ -122,21 +123,29 @@ class ProfileFragment : Fragment() {
             info.profilePhoto?.let {
                 Glide.with(requireContext()).load(it).into(binding.profileImage)
             }
+
+            logoutButton.setOnClickListener {
+                viewModel.navigateToScreen(
+                    Screens.getUpdateProfileScreen(
+                        info
+                    )
+                )
+            }
         }
     }
 
     private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
-        profileViewModel.addUserProfilePhoto(uri, bitmap)
+        viewModel.addUserProfilePhoto(uri, bitmap)
         Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
     }
 
     private fun setListeners() {
         binding.apply {
             profileImage.setOnClickListener { onAddPhotoButtonClick() }
-            logoutButton.setOnClickListener { profileViewModel.logout() }
             updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
-            synchronizeWordsButton.setOnClickListener { profileViewModel.synchronizeWords() }
-            deleteButton.setOnClickListener { profileViewModel.deleteAccount() }
+            synchronizeWordsButton.setOnClickListener { viewModel.synchronizeWords() }
+            deleteButton.setOnClickListener { viewModel.deleteAccount() }
+            changePasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getChangePasswordScreen()) }
         }
     }
 }

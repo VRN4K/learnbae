@@ -1,11 +1,15 @@
 package com.learnbae.my.presentation.screens
 
 import com.github.terrakok.cicerone.androidx.FragmentScreen
+import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.screens.authscreen.AuthFragment
+import com.learnbae.my.presentation.screens.changepasswordscreen.ChangePasswordFragment
 import com.learnbae.my.presentation.screens.mainscreen.MainScreenFragment
 import com.learnbae.my.presentation.screens.vocabularyscreen.VocabularyFragment
 import com.learnbae.my.presentation.screens.profilescreen.ProfileFragment
 import com.learnbae.my.presentation.screens.registrationscreen.RegistrationFragment
+import com.learnbae.my.presentation.screens.updateprofilescreen.UpdateProfileFragment
+import com.learnbae.my.presentation.screens.updateprofilescreen.UpdateProfileFragment.Companion.newInstance
 
 object Screens {
     fun getMainScreen() = FragmentScreen { MainScreenFragment() }
@@ -13,4 +17,8 @@ object Screens {
     fun getVocabularyScreen() = FragmentScreen { VocabularyFragment() }
     fun getAuthScreen() = FragmentScreen { AuthFragment() }
     fun getRegistrationScreen() = FragmentScreen { RegistrationFragment() }
+    fun getChangePasswordScreen() = FragmentScreen { ChangePasswordFragment() }
+    fun getUpdateProfileScreen(userProfileInfo: UserProfileInfoUIModel) = FragmentScreen {
+        UpdateProfileFragment.newInstance(userProfileInfo)
+    }
 }

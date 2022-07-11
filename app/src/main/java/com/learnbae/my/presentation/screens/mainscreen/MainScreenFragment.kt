@@ -6,27 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
 import com.learnbae.my.databinding.MainScreenBinding
 import com.learnbae.my.databinding.WordsListItemBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import java.util.*
 
 @AndroidEntryPoint
-class MainScreenFragment : Fragment() {
+class MainScreenFragment : BaseFragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
-    private val mainScreenViewModel: MainScreenViewModel by viewModels()
+    private val viewModel by viewModels<MainScreenViewModel>()
 
     private val wordsListAdapter by lazy {
         SimpleAdapter(
@@ -59,7 +57,7 @@ class MainScreenFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mainScreenViewModel.apply {
+        viewModel.apply {
             wordOfADay.observe(viewLifecycleOwner) {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showLoading(true)
@@ -127,7 +125,7 @@ class MainScreenFragment : Fragment() {
         AddWordDialog().apply {
             setActionListener(object : AddWordDialog.AddButtonClickListener {
                 override fun onClickWordAdd(wordText: String, wordTranslation: String) {
-                    mainScreenViewModel.addWordToVocabulary(
+                    viewModel.addWordToVocabulary(
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),
                             wordText,
@@ -144,7 +142,7 @@ class MainScreenFragment : Fragment() {
             wordTitle = minicard.title
             wordTranscription = minicard.transcription
             setTranslationsItems(minicard.translation)
-            setOnPlayButtonClickListener { mainScreenViewModel.onPlaySoundButtonCLick(minicard) }
+            setOnPlayButtonClickListener { viewModel.onPlaySoundButtonCLick(minicard) }
         }
     }
 }

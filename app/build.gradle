@@ -38,7 +38,7 @@ android {
         main {
             res {
                 srcDirs 'src\\main\\res', 'src\\main\\res-screens\\main-screen', 'src\\main\\res-screens\\profile-screen'
-                srcDirs 'src\\main\\res', 'src\\main\\res-screens\\main-screen', 'src\\main\\res-screens\\vocabulary-screen', 'src\\main\\res-screens\\registrations-screen'
+                srcDirs 'src\\main\\res', 'src\\main\\res-screens\\main-screen', 'src\\main\\res-screens\\vocabulary-screen', 'src\\main\\res-screens\\registrations-screen', 'src\\main\\res-screens\\update-profile-screen', 'src\\main\\res-screens\\change-password-screen', 'src\\main\\res-screens\\search-translation-screen'
             }
         }
     }

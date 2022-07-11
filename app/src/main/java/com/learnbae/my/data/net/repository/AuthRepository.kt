@@ -1,10 +1,7 @@
 package com.learnbae.my.data.net.repository
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.*
 import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
 import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
@@ -41,6 +38,31 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
+    override fun updateUserPassword(currentPassword: String, newPassword: String) {
+        firebaseAuth.currentUser!!.reauthenticate(
+            EmailAuthProvider.getCredential(
+                firebaseAuth.currentUser!!.email!!,
+                currentPassword
+            )
+        ).addOnCompleteListener {
+            Log.d("Auth", "changePassword: user re-authenticate")
+        }
+
+        firebaseAuth.currentUser!!.updatePassword(newPassword).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Auth", "changePassword:success")
+                Log.d("Auth", "user: ${firebaseAuth.currentUser!!.email}")
+            } else {
+                Log.d("Auth", "changePassword:failure", task.exception)
+            }
+        }
+    }
+
+    override fun sendResetPasswordCode() {
+        firebaseAuth.currentUser
+    }
+
+
     override suspend fun registerNewUser(user: RegisterUserInfo): String? {
         return suspendCoroutine {
             firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
@@ -62,7 +84,7 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-    override suspend fun getUserId(): String? {
+    override fun getUserId(): String? {
         return firebaseAuth.currentUser?.uid
     }
 

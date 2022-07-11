@@ -7,15 +7,21 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class CiceroneModule {
-    private val cicerone = Cicerone.create()
+object CiceroneModule {
+    @Provides
+    @Singleton
+    fun getCicerone(): Cicerone<Router> = Cicerone.create()
 
     @Provides
-    fun provideRouter(): Router = cicerone.router
+    @Singleton
+    fun provideRouter(cicerone: Cicerone<Router>): Router = cicerone.router
 
     @Provides
-    fun provideNavHolder(): NavigatorHolder = cicerone.getNavigatorHolder()
+    @Singleton
+    fun provideNavHolder(cicerone: Cicerone<Router>): NavigatorHolder =
+        cicerone.getNavigatorHolder()
 }

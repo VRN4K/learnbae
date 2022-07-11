@@ -64,11 +64,4 @@ class ProfileViewModel @Inject constructor(
             openFragment(Screens.getAuthScreen())
         }
     }
-
-    fun logout() {
-        launchIO {
-            userInteractor.logout()
-            openFragment(Screens.getAuthScreen())
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package com.learnbae.my.di
 
 import android.content.Context
+import android.content.res.Resources
 import com.learnbae.my.data.net.repository.TranslationNetRepository
 import com.learnbae.my.data.net.repository.VocabularyNetRepository
 import com.learnbae.my.data.net.retrofit.RetrofitInstance
@@ -31,6 +32,12 @@ class InteractorModule {
     @Singleton
     fun provideTranslationNetRepository(service: TranslationService): ITranslationNetRepository {
         return TranslationNetRepository(service)
+    }
+
+    @Provides
+    @Singleton
+    fun provideResources(@ApplicationContext context: Context): Resources {
+        return context.resources
     }
 
     @Provides

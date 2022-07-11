@@ -2,6 +2,7 @@ package com.learnbae.my.data.storage.repositories
 
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
+import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
 import javax.inject.Inject
@@ -53,18 +54,15 @@ class UserDBRepository @Inject constructor(private val database: FirebaseDatabas
     override suspend fun isUsernameAvailable(username: String): Boolean {
         return suspendCoroutine { continuation ->
             dataBaseReference.get().addOnCompleteListener { task ->
-                task.result.children.find { it.key == "username" && it.value == username }
-                    ?.let {
-                        continuation.resume(true).also {
-                            println(
-                                "answer: $it"
-                            )
-                        }
-                    } ?: continuation.resume(false).also {
-                    println(
-                        "answer: $it"
-                    )
+                if (task.result.children.find { it.key == "username" && it.value == username }
+                        ?.exists() == true) {
+                    Log.d("USER", "checkUsername:already exists")
+                    continuation.resume(false)
+                } else {
+                    Log.d("USER", "checkUsername:free")
+                    continuation.resume(true)
                 }
+
             }
         }
     }
@@ -78,6 +76,14 @@ class UserDBRepository @Inject constructor(private val database: FirebaseDatabas
                     Log.d("USER", "addUserInfo:failure", task.exception)
                 }
             }
+    }
+
+    override fun updateUserProfileInformation(userId: String, userInfo: UpdateUserEntity) {
+        dataBaseReference.child(userId).apply {
+            userInfo.userFullName?.let { child("userFullName").setValue(it) }
+            userInfo.username?.let { child("username").setValue(it) }
+            userInfo.email?.let { child("email").setValue(it) }
+        }
     }
 
     override fun deleteUserInfo(userId: String) {

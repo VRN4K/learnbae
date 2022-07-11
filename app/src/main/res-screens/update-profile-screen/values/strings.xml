@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save_changes_text_button">Сохранить изменения</string>
+    <string name="update_profile_email_title">Почта</string>
+    <string name="update_profile_fullname_title">Имя</string>
+    <string name="update_profile_change_photo_title">ИЗМЕНИТЬ АВАТАР</string>
+    <string name="update_profile_screen_title">Ваш профиль</string>
+    <string name="update_screen_toolbar_text">Настройки профиля</string>
+</resources>

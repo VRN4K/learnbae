@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.net.Uri
+import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.data.storage.entities.RegisterRequestData
+import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.data.storage.entities.toUI
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthorizationStorageRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.domain.datacontracts.model.toUpdateUserEntity
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +28,7 @@ class UserInteractor @Inject constructor(
     private val resources: Resources
 ) : IUserInteractor {
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy")
+    private val userId = getUserId()
 
     override suspend fun loginByEmailAndPassword(email: String, password: String) {
         val token = authRepository.loginByEmailAndPassword(email, password)
@@ -40,7 +44,7 @@ class UserInteractor @Inject constructor(
         if (!userToken.isNullOrEmpty()) {
             registerRequestData.userInfo.singUpDate = dateFormat.format(Calendar.getInstance().time)
             userDBRepository.addUser(
-                authRepository.getUserId()!!,
+                getUserId()!!,
                 registerRequestData.userInfo
             )
         }
@@ -48,16 +52,29 @@ class UserInteractor @Inject constructor(
     }
 
     override suspend fun uploadUserProfilePhoto(uri: Uri?, bitmap: Bitmap?) {
-        storageRepository.uploadProfilePhoto(authRepository.getUserId()!!, uri, bitmap)
+        storageRepository.uploadProfilePhoto(userId!!, uri, bitmap)
     }
 
     override suspend fun updateEnglishLevel(levelValue: String) {
-        userDBRepository.updateUser(authRepository.getUserId()!!, levelValue)
+        userDBRepository.updateUser(userId!!, levelValue)
     }
 
-    override suspend fun getUserId(): String? {
+    override fun getUserId(): String? {
         return authRepository.getUserId()
     }
+
+    override fun changeUserPassword(passwordChangeModel: PasswordChangeModel) {
+        authRepository.updateUserPassword(
+            passwordChangeModel.currentPassword,
+            passwordChangeModel.newPassword
+        )
+    }
+
+    override suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity) {
+        updateUserEntity.profilePhoto?.let { uploadUserProfilePhoto(it) }
+        userDBRepository.updateUserProfileInformation(userId!!, updateUserEntity)
+    }
+
 
     override suspend fun logout() {
         authRepository.logout()

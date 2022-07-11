@@ -35,6 +35,7 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
                 emailError.postValue(R.string.email_already_exists)
             }
         }) {
+
             val validationResult = mutableListOf(
                 registerRequestData.userInfo.email.getValidationEmailResult(),
                 registerRequestData.registerUserInfo.password.getValidationPasswordResult(),
@@ -42,9 +43,12 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
                 registerRequestData.userInfo.userFullName.getValidationFullNameResult(),
             )
 
+            //if (userInteractor.isUsernameAvailable(registerRequestData.userInfo.username)) {
             if (validationResult.all { true }) {
                 userInteractor.registerNewUser(registerRequestData)
                 openFragment(Screens.getProfileScreen())
+            } else {
+                usernameError.postValue(R.string.username_already_exist_error_text)
             }
         }
     }
@@ -63,14 +67,13 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
         return isValid
     }
 
-    private suspend fun String.getValidationUsernameResult(): Boolean {
+    private fun String.getValidationUsernameResult(): Boolean {
         var isValid = true
         when {
             this.isEmpty() -> usernameError.postValue(R.string.empty_input_error_text)
                 .also { isValid = false }
             !this.any { (it in 'a'..'z' || it in 'A'..'Z') || it in '0'..'9' || it == '_' }
             -> usernameError.postValue(R.string.username_error_text).also { isValid = false }
-            !userInteractor.isUsernameAvailable(this) -> usernameError.postValue(R.string.username_already_exist_error_text)
                 .also { isValid = false }
             else -> usernameError.postValue(null)
         }
@@ -97,8 +100,7 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
                 .also { isValid = false }
             !this.any { (it in 'a'..'z' || it in 'A'..'Z') || it in '0'..'9' } || this.length < PASSWORD_LENGTH -> passwordError.postValue(
                 R.string.password_text_error
-            )
-                .also { isValid = false }
+            ).also { isValid = false }
             else -> passwordError.postValue(null)
         }
         return isValid
