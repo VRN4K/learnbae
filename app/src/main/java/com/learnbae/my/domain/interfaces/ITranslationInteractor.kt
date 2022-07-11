@@ -2,6 +2,7 @@ package com.learnbae.my.domain.interfaces
 
 import com.learnbae.my.data.net.model.TranslationModel
 import com.learnbae.my.data.net.model.WordMinicardModel
+import com.learnbae.my.domain.datacontracts.model.SearchResultUIModel
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 
@@ -17,5 +18,11 @@ interface ITranslationInteractor {
     suspend fun addWordToVocabulary(userId: String? = null, word: VocabularyWordUI)
     suspend fun getWordsCount(userId: String): Int
     suspend fun isWordsSynchronize(userId: String): Boolean
-    suspend fun synchronizeWords(UserId: String)
+    suspend fun synchronizeWords(userId: String)
+    suspend fun deleteAllWordsFromAccount(userId: String)
+    suspend fun getWordTranslation(
+        sourceLang: String,
+        targetLang: String,
+        word: String
+    ): SearchResultUIModel
 }

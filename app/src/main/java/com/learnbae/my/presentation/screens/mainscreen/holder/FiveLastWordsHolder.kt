@@ -17,7 +17,7 @@ class FiveLastWordsHolder(private val binding: WordsListItemBinding) :
             wordValue.text = root.resources.getString(
                 R.string.words_list_item_pattern_bold,
                 root.resources.getString(
-                    R.string.words_list_item_pattern_number, (pos + 1).toString()
+                    R.string.words_list_item_before_10_pattern_number, (pos + 1).toString()
                 ),
                 item.title
             )

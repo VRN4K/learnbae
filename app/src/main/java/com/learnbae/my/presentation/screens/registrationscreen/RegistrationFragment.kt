@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.RegisterRequestData
 import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.databinding.RegistrationLayoutBinding
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.showError
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
-class RegistrationFragment : Fragment() {
+@AndroidEntryPoint
+class RegistrationFragment : BaseFragment() {
     private var binding by onDestroyNullable<RegistrationLayoutBinding>()
-    private val registrationViewModel by lazy { ViewModelProvider(this).get(RegistrationViewModel::class.java) }
+    private val viewModel by viewModels<RegistrationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +33,7 @@ class RegistrationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setObservers()
         setListeners()
+        setNavigationVisibility(false)
         binding.englishLevelsDropdown.setAdapter(
             ArrayAdapter(
                 requireContext(),
@@ -44,7 +47,7 @@ class RegistrationFragment : Fragment() {
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener {
-                registrationViewModel.registerNewUser(
+                viewModel.registerNewUser(
                     RegisterRequestData(
                         UserEntity(
                             textUserNameField.editText?.text.toString(),
@@ -59,12 +62,13 @@ class RegistrationFragment : Fragment() {
                     )
                 )
             }
+            backButton.setOnClickListener { viewModel.navigateToPreviousScreen() }
         }
     }
 
     private fun setObservers() {
         binding.apply {
-            registrationViewModel.apply {
+            viewModel.apply {
                 usernameError.observe(viewLifecycleOwner) {
                     textUserNameField.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
@@ -86,6 +90,11 @@ class RegistrationFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        setNavigationVisibility(true)
+        super.onDestroyView()
     }
 }
 

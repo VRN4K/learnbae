@@ -2,12 +2,17 @@ package com.learnbae.my.data.storage.repositories
 
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
+import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class UserDBRepository(private val database: FirebaseDatabase) : IUserDBRepository {
+@Singleton
+class UserDBRepository @Inject constructor(private val database: FirebaseDatabase) :
+    IUserDBRepository {
     companion object {
         private const val DB_USER_REF_NAME = "USER"
     }
@@ -17,9 +22,9 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
     override suspend fun addUser(userId: String, userInfo: UserEntity) {
         dataBaseReference.child(userId).setValue(userInfo).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("Reg", "addUserInfo:success")
+                Log.d("USER", "addUserInfo:success")
             } else {
-                Log.d("Reg", "addUserInfo:success:failure", task.exception)
+                Log.d("USER", "addUserInfo:failure", task.exception)
             }
         }
     }
@@ -41,7 +46,23 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
                     )
                 )
             }.addOnFailureListener {
-                Log.d("Login", "Error getting data", it)
+                Log.d("USER", "Error getting data", it)
+            }
+        }
+    }
+
+    override suspend fun isUsernameAvailable(username: String): Boolean {
+        return suspendCoroutine { continuation ->
+            dataBaseReference.get().addOnCompleteListener { task ->
+                if (task.result.children.find { it.key == "username" && it.value == username }
+                        ?.exists() == true) {
+                    Log.d("USER", "checkUsername:already exists")
+                    continuation.resume(false)
+                } else {
+                    Log.d("USER", "checkUsername:free")
+                    continuation.resume(true)
+                }
+
             }
         }
     }
@@ -50,10 +71,28 @@ class UserDBRepository(private val database: FirebaseDatabase) : IUserDBReposito
         dataBaseReference.child(userId).child("englishLevel").setValue(levelValue)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d("Reg", "addUserInfo:success")
+                    Log.d("USER", "addUserInfo:success")
                 } else {
-                    Log.d("Reg", "addUserInfo:success:failure", task.exception)
+                    Log.d("USER", "addUserInfo:failure", task.exception)
                 }
             }
+    }
+
+    override fun updateUserProfileInformation(userId: String, userInfo: UpdateUserEntity) {
+        dataBaseReference.child(userId).apply {
+            userInfo.userFullName?.let { child("userFullName").setValue(it) }
+            userInfo.username?.let { child("username").setValue(it) }
+            userInfo.email?.let { child("email").setValue(it) }
+        }
+    }
+
+    override fun deleteUserInfo(userId: String) {
+        dataBaseReference.child(userId).removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("USER", "removeUserInfo:success")
+            } else {
+                Log.d("USER", "removeUser:failure", task.exception)
+            }
+        }
     }
 }

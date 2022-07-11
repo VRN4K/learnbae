@@ -2,19 +2,27 @@ package com.learnbae.my.presentation.screens.profilescreen
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
-import org.koin.core.component.inject
+import javax.inject.Inject
 
-class ProfileViewModel : BaseViewModel() {
-    private val userInteractor: IUserInteractor by inject()
-    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository by inject()
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    val userInteractor: IUserInteractor,
+    private val translationInteractor: ITranslationInteractor,
+    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository
+    ) : BaseViewModel() {
+
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
+    val isSynchronizing = MutableLiveData<Boolean>()
 
     init {
         userInformation.postLoading()
@@ -25,7 +33,17 @@ class ProfileViewModel : BaseViewModel() {
                         vocabularyFirebaseRepository.getWordsCount(userInteractor.getUserId()!!)
                     )
                 )
-            } else { openFragment(Screens.getAuthScreen()) }
+            } else {
+                openFragment(Screens.getAuthScreen())
+            }
+        }
+    }
+
+    fun synchronizeWords() {
+        isSynchronizing.postValue(true)
+        launchIO {
+            translationInteractor.synchronizeWords(userInteractor.getUserId()!!)
+            isSynchronizing.postValue(false)
         }
     }
 
@@ -37,9 +55,12 @@ class ProfileViewModel : BaseViewModel() {
         launchIO { userInteractor.updateEnglishLevel(englishLevel) }
     }
 
-    fun logout() {
+    fun deleteAccount() {
+        userInformation.postLoading()
         launchIO {
-            userInteractor.logout()
+            userInteractor.deleteAccount()?.let {
+                translationInteractor.deleteAllWordsFromAccount(it)
+            }
             openFragment(Screens.getAuthScreen())
         }
     }

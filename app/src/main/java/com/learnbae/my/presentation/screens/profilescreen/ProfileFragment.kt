@@ -11,18 +11,22 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
+import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
-class ProfileFragment : Fragment() {
+@AndroidEntryPoint
+class ProfileFragment : BaseFragment() {
     private var binding by onDestroyNullable<ProfileLayoutBinding>()
-    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val viewModel by viewModels<ProfileViewModel>()
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
 
@@ -38,6 +42,7 @@ class ProfileFragment : Fragment() {
                     showProfilePhoto(uri = result.data!!.data!!)
                 }
             }
+
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -50,12 +55,13 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        showSynchronizeLoading(false)
         setListeners()
         setObservers()
     }
 
     private fun setObservers() {
-        profileViewModel.apply {
+        viewModel.apply {
             userInformation.observe(viewLifecycleOwner) {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showScreenContent(true)
@@ -66,8 +72,12 @@ class ProfileFragment : Fragment() {
                     else -> return@observe
                 }
             }
+            isSynchronizing.observe(viewLifecycleOwner) {
+                showSynchronizeLoading(it)
+            }
         }
     }
+
 
     private fun showScreenContent(isShow: Boolean) {
         binding.loadingAnimator.changeLoadingState(isShow, binding.screenContent.id)
@@ -92,10 +102,14 @@ class ProfileFragment : Fragment() {
             setActionListener(object : LevelPickingDialog.PickEnglishLevelClickListener {
                 override fun onLevelClick(levelValue: String) {
                     binding.englishLevelValue.text = levelValue
-                    profileViewModel.updateEnglishLevel(levelValue)
+                    viewModel.updateEnglishLevel(levelValue)
                 }
             })
         }.show(requireActivity().supportFragmentManager, "LevelPickingDialogFragmentTag")
+    }
+
+    private fun showSynchronizeLoading(isShow: Boolean) {
+        binding.synchronizationLoading.changeLoadingState(isShow, binding.synchronizeWordsButton.id)
     }
 
     private fun showProfileInfo(info: UserProfileInfoUIModel) {
@@ -109,19 +123,29 @@ class ProfileFragment : Fragment() {
             info.profilePhoto?.let {
                 Glide.with(requireContext()).load(it).into(binding.profileImage)
             }
+
+            logoutButton.setOnClickListener {
+                viewModel.navigateToScreen(
+                    Screens.getUpdateProfileScreen(
+                        info
+                    )
+                )
+            }
         }
     }
 
     private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
-        profileViewModel.addUserProfilePhoto(uri, bitmap)
+        viewModel.addUserProfilePhoto(uri, bitmap)
         Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
     }
 
     private fun setListeners() {
         binding.apply {
             profileImage.setOnClickListener { onAddPhotoButtonClick() }
-            logoutButton.setOnClickListener { profileViewModel.logout() }
             updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
+            synchronizeWordsButton.setOnClickListener { viewModel.synchronizeWords() }
+            deleteButton.setOnClickListener { viewModel.deleteAccount() }
+            changePasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getChangePasswordScreen()) }
         }
     }
 }

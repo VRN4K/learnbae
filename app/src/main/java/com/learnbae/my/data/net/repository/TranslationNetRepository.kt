@@ -1,14 +1,16 @@
 package com.learnbae.my.data.net.repository
 
+import com.learnbae.my.data.net.model.SearchResultModel
 import com.learnbae.my.data.net.model.TranslationModel
 import com.learnbae.my.data.net.model.WordMinicardModel
 import com.learnbae.my.data.net.retrofit.TranslationService
 import com.learnbae.my.domain.datacontracts.interfaces.ITranslationNetRepository
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class TranslationNetRepository : ITranslationNetRepository, KoinComponent {
-    private val mService: TranslationService by inject()
+@Singleton
+class TranslationNetRepository @Inject constructor(private val mService: TranslationService) :
+    ITranslationNetRepository {
 
     override suspend fun getMinicard(
         text: String,
@@ -32,6 +34,14 @@ class TranslationNetRepository : ITranslationNetRepository, KoinComponent {
 
     override suspend fun getAuthKey(): String {
         return mService.getAuthKey()
+    }
+
+    override suspend fun getWordTranslation(
+        sourceLang: String,
+        targetLang: String,
+        word: String
+    ): SearchResultModel {
+        return mService.getWordTranslation(sourceLang, targetLang, word, false)
     }
 }
 

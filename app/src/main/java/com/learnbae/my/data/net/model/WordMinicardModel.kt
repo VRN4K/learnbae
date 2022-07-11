@@ -8,10 +8,10 @@ import com.learnbae.my.presentation.common.extensions.splitTranslation
 
 data class WordMinicardModel(
     @SerializedName("Translation")
-    val translation: Translation
+    val translation: Translation1
 )
 
-data class Translation(
+data class Translation1(
     @SerializedName("Heading")
     val heading: String,
     @SerializedName("Translation")

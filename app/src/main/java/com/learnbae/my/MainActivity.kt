@@ -2,20 +2,26 @@ package com.learnbae.my
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.view.forEach
-import androidx.lifecycle.ViewModelProvider
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.learnbae.my.databinding.ActivityMainBinding
+import com.learnbae.my.presentation.base.BaseView
+import com.learnbae.my.presentation.common.setVisibility
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), BaseView{
+    private val mainActivityViewModel: MainActivityViewModel by viewModels()
     private var binding by onDestroyNullable<ActivityMainBinding>()
-    private val mainActivityViewModel by lazy { ViewModelProvider(this).get(MainActivityViewModel::class.java) }
-    private val navHolder: NavigatorHolder by inject()
+
+    @Inject
+    lateinit var navHolder: NavigatorHolder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun setNavigationVisibility(isVisible: Boolean) {
+        binding.bottomNavigationView.setVisibility(isVisible)
     }
 }
 

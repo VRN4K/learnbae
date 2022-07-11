@@ -4,24 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import android.widget.SearchView
+import androidx.fragment.app.viewModels
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
 import com.learnbae.my.databinding.MainScreenBinding
 import com.learnbae.my.databinding.WordsListItemBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
+import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.mainscreen.addworddialog.AddWordDialog
 import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import java.util.*
 
-class MainScreenFragment : Fragment() {
+@AndroidEntryPoint
+class MainScreenFragment : BaseFragment() {
     private var binding by onDestroyNullable<MainScreenBinding>()
-    private val mainScreenViewModel by lazy { ViewModelProvider(this).get(MainScreenViewModel::class.java) }
+    private val viewModel by viewModels<MainScreenViewModel>()
 
     private val wordsListAdapter by lazy {
         SimpleAdapter(
@@ -50,11 +54,22 @@ class MainScreenFragment : Fragment() {
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener { showAddDialog() }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.navigateToScreen(Screens.getSearchResultFragment("en", "ru", query!!))
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
         }
     }
 
     private fun setObservers() {
-        mainScreenViewModel.apply {
+        viewModel.apply {
             wordOfADay.observe(viewLifecycleOwner) {
                 when (it.status) {
                     StateData.DataStatus.LOADING -> showLoading(true)
@@ -122,7 +137,7 @@ class MainScreenFragment : Fragment() {
         AddWordDialog().apply {
             setActionListener(object : AddWordDialog.AddButtonClickListener {
                 override fun onClickWordAdd(wordText: String, wordTranslation: String) {
-                    mainScreenViewModel.addWordToVocabulary(
+                    viewModel.addWordToVocabulary(
                         VocabularyWordUI(
                             UUID.randomUUID().toString(),
                             wordText,
@@ -139,7 +154,7 @@ class MainScreenFragment : Fragment() {
             wordTitle = minicard.title
             wordTranscription = minicard.transcription
             setTranslationsItems(minicard.translation)
-            setOnPlayButtonClickListener { mainScreenViewModel.onPlaySoundButtonCLick(minicard) }
+            setOnPlayButtonClickListener { viewModel.onPlaySoundButtonCLick(minicard) }
         }
     }
 }

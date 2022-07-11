@@ -4,17 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.learnbae.my.databinding.AuthorizationLayoutBinding
+import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.setVisibility
 import com.learnbae.my.presentation.common.showError
 import com.learnbae.my.presentation.screens.Screens
+import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
-class AuthFragment : Fragment() {
+@AndroidEntryPoint
+class AuthFragment : BaseFragment() {
     private var binding by onDestroyNullable<AuthorizationLayoutBinding>()
-    private val authViewModel by lazy { ViewModelProvider(this).get(AuthViewModel::class.java) }
+    private val viewModel by viewModels<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,23 +30,24 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setListeners()
         setObservers()
+        setNavigationVisibility(true)
         super.onViewCreated(view, savedInstanceState)
     }
 
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener {
-                authViewModel.singInByEmailAndPassword(
+                viewModel.singInByEmailAndPassword(
                     binding.textEmailField.editText!!.text.toString(),
                     binding.textPasswordField.editText!!.text.toString()
                 )
             }
-            registrationButton.setOnClickListener { authViewModel.navigateToPreviousScreen(Screens.getRegistrationScreen()) }
+            registrationButton.setOnClickListener { viewModel.navigateToScreen(Screens.getRegistrationScreen()) }
         }
     }
 
     private fun setObservers() {
-        authViewModel.apply {
+        viewModel.apply {
             userError.observe(viewLifecycleOwner) {
                 it?.let { showUserError(true, resources.getString(it)) } ?: showUserError(false)
             }
@@ -65,5 +68,4 @@ class AuthFragment : Fragment() {
         binding.userErrorText.setVisibility(isShow)
         errorText?.let { binding.userErrorText.text = it }
     }
-
 }

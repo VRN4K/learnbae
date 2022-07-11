@@ -10,5 +10,6 @@
     <string name="add_new_word_button_title">Добавить слово</string>
     <string name="show_more_button">Еще</string>
     <string name="add_new_word_button_text">Добавить новое слово</string>
+    <string name="update_profile_username_title">Имя пользователя</string>
 
 </resources>

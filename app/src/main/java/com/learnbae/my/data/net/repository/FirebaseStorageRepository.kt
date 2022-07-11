@@ -6,10 +6,15 @@ import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import java.io.ByteArrayOutputStream
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirebaseStorageRepository(private val storage: FirebaseStorage) : IStorageRepository {
+@Singleton
+class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) :
+    IStorageRepository {
+
     override fun uploadProfilePhoto(userId: String, uri: Uri?, bitmap: Bitmap?) {
         with(storage.reference.child("images").child(userId).child("profile.jpg")) {
             bitmap?.let {
@@ -27,14 +32,28 @@ class FirebaseStorageRepository(private val storage: FirebaseStorage) : IStorage
         }
     }
 
+    override suspend fun removeProfilePhoto(userId: String) {
+        getProfilePhoto(userId)?.let {
+            storage.reference.child("images/$userId").delete().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Profile", "removePhoto:success")
+                } else {
+                    Log.d("Profile", "removePhoto:failure", task.exception)
+                }
+            }
+        }
+    }
+
     override suspend fun getProfilePhoto(userId: String): Uri? {
         return suspendCoroutine {
-            storage.reference.child("images/$userId/profile.jpg").downloadUrl.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+            storage.reference.child("images/$userId").list(1).addOnCompleteListener { task ->
+                if (task.result.items.size > 0) {
                     Log.d("Profile", "downloadPhoto:success")
-                    it.resume(task.result)
+                    storage.reference.child("images/$userId/profile.jpg").downloadUrl.addOnCompleteListener { task ->
+                        it.resume(task.result)
+                    }
                 } else {
-                    Log.d("Profile", "downloadPhoto:failure", task.exception)
+                    Log.d("Profile", "downloadPhoto:failure")
                     it.resume(null)
                 }
             }

@@ -6,7 +6,8 @@
     <string name="profile_account_info">Информация об аккаунте</string>
     <string name="profile_account_another">Другое</string>
     <string name="profile_account_level_change_button">Изменить</string>
-    <string name="profile_account_login_button">Выйти из профиля</string>
+    <string name="profile_account_logout_button">Выйти из профиля</string>
+    <string name="profile_account_change_password_button">Изменить пароль</string>
     <string name="profile_account_username_pattern">\@%s</string>
     <string name="profile_account_register_date_pattern">Дата регистрации: %s</string>
     <string name="profile_account_words_count_pattern">Слов в словаре: %s</string>
@@ -26,5 +27,6 @@
     <string name="b2_level_description">Upper-\nIntermediate</string>
     <string name="c1_level_description">Advanced</string>
     <string name="c2_level_description">Proficiency</string>
+    <string name="profile_account_change_info_button">Редактировать</string>
 
 </resources>

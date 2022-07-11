@@ -34,9 +34,9 @@ fun UserEntity.toUI(
             resources.getString(R.string.profile_account_username_pattern),
             this.username
         ),
-        this.userFullName,
+        this.userFullName!!,
         this.englishLevel,
-        this.email,
+        this.email!!,
         String.format(
             resources.getString(R.string.profile_account_register_date_pattern),
             this.singUpDate!!
