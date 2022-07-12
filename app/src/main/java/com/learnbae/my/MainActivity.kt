@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity(), BaseView{
         setContentView(binding.root)
         navHolder.setNavigator(AppNavigator(this, binding.fragmentContainerView.id))
         mainActivityViewModel.openRootScreen()
-        mainActivityViewModel.setNewAuthKey()
     }
 
     override fun onStart() {

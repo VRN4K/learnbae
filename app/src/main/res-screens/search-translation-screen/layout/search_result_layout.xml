@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.learnbae.my.presentation.common.animator.LoadingViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+<com.learnbae.my.presentation.common.animator.BetterViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loading_animator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:visible_child="true">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:visibility="gone">
 
         <Toolbar
             android:layout_width="match_parent"
@@ -28,7 +28,7 @@
                 android:text="@string/search_result_title" />
 
             <ImageView
-                android:id="@+id/save_button"
+                android:id="@+id/add_to_vocabulary_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
@@ -49,10 +49,9 @@
             android:layout_height="1dp"
             android:background="@drawable/line" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -79,9 +78,6 @@
                     tools:text="[triː]" />
             </LinearLayout>
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/sound_items_recycler"
@@ -89,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="20dp"
+                android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="2"
@@ -99,87 +96,146 @@
                 android:layout_height="1dp"
                 android:background="@drawable/line" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@color/primary_dark"
-                app:cardCornerRadius="8dp">
-
-                <TextView
-                    style="@style/MariupolMedium.PrimaryLight.17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="6dp"
-                    android:text="@string/search_result_translation_title" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/word_of_a_day_content"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
-                app:cardCornerRadius="15dp">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/word_translation_recycler"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/translation_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="4"
-                        tools:listitem="@layout/word_translation_item" />
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="20dp"
+                        app:cardBackgroundColor="@color/primary_dark"
+                        app:cardCornerRadius="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                        <TextView
+                            style="@style/MariupolMedium.PrimaryLight.17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="2dp"
+                            android:paddingHorizontal="30dp"
+                            android:paddingVertical="6dp"
+                            android:text="@string/search_result_translation_title" />
+                    </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@color/accent"
-                app:cardCornerRadius="8dp">
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/word_of_a_day_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="15dp"
+                        app:layout_constraintTop_toBottomOf="@id/translation_title">
 
-                <TextView
-                    style="@style/MariupolMedium.PrimaryLight.17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:paddingHorizontal="30dp"
-                    android:paddingVertical="6dp"
-                    android:text="@string/search_result_examples_title" />
-            </androidx.cardview.widget.CardView>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/word_translation_recycler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="20dp"
+                            android:fadeScrollbars="false"
+                            android:padding="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="4"
+                            tools:listitem="@layout/word_translation_item" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/examples_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
-                app:cardCornerRadius="15dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/examples_items_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
-                    android:layout_marginVertical="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/examples_item" />
-            </androidx.cardview.widget.CardView>
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/examples_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="20dp"
+                        app:cardBackgroundColor="@color/accent"
+                        app:cardCornerRadius="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/word_of_a_day_content">
+
+                        <TextView
+                            style="@style/MariupolMedium.PrimaryLight.17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="2dp"
+                            android:paddingHorizontal="30dp"
+                            android:paddingVertical="6dp"
+                            android:text="@string/search_result_examples_title" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/examples_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        app:cardCornerRadius="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/examples_title">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/examples_items_recycler"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="15dp"
+                            android:layout_marginVertical="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/examples_item" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
         </LinearLayout>
-</LinearLayout>
-    </com.learnbae.my.presentation.common.animator.LoadingViewAnimator>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_list_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/croodssitting" />
+
+        <TextView
+            style="@style/MariupolMedium.Primary.17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/word_not_found_title"
+            android:textAlignment="center" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/research_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/black"
+            android:paddingHorizontal="20dp"
+            android:text="@string/research_button_title"
+            android:textAppearance="@style/MariupolMedium.PrimaryLight.17"
+            android:textColor="@color/primary_light_text" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_loading"
+        android:indeterminateTint="@color/primary_dark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</com.learnbae.my.presentation.common.animator.BetterViewAnimator>

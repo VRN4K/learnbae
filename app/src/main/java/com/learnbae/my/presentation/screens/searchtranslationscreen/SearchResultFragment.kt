@@ -5,17 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.google.gson.Gson
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.learnbae.my.R
 import com.learnbae.my.databinding.*
-import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
-import com.learnbae.my.presentation.screens.mainscreen.holder.FiveLastWordsHolder
 import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.ExamplesWordHolder
 import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.TranslationWordHolder
-import com.learnbae.my.presentation.screens.updateprofilescreen.UpdateProfileFragment
+import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.WordSoundsHolder
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
@@ -40,6 +39,21 @@ class SearchResultFragment : BaseFragment() {
 
     private var binding by onDestroyNullable<SearchResultLayoutBinding>()
     private val viewModel by viewModels<SearchResultViewModel>()
+
+    private val soundsAdapter by lazy {
+        SimpleAdapter(
+            SoundItemBinding::inflate,
+            createViewHolder = { WordSoundsHolder(it) },
+            onClickCallback = { item, _ ->
+                ExoPlayer.Builder(requireContext()).build().apply {
+                    println(item.second)
+                    addMediaItem(MediaItem.fromUri(item.second))
+                    prepare()
+                    play()
+                }
+            }
+        )
+    }
 
     private val translationAdapter by lazy {
         SimpleAdapter(
@@ -67,8 +81,12 @@ class SearchResultFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.wordTranslationRecycler.adapter = translationAdapter
-        binding.examplesItemsRecycler.adapter = examplesAdapter
+        binding.apply {
+            wordTranslationRecycler.adapter = translationAdapter
+            examplesItemsRecycler.adapter = examplesAdapter
+            soundItemsRecycler.adapter = soundsAdapter
+        }
+        setListeners()
         setObservers()
         viewModel.searchWordTranslation(
             requireArguments().getString(SOURCE_LANGUAGE_KEY)!!,
@@ -82,7 +100,7 @@ class SearchResultFragment : BaseFragment() {
         viewModel.apply {
             wordTranslation.observe(viewLifecycleOwner) {
                 when (it.status) {
-                    StateData.DataStatus.LOADING -> showLoading(true)
+                    StateData.DataStatus.LOADING -> showContent(false)
                     StateData.DataStatus.COMPLETE -> with(it.data!!) {
                         binding.apply {
                             wordTitle.text = word
@@ -92,16 +110,32 @@ class SearchResultFragment : BaseFragment() {
                             )
                             translationAdapter.swapItems(translation)
                             examplesAdapter.swapItems(examples.toList())
-                            showLoading(false)
+                            soundsAdapter.swapItems(wordSounds.toList())
+                            showContent(true)
                         }
                     }
+                    StateData.DataStatus.ERROR -> showContent(null)
                     else -> return@observe
                 }
             }
         }
     }
 
-    private fun showLoading(isShow: Boolean) {
-        binding.loadingAnimator.changeLoadingState(isShow, binding.content.id)
+    private fun setListeners() {
+        binding.apply {
+            backButton.setOnClickListener { viewModel.navigateToPreviousScreen() }
+            addToVocabularyButton.setOnClickListener { viewModel.addWordToVocabulary() }
+            researchButton.setOnClickListener { viewModel.navigateToPreviousScreen() }
+        }
+    }
+
+    private fun showContent(isShow: Boolean?) {
+        binding.apply {
+            when (isShow) {
+                true -> loadingAnimator.visibleChildId = content.id
+                false -> loadingAnimator.visibleChildId = progressBarLoading.id
+                null -> loadingAnimator.visibleChildId = emptyListState.id
+            }
+        }
     }
 }

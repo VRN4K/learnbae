@@ -7,7 +7,6 @@ import com.learnbae.my.di.InteractorModule
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthorizationStorageRepository
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

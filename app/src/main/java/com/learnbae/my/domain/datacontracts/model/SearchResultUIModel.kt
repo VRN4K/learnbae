@@ -1,6 +1,7 @@
 package com.learnbae.my.domain.datacontracts.model
 
 import com.learnbae.my.data.net.model.SearchResultModel
+import java.util.*
 
 class SearchResultUIModel(
     val word: String,
@@ -28,5 +29,15 @@ fun SearchResultModel.toUI(): SearchResultUIModel {
                     example.translations.map { translation -> translation.text })
             }
         }
+    )
+}
+
+fun SearchResultUIModel.toVocabularyEntity(): VocabularyWordUI {
+    return VocabularyWordUI(
+        UUID.randomUUID().toString(),
+        this.word,
+        this.translation.joinToString(
+            ", "
+        )
     )
 }

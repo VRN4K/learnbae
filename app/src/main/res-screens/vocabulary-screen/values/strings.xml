@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="vocabulary_title">Словарь</string>
+    <string name="research_button_title">Найти другое слово</string>
+    <string name="word_not_found_title">Sorry, но такого слова нет в нашей базе.\nПроверьте правильность написания или попробуйте ввести другое!</string>
 </resources>
