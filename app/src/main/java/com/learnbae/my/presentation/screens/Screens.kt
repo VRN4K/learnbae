@@ -8,6 +8,7 @@ import com.learnbae.my.presentation.screens.mainscreen.MainScreenFragment
 import com.learnbae.my.presentation.screens.vocabularyscreen.VocabularyFragment
 import com.learnbae.my.presentation.screens.profilescreen.ProfileFragment
 import com.learnbae.my.presentation.screens.registrationscreen.RegistrationFragment
+import com.learnbae.my.presentation.screens.resetpasswordscreen.ResetPasswordFragment
 import com.learnbae.my.presentation.screens.searchtranslationscreen.SearchResultFragment
 import com.learnbae.my.presentation.screens.updateprofilescreen.UpdateProfileFragment
 
@@ -21,8 +22,12 @@ object Screens {
     fun getUpdateProfileScreen(userProfileInfo: UserProfileInfoUIModel) = FragmentScreen {
         UpdateProfileFragment.newInstance(userProfileInfo)
     }
+
     fun getSearchResultFragment(sourceLang: String, targetLang: String, word: String) =
         FragmentScreen {
             SearchResultFragment.newInstance(sourceLang, targetLang, word)
         }
+
+    fun getResetPasswordFragment(code: String) =
+        FragmentScreen { ResetPasswordFragment.newInstance(code) }
 }

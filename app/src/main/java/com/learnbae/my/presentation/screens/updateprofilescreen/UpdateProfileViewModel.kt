@@ -3,7 +3,6 @@ package com.learnbae.my.presentation.screens.updateprofilescreen
 import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
-import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.screens.Screens
@@ -19,14 +18,16 @@ class UpdateProfileViewModel @Inject constructor(
 
     fun saveChanges(updateUserEntity: UpdateUserEntity) {
         launchIO {
-            //if (userInteractor.isUsernameAvailable(userProfileInfoUIModel.username)) {
+            if (userInteractor.isUsernameAvailable(updateUserEntity.username!!)) {
                 userInteractor.updateUserInfo(updateUserEntity)
                 navigateToPreviousScreen()
-//            } else {
-//                usernameError.postValue(R.string.username_already_exist_error_text)
-//            }
+            } else {
+                usernameError.postValue(R.string.username_already_exist_error_text)
+            }
         }
     }
+
+
 
     fun logOut() {
         launchIO {

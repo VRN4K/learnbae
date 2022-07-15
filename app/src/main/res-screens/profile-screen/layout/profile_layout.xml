@@ -260,7 +260,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="end|center_vertical"
                             android:layout_marginHorizontal="15dp"
-                            android:src="@drawable/ic_baseline_change_circle_24" />
+                            android:src="@drawable/ic_renew_svgrepo_com" />
                     </com.learnbae.my.presentation.common.animator.LoadingViewAnimator>
                 </androidx.cardview.widget.CardView>
 

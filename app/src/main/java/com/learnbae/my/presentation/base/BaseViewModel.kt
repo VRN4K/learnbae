@@ -14,14 +14,16 @@ import okhttp3.OkHttpClient
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel: ViewModel(), CoroutineScope {
+abstract class BaseViewModel : ViewModel(), CoroutineScope {
     @Inject
     lateinit var router: Router
+
     @Inject
     lateinit var authPreferenceRepository: IAuthorizationStorageRepository
 
     @Inject
-    @InteractorModule.DefaultClient lateinit var okHttpClient: OkHttpClient
+    @InteractorModule.DefaultClient
+    lateinit var okHttpClient: OkHttpClient
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext = Dispatchers.IO + job

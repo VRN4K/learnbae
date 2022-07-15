@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/primary_dark">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/croodplant2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
@@ -45,19 +37,35 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/authorization_small_title" />
 
+            <TextView
+                style="@style/MariupolMedium.PrimaryYellow.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:text="@string/authorization_mail_form" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textEmailField"
                 style="@style/TextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/authorization_mail_form"
                 app:hintTextAppearance="@style/MariupolMedium.Primary.17">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/authorization_mail_form"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/MariupolMedium.PrimaryYellow.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:text="@string/authorization_password_form" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textPasswordField"
@@ -71,6 +79,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/authorization_password_form"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,11 +90,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="15dp"
-                tools:text="@string/user_error_text"
                 android:textAlignment="center"
                 android:visibility="gone"
+                tools:text="@string/user_error_text"
                 tools:visibility="visible" />
-
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addButton"
@@ -94,8 +102,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/round_button"
-                android:paddingHorizontal="40dp"
                 android:backgroundTint="@color/black"
+                android:paddingHorizontal="40dp"
                 android:text="@string/authorization_login_button_text"
                 android:textAppearance="@style/MariupolMedium.PrimaryLight.17"
                 android:textColor="@color/primary_light_text" />

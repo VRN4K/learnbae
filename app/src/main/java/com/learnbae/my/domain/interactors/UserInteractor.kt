@@ -75,6 +75,10 @@ class UserInteractor @Inject constructor(
         userDBRepository.updateUserProfileInformation(userId!!, updateUserEntity)
     }
 
+    override suspend fun resetPassword(code: String, newPassword: String) {
+        authRepository.resetPassword(code, newPassword)
+    }
+
 
     override suspend fun logout() {
         authRepository.logout()

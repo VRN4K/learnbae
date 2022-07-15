@@ -27,6 +27,10 @@
     <string name="b2_level_description">Upper-\nIntermediate</string>
     <string name="c1_level_description">Advanced</string>
     <string name="c2_level_description">Proficiency</string>
+
     <string name="profile_account_change_info_button">Редактировать</string>
+    <string name="profile_account_delete_account_message">Вы уверены, что хотите удалить аккаунт?</string>
+    <string name="profile_account_confirm_delete_account_text">Удалить</string>
+    <string name="profile_account_cancel_delete_account_text">Отменить</string>
 
 </resources>

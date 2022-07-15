@@ -12,6 +12,7 @@ import com.learnbae.my.databinding.*
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
+import com.learnbae.my.presentation.common.setVisibility
 import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.ExamplesWordHolder
 import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.TranslationWordHolder
 import com.learnbae.my.presentation.screens.searchtranslationscreen.holder.WordSoundsHolder
@@ -103,14 +104,27 @@ class SearchResultFragment : BaseFragment() {
                     StateData.DataStatus.LOADING -> showContent(false)
                     StateData.DataStatus.COMPLETE -> with(it.data!!) {
                         binding.apply {
+                            addToVocabularyButton.setVisibility(true)
                             wordTitle.text = word
-                            wordTranscription.text = requireContext().resources.getString(
-                                R.string.transcription_pattern,
-                                pronunciations
-                            )
+
+                            pronunciations?.let {
+                                wordTranscription.setVisibility(true)
+                                wordTranscription.text = requireContext().resources.getString(
+                                    R.string.transcription_pattern,
+                                    it
+                                )
+                            }
+
                             translationAdapter.swapItems(translation)
-                            examplesAdapter.swapItems(examples.toList())
-                            soundsAdapter.swapItems(wordSounds.toList())
+                            examples?.let {
+                                examplesTitle.setVisibility(true)
+                                examplesBlock.setVisibility(true)
+                                examplesAdapter.swapItems(examples.toList())
+                            }
+                            wordSounds?.let {
+                                soundItemsRecycler.setVisibility(true)
+                                soundsAdapter.swapItems(wordSounds.toList())
+                            }
                             showContent(true)
                         }
                     }
@@ -118,13 +132,24 @@ class SearchResultFragment : BaseFragment() {
                     else -> return@observe
                 }
             }
+
+            isWordAlreadyInVocabulary.observe(viewLifecycleOwner) {
+                binding.addToVocabularyButton.isChecked = it
+            }
         }
     }
 
     private fun setListeners() {
         binding.apply {
             backButton.setOnClickListener { viewModel.navigateToPreviousScreen() }
-            addToVocabularyButton.setOnClickListener { viewModel.addWordToVocabulary() }
+            addToVocabularyButton.setOnClickListener {
+                if (addToVocabularyButton.isChecked) {
+                    viewModel.addWordToVocabulary()
+                } else {
+                    viewModel.removeFromVocabulary()
+                }
+
+            }
             researchButton.setOnClickListener { viewModel.navigateToPreviousScreen() }
         }
     }

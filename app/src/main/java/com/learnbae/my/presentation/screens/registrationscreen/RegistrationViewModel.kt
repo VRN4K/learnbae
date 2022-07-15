@@ -35,6 +35,8 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
                 emailError.postValue(R.string.email_already_exists)
             }
         }) {
+            val isUsernameAvailable =
+                userInteractor.isUsernameAvailable(registerRequestData.userInfo.username)
 
             val validationResult = mutableListOf(
                 registerRequestData.userInfo.email.getValidationEmailResult(),
@@ -43,8 +45,7 @@ class RegistrationViewModel @Inject constructor(val userInteractor: IUserInterac
                 registerRequestData.userInfo.userFullName.getValidationFullNameResult(),
             )
 
-            //if (userInteractor.isUsernameAvailable(registerRequestData.userInfo.username)) {
-            if (validationResult.all { true }) {
+            if (isUsernameAvailable && validationResult.all { true }) {
                 userInteractor.registerNewUser(registerRequestData)
                 openFragment(Screens.getProfileScreen())
             } else {

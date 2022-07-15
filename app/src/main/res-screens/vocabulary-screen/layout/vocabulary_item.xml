@@ -71,7 +71,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="38dp"
                 android:clickable="true"
-                android:src="@drawable/ic_baseline_delete_24" />
+                android:src="@drawable/ic_trash_svgrepo_com" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ru.rambler.libs.swipe_layout.SwipeLayout>

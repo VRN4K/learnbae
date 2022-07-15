@@ -16,8 +16,8 @@ import ltst.nibirualert.my.presentation.common.onDestroyNullable
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), BaseView{
-    private val mainActivityViewModel: MainActivityViewModel by viewModels()
+class MainActivity : AppCompatActivity(), BaseView {
+    private val viewModel by viewModels<MainActivityViewModel>()
     private var binding by onDestroyNullable<ActivityMainBinding>()
 
     @Inject
@@ -28,8 +28,10 @@ class MainActivity : AppCompatActivity(), BaseView{
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         navHolder.setNavigator(AppNavigator(this, binding.fragmentContainerView.id))
-        mainActivityViewModel.openRootScreen()
+        viewModel.openRootScreen()
+        viewModel.onDeeplinkDataReceive(intent)
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), BaseView{
         binding.bottomNavigationView.menu.forEach { menuItem ->
             NavBarItems.values().onEach { navBarItem ->
                 if (menuItem.itemId == navBarItem.menuId) menuItem.setOnMenuItemClickListener {
-                    mainActivityViewModel.openFragment(
+                    viewModel.openFragment(
                         navBarItem.screen
                     )
                     false

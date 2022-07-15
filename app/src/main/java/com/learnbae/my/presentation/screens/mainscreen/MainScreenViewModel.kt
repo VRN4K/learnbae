@@ -1,49 +1,51 @@
 package com.learnbae.my.presentation.screens.mainscreen
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.DiffUtil
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.google.android.exoplayer2.MediaItem
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import ltst.nibirualert.my.domain.launchIO
-import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-@SuppressLint("SimpleDateFormat")
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
     private val translationInteractor: ITranslationInteractor,
     val userInteractor: IUserInteractor
 ) : BaseViewModel() {
     companion object {
+        const val SEARCH_RESULT_KEY = "SEARCH RESULT SCREEN KEY"
         private const val LAST_ADDED_WORDS_COUNT = 5
     }
-
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
     val wordOfADay = StateLiveData<WordMinicardUI>()
     val vocabulary = StateLiveData<List<VocabularyWordUI>>()
     val mediaSourceData = MutableLiveData<MediaItem>()
     val countTitle = MutableLiveData<Int>()
+    val isWordAlreadyInVocabulary = MutableLiveData<Boolean>()
 
     init {
-        val handler = CoroutineExceptionHandler { _, exception ->
-            exception.printStackTrace()
+        launchIO { getLastFiveWords() }
+        wordOfADay.postLoading()
+        launchIO(createExceptionHandler {
             wordOfADay.postLoading()
+        }) {
+            val word = translationInteractor.getWordOfADay()
+            isWordAlreadyInVocabulary.postValue(
+                translationInteractor.isWordAlreadyInVocabulary(
+                    userInteractor.getUserId(),
+                    word.title
+                )
+            )
+            wordOfADay.postComplete(word)
         }
-
-//        wordOfADay.postLoading()
-//        launchIO(handler) {
-//            getLastFiveWords()
-//            //dateFormat.format(Calendar.getInstance().time
-//            wordOfADay.postComplete(translationInteractor.getWordOfADay("2022-06-21"))
-//        }
     }
 
     fun addWordToVocabulary(wordUI: VocabularyWordUI) {
@@ -54,8 +56,13 @@ class MainScreenViewModel @Inject constructor(
     }
 
     fun onPlaySoundButtonCLick(minicard: WordMinicardUI) {
-        println(minicard.soundURL)
         mediaSourceData.postValue(MediaItem.fromUri(minicard.soundURL!!))
+    }
+
+    fun removeFromVocabulary(word: String) {
+        launchIO {
+            translationInteractor.deleteWordByTitle(userInteractor.getUserId(), word)
+        }
     }
 
     private suspend fun getLastFiveWords() {
@@ -67,5 +74,12 @@ class MainScreenViewModel @Inject constructor(
                 vocabulary.postEmpty()
             }
         }
+    }
+
+    override fun navigateToScreen(screen: FragmentScreen) {
+        router.setResultListener(SEARCH_RESULT_KEY) { data ->
+            if (data as Boolean) launchIO { getLastFiveWords() }
+        }
+        super.navigateToScreen(screen)
     }
 }

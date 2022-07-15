@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.databinding.UpdateProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
@@ -116,7 +117,14 @@ class UpdateProfileFragment : BaseFragment() {
                     )
                 )
             }
-            logoutButton.setOnClickListener { viewModel.logOut() }
+            logoutButton.setOnClickListener {
+                showConfirmActionDialog(
+                    resources.getString(R.string.update_screen_log_out_message),
+                    resources.getString(R.string.update_screen_log_out_confirm_message),
+                    resources.getString(R.string.update_screen_log_out_cancel_message),
+                    viewModel::logOut
+                )
+            }
         }
     }
 

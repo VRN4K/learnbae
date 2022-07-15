@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DiffUtil
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
 import com.learnbae.my.databinding.MainScreenBinding
@@ -13,6 +14,7 @@ import com.learnbae.my.databinding.WordsListItemBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.presentation.base.BaseFragment
+import com.learnbae.my.presentation.common.DiffUtilCallBack
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.Screens
@@ -57,7 +59,23 @@ class MainScreenFragment : BaseFragment() {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.navigateToScreen(Screens.getSearchResultFragment("en", "ru", query!!))
+                    if (languageCheckbox.isChecked) {
+                        viewModel.navigateToScreen(
+                            Screens.getSearchResultFragment(
+                                "ru",
+                                "en",
+                                query!!
+                            )
+                        )
+                    } else {
+                        viewModel.navigateToScreen(
+                            Screens.getSearchResultFragment(
+                                "en",
+                                "ru",
+                                query!!
+                            )
+                        )
+                    }
                     return false
                 }
 
@@ -65,6 +83,7 @@ class MainScreenFragment : BaseFragment() {
                     return false
                 }
             })
+            languageCheckbox.setOnCheckedChangeListener { _, check -> showSearchHint(check) }
         }
     }
 
@@ -98,6 +117,10 @@ class MainScreenFragment : BaseFragment() {
                 }
             }
 
+            isWordAlreadyInVocabulary.observe(viewLifecycleOwner) {
+                binding.wordOfADayBlock.setAddToVocabularyCheckStatus(it)
+            }
+
             mediaSourceData.observe(viewLifecycleOwner) {
                 ExoPlayer.Builder(requireContext()).build().apply {
                     addMediaItem(it)
@@ -107,7 +130,6 @@ class MainScreenFragment : BaseFragment() {
             }
         }
     }
-
 
     private fun showLoading(isLoading: Boolean) {
         binding.wordOfADayBlock.changeLoadingState(isLoading)
@@ -133,6 +155,11 @@ class MainScreenFragment : BaseFragment() {
         }
     }
 
+    private fun showSearchHint(isLangButtonChecked: Boolean) {
+        binding.searchView.queryHint =
+            resources.getString(if (isLangButtonChecked) R.string.search_word_in_russian_title else R.string.search_word_in_english_title)
+    }
+
     private fun showAddDialog() {
         AddWordDialog().apply {
             setActionListener(object : AddWordDialog.AddButtonClickListener {
@@ -155,6 +182,10 @@ class MainScreenFragment : BaseFragment() {
             wordTranscription = minicard.transcription
             setTranslationsItems(minicard.translation)
             setOnPlayButtonClickListener { viewModel.onPlaySoundButtonCLick(minicard) }
+            setOnFavoriteIconClickListener(
+                viewModel::addWordToVocabulary,
+                viewModel::removeFromVocabulary
+            )
         }
     }
 }

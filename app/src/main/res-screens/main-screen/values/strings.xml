@@ -12,10 +12,15 @@
 
     <string name="words_list_empty_text">В вашем словаре отсутсвуют \nслова. Хотите добавить новые?</string>
     <string name="words_list_not_empty_text">В вашем словаре %s %s.\nХотите добавить новые?</string>
-
     <string name="add_word_dialog_title">Какое слово хотите добавить?</string>
-
     <string name="empty_input_error_text">Поле не может быть пустым</string>
+
+    <string name="search_word_in_russian_title">Введите слово на русском</string>
+    <string name="search_word_in_english_title">Введите слово на английском</string>
+
+
+    <string name="add_word_dialog_word_title">Слово</string>
+    <string name="add_word_dialog_translation_title">Перевод</string>
 
     <plurals name="words_plurals" >
         <item quantity="one">слово</item>

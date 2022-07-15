@@ -3,13 +3,14 @@ package com.learnbae.my.presentation.common.customview
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import com.learnbae.my.R
 import com.learnbae.my.databinding.TranslationItemBinding
 import com.learnbae.my.databinding.WordOfADayCustomViewBinding
+import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.mainscreen.holder.WordMinicardHolder
+import java.util.*
 
 class WordOfADayCustomView @JvmOverloads constructor(
     context: Context,
@@ -74,5 +75,28 @@ class WordOfADayCustomView @JvmOverloads constructor(
 
     fun setOnPlayButtonClickListener(action: () -> Unit) {
         binding.soundPlayButton.setOnClickListener { action() }
+    }
+
+    fun setAddToVocabularyCheckStatus(isWordInVocabulary: Boolean) {
+        binding.addWordToFavorite.isChecked = isWordInVocabulary
+    }
+
+    fun setOnFavoriteIconClickListener(
+        addAction: (VocabularyWordUI) -> Unit,
+        deleteAction: (String) -> Unit
+    ) {
+        binding.addWordToFavorite.setOnCheckedChangeListener { _, check ->
+            if (check) {
+                addAction(
+                    VocabularyWordUI(
+                        UUID.randomUUID().toString(),
+                        wordTitle,
+                        translationAdapter.items.joinToString(", ")
+                    )
+                )
+            } else {
+                deleteAction(wordTitle)
+            }
+        }
     }
 }

@@ -54,15 +54,13 @@ class UserDBRepository @Inject constructor(private val database: FirebaseDatabas
     override suspend fun isUsernameAvailable(username: String): Boolean {
         return suspendCoroutine { continuation ->
             dataBaseReference.get().addOnCompleteListener { task ->
-                if (task.result.children.find { it.key == "username" && it.value == username }
-                        ?.exists() == true) {
+                if (task.result.value.toString().contains("username=$username")) {
                     Log.d("USER", "checkUsername:already exists")
                     continuation.resume(false)
                 } else {
                     Log.d("USER", "checkUsername:free")
                     continuation.resume(true)
                 }
-
             }
         }
     }

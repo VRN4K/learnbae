@@ -81,6 +81,7 @@ class FirebaseModule {
         return VocabularyFirebaseRepository(firebaseDatabase)
     }
 
+
     @Provides
     @Singleton
     fun provideUserInteractor(

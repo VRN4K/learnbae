@@ -6,4 +6,9 @@
     <string name="update_profile_change_photo_title">ИЗМЕНИТЬ АВАТАР</string>
     <string name="update_profile_screen_title">Ваш профиль</string>
     <string name="update_screen_toolbar_text">Настройки профиля</string>
+
+    <string name="update_screen_log_out_message">Вы уверены что хотите выйти?</string>
+    <string name="update_screen_log_out_confirm_message">Да</string>
+    <string name="update_screen_log_out_cancel_message">Нет</string>
+
 </resources>

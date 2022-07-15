@@ -12,6 +12,7 @@ import com.learnbae.my.presentation.common.livedata.StateLiveData
 import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
+import ltst.nibirualert.my.domain.withUI
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,13 +20,15 @@ class ProfileViewModel @Inject constructor(
     val userInteractor: IUserInteractor,
     private val translationInteractor: ITranslationInteractor,
     private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository
-    ) : BaseViewModel() {
-
+) : BaseViewModel() {
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
     val isSynchronizing = MutableLiveData<Boolean>()
 
     init {
         userInformation.postLoading()
+    }
+
+    fun isUserAuthorizedCheck() {
         launchIO {
             if (userInteractor.isUserAuthorized()) {
                 userInformation.postComplete(
@@ -34,7 +37,7 @@ class ProfileViewModel @Inject constructor(
                     )
                 )
             } else {
-                openFragment(Screens.getAuthScreen())
+                withUI { openFragment(Screens.getAuthScreen()) }
             }
         }
     }

@@ -5,10 +5,11 @@
         <item name="boxCornerRadiusBottomEnd">26dp</item>
         <item name="boxCornerRadiusTopStart">26dp</item>
         <item name="boxCornerRadiusTopEnd">26dp</item>
-        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
         <item name="android:layout_marginEnd">15dp</item>
-        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="errorIconDrawable">@null</item>
+        <item name="hintEnabled">false</item>
     </style>
 </resources>

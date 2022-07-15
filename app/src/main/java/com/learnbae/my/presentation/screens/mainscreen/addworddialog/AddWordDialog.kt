@@ -40,7 +40,7 @@ class AddWordDialog : DialogFragment() {
 
     private fun setListeners() {
         binding.apply {
-            addButton.setOnClickListener {
+            addWordButton.setOnClickListener {
                 when {
                     inputFields.all { it.editText!!.text.isNotEmpty() } -> listener!!.onClickWordAdd(
                         textFieldWord.editText!!.text.toString(),

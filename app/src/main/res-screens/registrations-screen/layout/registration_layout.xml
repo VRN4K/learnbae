@@ -52,6 +52,14 @@
                 android:layout_margin="20dp"
                 android:text="@string/registration_button_text_title" />
 
+            <TextView
+                style="@style/MariupolMedium.Accent.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:text="@string/update_profile_username_title" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,6 +79,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="@string/registration_username"
                         android:inputType="textPersonName" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,6 +102,14 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <TextView
+                style="@style/MariupolMedium.Accent.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="8dp"
+                android:text="@string/update_profile_fullname_title" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFullNameField"
                 style="@style/TextInputStyle"
@@ -105,8 +122,17 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/registration_fullname_text"
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/MariupolMedium.Accent.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="8dp"
+                android:text="@string/update_profile_email_title" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textEmailField"
@@ -119,8 +145,17 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/authorization_mail_form"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                style="@style/MariupolMedium.Accent.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="8dp"
+                android:text="@string/authorization_password_form" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textPasswordField"
@@ -134,6 +169,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/authorization_password_form"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,6 +180,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="10dp"
                 android:textAlignment="center"
                 android:visibility="gone"
                 tools:text="@string/user_error_text"

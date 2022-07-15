@@ -10,9 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.learnbae.my.R
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
@@ -55,9 +55,27 @@ class ProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.isUserAuthorizedCheck()
         showSynchronizeLoading(false)
         setListeners()
         setObservers()
+    }
+
+    private fun setListeners() {
+        binding.apply {
+            profileImage.setOnClickListener { onAddPhotoButtonClick() }
+            updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
+            synchronizeWordsButton.setOnClickListener { viewModel.synchronizeWords() }
+            deleteButton.setOnClickListener {
+                showConfirmActionDialog(
+                    resources.getString(R.string.profile_account_delete_account_message),
+                    resources.getString(R.string.profile_account_confirm_delete_account_text),
+                    resources.getString(R.string.profile_account_cancel_delete_account_text),
+                    viewModel::deleteAccount,
+                )
+            }
+            changePasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getChangePasswordScreen()) }
+        }
     }
 
     private fun setObservers() {
@@ -139,13 +157,5 @@ class ProfileFragment : BaseFragment() {
         Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
     }
 
-    private fun setListeners() {
-        binding.apply {
-            profileImage.setOnClickListener { onAddPhotoButtonClick() }
-            updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
-            synchronizeWordsButton.setOnClickListener { viewModel.synchronizeWords() }
-            deleteButton.setOnClickListener { viewModel.deleteAccount() }
-            changePasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getChangePasswordScreen()) }
-        }
-    }
+
 }

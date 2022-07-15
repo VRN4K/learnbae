@@ -98,6 +98,16 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         firebaseAuth.signOut()
     }
 
+    override suspend fun resetPassword(code: String, newPassword: String) {
+        firebaseAuth.confirmPasswordReset(code, newPassword).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Auth", "resetPassword:success")
+            } else {
+                Log.d("Auth", "resetPassword:failure", task.exception)
+            }
+        }
+    }
+
     override suspend fun deleteUser(): String? {
         val userId = getUserId()
         return suspendCoroutine {
