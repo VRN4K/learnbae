@@ -42,6 +42,13 @@ class AuthFragment : BaseFragment() {
                     binding.textPasswordField.editText!!.text.toString()
                 )
             }
+            forgotPasswordButton.setOnClickListener {
+                viewModel.navigateToScreen(
+                    Screens.getResetPasswordFragment(
+                        null
+                    )
+                )
+            }
             registrationButton.setOnClickListener { viewModel.navigateToScreen(Screens.getRegistrationScreen()) }
         }
     }

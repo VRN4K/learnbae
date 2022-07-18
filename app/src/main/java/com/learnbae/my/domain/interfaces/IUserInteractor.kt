@@ -21,5 +21,5 @@ interface IUserInteractor {
     suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel)
     suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity)
     suspend fun resetPassword(code: String, newPassword: String)
-
+    suspend fun sendEmailResetPasswordMessage(email: String)
 }

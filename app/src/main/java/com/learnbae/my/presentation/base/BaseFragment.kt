@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.learnbae.my.MainActivity
 import com.learnbae.my.presentation.base.dialogs.ConfirmActionDialogFragment
+import com.learnbae.my.presentation.base.dialogs.InformationDialogFragment
 
 abstract class BaseFragment : Fragment(), BaseView {
     override fun setNavigationVisibility(isVisible: Boolean) {
@@ -42,6 +43,23 @@ abstract class BaseFragment : Fragment(), BaseView {
                 override fun onCancelButtonClick() {
                     cancelAction?.let { it() }
                     super.onCancelButtonClick()
+                }
+            })
+        }.show(requireActivity().supportFragmentManager, "ConfirmActionDialogFragmentTag")
+    }
+
+    fun showInformationDialog(
+        messageText: String,
+        messageSubText: String? = null,
+    ) {
+        InformationDialogFragment().apply {
+            setActionListener(object : InformationDialogFragment.InformationDialogListener {
+                override fun showMessageText(textField: TextView) {
+                    textField.text = messageText
+                }
+
+                override fun showMessageSubText(textField: TextView) {
+                    textField.text = messageSubText
                 }
             })
         }.show(requireActivity().supportFragmentManager, "ConfirmActionDialogFragmentTag")

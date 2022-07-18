@@ -4,10 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.*
 import com.learnbae.my.data.storage.entities.RegisterUserInfo
 import com.learnbae.my.domain.datacontracts.interfaces.IAuthRepository
-import com.learnbae.my.presentation.common.exceptions.UsernameOrEmailAlreadyExistException
-import com.learnbae.my.presentation.common.exceptions.WrongCurrentPasswordException
-import com.learnbae.my.presentation.common.exceptions.WrongEmailOrPasswordException
-import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
+import com.learnbae.my.presentation.common.exceptions.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -92,6 +89,21 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
 
     override fun getUserId(): String? {
         return firebaseAuth.currentUser?.uid
+    }
+
+    override suspend fun sendEmailResetPasswordMessage(email: String) {
+        suspendCoroutine<Unit> {
+            firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Auth", "sendResetPasswordEmail:success")
+                    it.resume(Unit)
+
+                } else {
+                    Log.d("Auth", "sendResetPasswordEmail:failure", task.exception)
+                    it.resumeWithException(UserNotFoundException())
+                }
+            }
+        }
     }
 
     override suspend fun logout() {

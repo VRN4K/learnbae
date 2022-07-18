@@ -8,6 +8,7 @@ import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.common.livedata.StateLiveData
 import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,13 +30,19 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun isUserAuthorizedCheck() {
-        launchIO {
+        launchIO(createExceptionHandler {
+            onException(it)
+        }) {
             if (userInteractor.isUserAuthorized()) {
-                userInformation.postComplete(
-                    userInteractor.getUserInfo(
-                        vocabularyFirebaseRepository.getWordsCount(userInteractor.getUserId()!!)
+                userInteractor.getUserId()?.let {
+                    userInformation.postComplete(
+                        userInteractor.getUserInfo(
+                            vocabularyFirebaseRepository.getWordsCount(
+                                it
+                            )
+                        )
                     )
-                )
+                } ?: userInteractor.logout().also { isUserAuthorizedCheck() }
             } else {
                 withUI { openFragment(Screens.getAuthScreen()) }
             }

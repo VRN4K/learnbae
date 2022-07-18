@@ -13,7 +13,6 @@ import com.learnbae.my.domain.datacontracts.interfaces.IAuthorizationStorageRepo
 import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
-import com.learnbae.my.domain.datacontracts.model.toUpdateUserEntity
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -79,6 +78,9 @@ class UserInteractor @Inject constructor(
         authRepository.resetPassword(code, newPassword)
     }
 
+    override suspend fun sendEmailResetPasswordMessage(email: String) {
+        authRepository.sendEmailResetPasswordMessage(email)
+    }
 
     override suspend fun logout() {
         authRepository.logout()

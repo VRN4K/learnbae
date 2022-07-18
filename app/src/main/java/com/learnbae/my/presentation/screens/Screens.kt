@@ -28,6 +28,6 @@ object Screens {
             SearchResultFragment.newInstance(sourceLang, targetLang, word)
         }
 
-    fun getResetPasswordFragment(code: String) =
+    fun getResetPasswordFragment(code: String?) =
         FragmentScreen { ResetPasswordFragment.newInstance(code) }
 }

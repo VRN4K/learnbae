@@ -9,6 +9,7 @@ import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.databinding.ChangePasswordLayoutBinding
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.showError
+import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
@@ -57,6 +58,13 @@ class ChangePasswordFragment : BaseFragment() {
                         textNewPassword.editText?.text.toString()
                     )
                 )
+                textView2.setOnClickListener {
+                    viewModel.navigateToScreen(
+                        Screens.getResetPasswordFragment(
+                            null
+                        )
+                    )
+                }
             }
         }
     }
