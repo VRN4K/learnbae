@@ -33,6 +33,7 @@ class RegistrationFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setObservers()
         setListeners()
+        binding.addButton.hideLoading()
         setNavigationVisibility(false)
         binding.englishLevelsDropdown.setAdapter(
             ArrayAdapter(

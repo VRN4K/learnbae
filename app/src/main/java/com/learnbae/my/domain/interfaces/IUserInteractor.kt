@@ -15,9 +15,10 @@ interface IUserInteractor {
     suspend fun isUsernameAvailable(username: String): Boolean
     suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel
     suspend fun registerNewUser(registerRequestData: RegisterRequestData)
-    suspend fun uploadUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null)
+    suspend fun uploadUserProfilePhoto(uri: Uri)
     suspend fun updateEnglishLevel(levelValue: String)
     fun getUserId(): String?
+    suspend fun isCodeValid(code: String): Boolean
     suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel)
     suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity)
     suspend fun resetPassword(code: String, newPassword: String)

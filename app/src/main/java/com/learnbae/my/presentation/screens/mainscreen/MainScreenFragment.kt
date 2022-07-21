@@ -1,12 +1,14 @@
 package com.learnbae.my.presentation.screens.mainscreen
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DiffUtil
 import com.google.android.exoplayer2.ExoPlayer
 import com.learnbae.my.R
 import com.learnbae.my.databinding.MainScreenBinding
@@ -14,7 +16,6 @@ import com.learnbae.my.databinding.WordsListItemBinding
 import com.learnbae.my.domain.datacontracts.model.VocabularyWordUI
 import com.learnbae.my.domain.datacontracts.model.WordMinicardUI
 import com.learnbae.my.presentation.base.BaseFragment
-import com.learnbae.my.presentation.common.DiffUtilCallBack
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.common.recycler.SimpleAdapter
 import com.learnbae.my.presentation.screens.Screens
@@ -56,30 +57,32 @@ class MainScreenFragment : BaseFragment() {
     private fun setListeners() {
         binding.apply {
             addButton.setOnClickListener { showAddDialog() }
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-                androidx.appcompat.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (languageCheckbox.isChecked) {
-                        viewModel.navigateToScreen(
-                            Screens.getSearchResultFragment(
-                                "ru",
-                                "en",
-                                query!!
+            searchView.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                override fun onEditorAction(
+                    textView: TextView?,
+                    actionId: Int,
+                    p2: KeyEvent?
+                ): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        if (languageCheckbox.isChecked) {
+                            viewModel.navigateToScreen(
+                                Screens.getSearchResultFragment(
+                                    "ru",
+                                    "en",
+                                    textView?.text.toString()
+                                )
                             )
-                        )
-                    } else {
-                        viewModel.navigateToScreen(
-                            Screens.getSearchResultFragment(
-                                "en",
-                                "ru",
-                                query!!
+                        } else {
+                            viewModel.navigateToScreen(
+                                Screens.getSearchResultFragment(
+                                    "en",
+                                    "ru",
+                                    textView?.text.toString()
+                                )
                             )
-                        )
+                        }
+                        return true
                     }
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
                     return false
                 }
             })
@@ -156,7 +159,7 @@ class MainScreenFragment : BaseFragment() {
     }
 
     private fun showSearchHint(isLangButtonChecked: Boolean) {
-        binding.searchView.queryHint =
+        binding.searchView.hint =
             resources.getString(if (isLangButtonChecked) R.string.search_word_in_russian_title else R.string.search_word_in_english_title)
     }
 

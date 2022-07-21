@@ -43,12 +43,9 @@ class AuthFragment : BaseFragment() {
                 )
             }
             forgotPasswordButton.setOnClickListener {
-                viewModel.navigateToScreen(
-                    Screens.getResetPasswordFragment(
-                        null
-                    )
-                )
+                viewModel.navigateToScreen(Screens.getEmailSendCodeFragment())
             }
+
             registrationButton.setOnClickListener { viewModel.navigateToScreen(Screens.getRegistrationScreen()) }
         }
     }

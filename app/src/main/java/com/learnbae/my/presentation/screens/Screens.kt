@@ -4,6 +4,7 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.screens.authscreen.AuthFragment
 import com.learnbae.my.presentation.screens.changepasswordscreen.ChangePasswordFragment
+import com.learnbae.my.presentation.screens.emailsendcodescreen.EmailSendCodeFragment
 import com.learnbae.my.presentation.screens.mainscreen.MainScreenFragment
 import com.learnbae.my.presentation.screens.vocabularyscreen.VocabularyFragment
 import com.learnbae.my.presentation.screens.profilescreen.ProfileFragment
@@ -19,6 +20,8 @@ object Screens {
     fun getAuthScreen() = FragmentScreen { AuthFragment() }
     fun getRegistrationScreen() = FragmentScreen { RegistrationFragment() }
     fun getChangePasswordScreen() = FragmentScreen { ChangePasswordFragment() }
+    fun getEmailSendCodeFragment() = FragmentScreen { EmailSendCodeFragment() }
+
     fun getUpdateProfileScreen(userProfileInfo: UserProfileInfoUIModel) = FragmentScreen {
         UpdateProfileFragment.newInstance(userProfileInfo)
     }
@@ -30,4 +33,6 @@ object Screens {
 
     fun getResetPasswordFragment(code: String?) =
         FragmentScreen { ResetPasswordFragment.newInstance(code) }
+
+
 }

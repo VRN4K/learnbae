@@ -57,8 +57,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun addUserProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
-        launchIO { userInteractor.uploadUserProfilePhoto(uri, bitmap) }
+    fun addUserProfilePhoto(uri: Uri) {
+        launchIO { userInteractor.uploadUserProfilePhoto(uri) }
     }
 
     fun updateEnglishLevel(englishLevel: String) {

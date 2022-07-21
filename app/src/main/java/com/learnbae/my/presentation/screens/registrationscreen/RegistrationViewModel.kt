@@ -11,7 +11,6 @@ import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
-import org.koin.core.component.inject
 import javax.inject.Inject
 
 @HiltViewModel

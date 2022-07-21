@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.learnbae.my.databinding.InformationDialogLayoutBinding
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class InformationDialogFragment() : DialogFragment() {
     private var binding by onDestroyNullable<InformationDialogLayoutBinding>()
-    private var listener: InformationDialogListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,20 +27,14 @@ class InformationDialogFragment() : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        listener?.apply {
-            binding.apply {
-                showMessageText(messageText)
-                showMessageSubText(messageSubText)
-            }
+    }
+
+
+    fun show(manager: FragmentManager, tag: String?, messageText: String, messageSubText: String?) {
+        binding.apply {
+            this.messageText.text = messageText
+            messageSubText?.let { this.messageText.text = messageSubText }
         }
-    }
-
-    fun setActionListener(listener: InformationDialogListener) {
-        this.listener = listener
-    }
-
-    interface InformationDialogListener {
-        fun showMessageText(textField: TextView) {}
-        fun showMessageSubText(textField: TextView) {}
+        super.show(manager, tag)
     }
 }

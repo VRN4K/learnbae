@@ -14,16 +14,10 @@ import kotlin.coroutines.suspendCoroutine
 @Singleton
 class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) :
     IStorageRepository {
-
-    override fun uploadProfilePhoto(userId: String, uri: Uri?, bitmap: Bitmap?) {
+    override fun uploadProfilePhoto(userId: String, uri: Uri) {
         with(storage.reference.child("images").child(userId).child("profile.jpg")) {
-            bitmap?.let {
-                putBytes(with(ByteArrayOutputStream()) {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, this)
-                    this.toByteArray()
-                })
-            } ?: uri?.let { putFile(it) }
-        }?.addOnCompleteListener { task ->
+            putFile(uri)
+        }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d("Profile", "uploadPhoto:success")
             } else {

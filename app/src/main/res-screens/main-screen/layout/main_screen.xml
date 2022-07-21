@@ -59,24 +59,31 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <androidx.appcompat.widget.SearchView
-                        android:id="@+id/search_view"
-                        style="@style/MariupolRegular.Primary.15"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:closeIcon="@null"
-                        app:iconifiedByDefault="false"
-                        app:queryBackground="@android:color/transparent"
-                        app:queryHint="Введите слово на английском"
-                        app:searchIcon="@null" />
+                        android:orientation="horizontal">
 
-                    <CheckBox
-                        android:id="@+id/language_checkbox"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="end|center_vertical"
-                        android:layout_marginEnd="15dp"
-                        android:button="@drawable/ic_language_translation_svgrepo_com" />
+                        <EditText
+                            android:id="@+id/search_view"
+                            style="@style/MariupolRegular.Primary.20"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/search_word_in_english_title"
+                            android:inputType="text"
+                            android:padding="15dp"
+                            android:imeOptions="actionSearch"
+                            app:queryBackground="@android:color/transparent" />
+
+                        <CheckBox
+                            android:id="@+id/language_checkbox"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginEnd="15dp"
+                            android:button="@drawable/ic_language_translation_svgrepo_com" />
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -165,7 +172,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/vocabulary_title" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -198,6 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="5"
                         tools:listitem="@layout/words_list_item" />

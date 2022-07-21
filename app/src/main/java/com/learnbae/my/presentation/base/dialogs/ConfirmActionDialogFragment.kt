@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.learnbae.my.databinding.ActionConfirmationDialogLayoutBinding
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
@@ -29,13 +28,6 @@ class ConfirmActionDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        listener?.apply {
-            binding.apply {
-                showMessageText(messageText)
-                showConfirmButtonText(confirmButton)
-                showCancelButtonText(cancelButton)
-            }
-        }
         setListeners()
     }
 
@@ -57,11 +49,20 @@ class ConfirmActionDialogFragment : DialogFragment() {
         this.listener = listener
     }
 
+    fun show(
+        manager: FragmentManager,
+        tag: String?,
+        messageText: String,
+        confirmButtonText: String,
+        cancelButtonText: String
+    ) {
+        binding.messageText.text = messageText
+        binding.confirmButton.text = confirmButtonText
+        binding.cancelButton.text = cancelButtonText
+        super.show(manager, tag)
+    }
 
     interface ConfirmActionDialogListener {
-        fun showMessageText(textField: TextView) {}
-        fun showConfirmButtonText(confirmButton: Button) {}
-        fun showCancelButtonText(cancelButton: Button) {}
         fun onConfirmButtonClick() {}
         fun onCancelButtonClick() {}
     }

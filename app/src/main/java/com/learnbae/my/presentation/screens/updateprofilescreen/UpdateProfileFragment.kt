@@ -18,6 +18,7 @@ import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.databinding.UpdateProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
+import com.learnbae.my.presentation.common.convertProfileBitmapToFile
 import com.learnbae.my.presentation.common.showError
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +56,7 @@ class UpdateProfileFragment : BaseFragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    showProfilePhoto(bitmap = bitmap)
+                    showProfilePhoto(bitmap.convertProfileBitmapToFile(context?.filesDir?.absolutePath!!))
                 }
             }
         return binding.root
@@ -79,6 +80,8 @@ class UpdateProfileFragment : BaseFragment() {
             requireArguments().getString(KEY),
             UserProfileInfoUIModel::class.java
         )
+
+        viewModel.setInitParams(userInfo)
 
         binding.apply {
             textFullName.editText!!.setText(userInfo.userFullName)
@@ -128,8 +131,9 @@ class UpdateProfileFragment : BaseFragment() {
         }
     }
 
-    private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
-        Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
+    private fun showProfilePhoto(uri: Uri) {
+        Glide.with(requireContext()).load(uri).into(binding.profileImage)
+        viewModel.addUserProfilePhoto(uri)
     }
 
     private fun setObservers() {
@@ -137,6 +141,21 @@ class UpdateProfileFragment : BaseFragment() {
             viewModel.apply {
                 usernameError.observe(viewLifecycleOwner) {
                     textUsername.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+
+                successDialogText.observe(viewLifecycleOwner) {
+                    showInformationDialog(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+
+                emailError.observe(viewLifecycleOwner) {
+                    textEmail.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+
+                fullNameError.observe(viewLifecycleOwner) {
+                    textFullName.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
             }

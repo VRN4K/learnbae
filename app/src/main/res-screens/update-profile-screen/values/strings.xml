@@ -10,5 +10,6 @@
     <string name="update_screen_log_out_message">Вы уверены что хотите выйти?</string>
     <string name="update_screen_log_out_confirm_message">Да</string>
     <string name="update_screen_log_out_cancel_message">Нет</string>
+    <string name="update_screen_message_success">Данные успешно обновлены</string>
 
 </resources>

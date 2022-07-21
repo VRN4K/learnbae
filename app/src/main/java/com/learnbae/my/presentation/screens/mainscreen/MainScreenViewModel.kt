@@ -62,6 +62,7 @@ class MainScreenViewModel @Inject constructor(
     fun removeFromVocabulary(word: String) {
         launchIO {
             translationInteractor.deleteWordByTitle(userInteractor.getUserId(), word)
+            getLastFiveWords()
         }
     }
 
@@ -75,6 +76,7 @@ class MainScreenViewModel @Inject constructor(
             }
         }
     }
+
 
     override fun navigateToScreen(screen: FragmentScreen) {
         router.setResultListener(SEARCH_RESULT_KEY) { data ->

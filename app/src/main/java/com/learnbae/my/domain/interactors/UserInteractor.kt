@@ -50,8 +50,8 @@ class UserInteractor @Inject constructor(
         authPreferenceRepository.saveToken(userToken)
     }
 
-    override suspend fun uploadUserProfilePhoto(uri: Uri?, bitmap: Bitmap?) {
-        storageRepository.uploadProfilePhoto(userId!!, uri, bitmap)
+    override suspend fun uploadUserProfilePhoto(uri: Uri) {
+        storageRepository.uploadProfilePhoto(userId!!, uri)
     }
 
     override suspend fun updateEnglishLevel(levelValue: String) {
@@ -62,6 +62,10 @@ class UserInteractor @Inject constructor(
         return authRepository.getUserId()
     }
 
+    override suspend fun isCodeValid(code: String): Boolean {
+        return authRepository.isCodeValid(code)
+    }
+
     override suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel) {
         authRepository.updateUserPassword(
             passwordChangeModel.currentPassword,
@@ -70,7 +74,11 @@ class UserInteractor @Inject constructor(
     }
 
     override suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity) {
-        updateUserEntity.profilePhoto?.let { uploadUserProfilePhoto(it) }
+        updateUserEntity.apply {
+            profilePhoto?.let { uploadUserProfilePhoto(Uri.parse(it)) }
+            email?.let { authRepository.updateUserEmail(it) }
+        }
+
         userDBRepository.updateUserProfileInformation(userId!!, updateUserEntity)
     }
 
@@ -104,6 +112,6 @@ class UserInteractor @Inject constructor(
     override suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
         val photo = storageRepository.getProfilePhoto(userId!!)
-        return userDBRepository.getUserInfo(userId)!!.toUI(resources, wordsCount.toString(), photo)
+        return userDBRepository.getUserInfo(userId)!!.toUI(resources, wordsCount.toString(), photo.toString())
     }
 }

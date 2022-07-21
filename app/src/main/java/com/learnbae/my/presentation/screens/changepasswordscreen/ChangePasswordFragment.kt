@@ -60,12 +60,11 @@ class ChangePasswordFragment : BaseFragment() {
                 )
                 textView2.setOnClickListener {
                     viewModel.navigateToScreen(
-                        Screens.getResetPasswordFragment(
-                            null
-                        )
+                        Screens.getEmailSendCodeFragment()
                     )
                 }
             }
+            forgotPasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getEmailSendCodeFragment()) }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.learnbae.my.presentation.screens.profilescreen
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.learnbae.my.R
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
+import com.learnbae.my.presentation.common.convertProfileBitmapToFile
 import com.learnbae.my.presentation.common.livedata.StateData
 import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
@@ -47,7 +49,7 @@ class ProfileFragment : BaseFragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    showProfilePhoto(bitmap = bitmap)
+                    showProfilePhoto(bitmap.convertProfileBitmapToFile(context?.filesDir?.absolutePath!!))
                 }
             }
         return binding.root
@@ -141,21 +143,28 @@ class ProfileFragment : BaseFragment() {
             info.profilePhoto?.let {
                 Glide.with(requireContext()).load(it).into(binding.profileImage)
             }
-
-            logoutButton.setOnClickListener {
+            updateProfileButton.setOnClickListener {
                 viewModel.navigateToScreen(
                     Screens.getUpdateProfileScreen(
-                        info
+                        info.apply {
+                            binding.apply {
+                                profilePhoto = Bitmap.createBitmap(
+                                    profileImage.drawable.intrinsicWidth,
+                                    profileImage.drawable.intrinsicHeight,
+                                    Bitmap.Config.ARGB_8888
+                                ).convertProfileBitmapToFile(
+                                    context?.filesDir?.absolutePath!!
+                                ).toString()
+                            }
+                        }
                     )
                 )
             }
         }
     }
 
-    private fun showProfilePhoto(uri: Uri? = null, bitmap: Bitmap? = null) {
-        viewModel.addUserProfilePhoto(uri, bitmap)
-        Glide.with(requireContext()).load(uri ?: bitmap).into(binding.profileImage)
+    private fun showProfilePhoto(uri: Uri) {
+        viewModel.addUserProfilePhoto(uri)
+        Glide.with(requireContext()).load(uri).into(binding.profileImage)
     }
-
-
 }

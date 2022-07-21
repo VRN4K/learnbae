@@ -1,10 +1,14 @@
 package com.learnbae.my.presentation.screens.updateprofilescreen
 
+import android.net.Uri
+import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
+import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
+import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
@@ -14,25 +18,100 @@ import javax.inject.Inject
 class UpdateProfileViewModel @Inject constructor(
     private val userInteractor: IUserInteractor
 ) : BaseViewModel() {
+    private lateinit var currentUserInformation: UserProfileInfoUIModel
     val usernameError = MutableLiveData<Int?>()
+    val successDialogText = MutableLiveData<Int?>()
+    val emailError = MutableLiveData<Int?>()
+    val fullNameError = MutableLiveData<Int?>()
+
+
+    fun setInitParams(currentUserInfo: UserProfileInfoUIModel) {
+        currentUserInformation = currentUserInfo
+    }
 
     fun saveChanges(updateUserEntity: UpdateUserEntity) {
-        launchIO {
-            if (userInteractor.isUsernameAvailable(updateUserEntity.username!!)) {
-                userInteractor.updateUserInfo(updateUserEntity)
-                navigateToPreviousScreen()
-            } else {
-                usernameError.postValue(R.string.username_already_exist_error_text)
+        launchIO(createExceptionHandler {
+            onException(it)
+        }) {
+            val validationResult = mutableListOf(
+                updateUserEntity.email?.getValidationEmailResult() ?: false,
+                updateUserEntity.username?.getValidationUsernameResult() ?: false,
+                updateUserEntity.userFullName?.getValidationFullNameResult() ?: false,
+            )
+
+            if (!validationResult.contains(false)) {
+                updateUserEntity.isDataChanged()
+                updateUserEntity.username?.let {
+                    if (userInteractor.isUsernameAvailable(it)) {
+                        userInteractor.updateUserInfo(updateUserEntity)
+                        navigateToPreviousScreen()
+                    } else {
+                        usernameError.postValue(R.string.username_already_exist_error_text)
+                    }
+                } ?: userInteractor.updateUserInfo(updateUserEntity)
+                    .also { navigateToPreviousScreen() }
+                successDialogText.postValue(R.string.update_screen_message_success)
             }
         }
     }
 
-
+    fun addUserProfilePhoto(uri: Uri) {
+        launchIO { userInteractor.uploadUserProfilePhoto(uri) }
+    }
 
     fun logOut() {
         launchIO {
             userInteractor.logout()
             navigateToScreen(Screens.getAuthScreen())
         }
+    }
+
+    private fun UpdateUserEntity.isDataChanged(): UpdateUserEntity {
+        username =
+            if (username == currentUserInformation.username.substringAfter("@")) null else username
+        email = if (email == currentUserInformation.email) null else email
+        userFullName =
+            if (userFullName == currentUserInformation.userFullName) null else userFullName
+        return this
+    }
+
+    private fun String.getValidationFullNameResult(): Boolean {
+        var isValid = true
+        when {
+            this.isEmpty() -> fullNameError.postValue(R.string.empty_input_error_text)
+                .also { isValid = false }
+            !this.any { (it in 'а'..'я' || it in 'А'..'Я') || (it == '-' || it == ' ') }
+            -> fullNameError.postValue(
+                R.string.fullname_error_text
+            ).also { isValid = false }
+            else -> fullNameError.postValue(null)
+        }
+        return isValid
+    }
+
+    private fun String.getValidationUsernameResult(): Boolean {
+        var isValid = true
+        when {
+            this.isEmpty() -> usernameError.postValue(R.string.empty_input_error_text)
+                .also { isValid = false }
+            !this.any { (it in 'a'..'z' || it in 'A'..'Z') || it in '0'..'9' || it == '_' }
+            -> usernameError.postValue(R.string.username_error_text).also { isValid = false }
+                .also { isValid = false }
+            else -> usernameError.postValue(null)
+        }
+        return isValid
+    }
+
+    private fun String.getValidationEmailResult(): Boolean {
+        var isValid = true
+        when {
+            this.isEmpty() -> emailError.postValue(R.string.empty_input_error_text)
+                .also { isValid = false }
+            !Patterns.EMAIL_ADDRESS.matcher(this)
+                .matches() -> emailError.postValue(R.string.email_not_match_mask_text)
+                .also { isValid = false }
+            else -> emailError.postValue(null)
+        }
+        return isValid
     }
 }

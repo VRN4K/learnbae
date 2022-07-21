@@ -65,7 +65,6 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-
     override suspend fun registerNewUser(user: RegisterUserInfo): String? {
         return suspendCoroutine {
             firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
@@ -89,6 +88,20 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
 
     override fun getUserId(): String? {
         return firebaseAuth.currentUser?.uid
+    }
+
+    override suspend fun isCodeValid(code: String): Boolean {
+        return suspendCoroutine {
+            firebaseAuth.verifyPasswordResetCode(code).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("Auth", "checkResetPasswordEmailCode:success")
+                    it.resume(true)
+                } else {
+                    Log.d("Auth", "checkResetPasswordEmailCode:failure", task.exception)
+                    it.resume(false)
+                }
+            }
+        }
     }
 
     override suspend fun sendEmailResetPasswordMessage(email: String) {
@@ -130,6 +143,22 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
                 } else {
                     Log.d("Auth", "userDeleting:failure", task.exception)
                     it.resume(null)
+                }
+            }
+        }
+    }
+
+    override suspend fun updateUserEmail(newEmail: String) {
+        suspendCoroutine<Unit> { continuation ->
+            firebaseAuth.currentUser?.let {
+                it.updateEmail(newEmail).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Auth", "userEmailUpdate:success")
+                        continuation.resume(Unit)
+                    } else {
+                        Log.d("Auth", "userEmailUpdate:failure", task.exception)
+                        continuation.resumeWithException(UsernameOrEmailAlreadyExistException())
+                    }
                 }
             }
         }

@@ -3,6 +3,6 @@
     <string name="reset_password_title">Восстановление пароля</string>
     <string name="reset_password_change_password_button">Изменить пароль</string>
     <string name="reset_password_change_send_email_button">Восстановить пароль</string>
-    <string name="reset_password_change_email_send">На указанную почту было отправленно сообщение для смены пароля</string>
     <string name="reset_password_change_password_changed">Пароль был успешно изменен</string>
+    <string name="reset_password_expired_code_title">Текущая ссылка уже истекла. Пожалуйста, отправьте запрос на восстановление пароля заново :(</string>
 </resources>

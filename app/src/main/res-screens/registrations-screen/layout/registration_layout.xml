@@ -186,18 +186,12 @@
                 tools:text="@string/user_error_text"
                 tools:visibility="visible" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.learnbae.my.presentation.common.customview.button.action.ButtonWithProgress
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/round_button"
-                android:backgroundTint="@color/black"
-                android:paddingHorizontal="20dp"
-                android:text="@string/registration_button_text"
-                android:textAppearance="@style/MariupolMedium.PrimaryLight.17"
-                android:textColor="@color/primary_light_text" />
+                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

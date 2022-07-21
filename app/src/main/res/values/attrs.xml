@@ -7,4 +7,7 @@
         <attr name="word_title" format="string" />
         <attr name="word_transcription" format="string" />
     </declare-styleable>
+    <declare-styleable name="ButtonWithProgress">
+        <attr name="button_text" format="string" />
+    </declare-styleable>
 </resources>

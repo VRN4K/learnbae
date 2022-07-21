@@ -2,6 +2,8 @@ package com.learnbae.my.data.storage.repositories
 
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
+import com.google.gson.Gson
+import com.learnbae.my.data.net.model.UserInfoModel
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.data.storage.entities.UserEntity
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
@@ -54,13 +56,12 @@ class UserDBRepository @Inject constructor(private val database: FirebaseDatabas
     override suspend fun isUsernameAvailable(username: String): Boolean {
         return suspendCoroutine { continuation ->
             dataBaseReference.get().addOnCompleteListener { task ->
-                if (task.result.value.toString().contains("username=$username")) {
+                val usersInfo = (task.result.value as Map<*, *>).map { Gson().toJson(it.value) }
+                    .map { Gson().fromJson(it, UserInfoModel::class.java) }
+                usersInfo.find { it.username == username }?.let {
                     Log.d("USER", "checkUsername:already exists")
                     continuation.resume(false)
-                } else {
-                    Log.d("USER", "checkUsername:free")
-                    continuation.resume(true)
-                }
+                } ?: continuation.resume(true).also { Log.d("USER", "checkUsername:free") }
             }
         }
     }
