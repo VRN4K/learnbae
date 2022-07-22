@@ -14,6 +14,9 @@ import ltst.nibirualert.my.presentation.common.onDestroyNullable
 class ConfirmActionDialogFragment : DialogFragment() {
     private var binding by onDestroyNullable<ActionConfirmationDialogLayoutBinding>()
     private var listener: ConfirmActionDialogListener? = null
+    private lateinit var message: String
+    private lateinit var confirmText: String
+    private lateinit var cancelText: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +32,7 @@ class ConfirmActionDialogFragment : DialogFragment() {
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setListeners()
+        setTexts()
     }
 
     private fun setListeners() {
@@ -45,6 +49,14 @@ class ConfirmActionDialogFragment : DialogFragment() {
         }
     }
 
+    private fun setTexts() {
+        binding.apply {
+            messageText.text = message
+            confirmButton.text = confirmText
+            cancelButton.text = cancelText
+        }
+    }
+
     fun setActionListener(listener: ConfirmActionDialogListener) {
         this.listener = listener
     }
@@ -56,9 +68,9 @@ class ConfirmActionDialogFragment : DialogFragment() {
         confirmButtonText: String,
         cancelButtonText: String
     ) {
-        binding.messageText.text = messageText
-        binding.confirmButton.text = confirmButtonText
-        binding.cancelButton.text = cancelButtonText
+        message = messageText
+        confirmText = confirmButtonText
+        cancelText = cancelButtonText
         super.show(manager, tag)
     }
 

@@ -1,6 +1,5 @@
 package com.learnbae.my.presentation.screens.profilescreen
 
-import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository

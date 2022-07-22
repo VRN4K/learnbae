@@ -144,6 +144,29 @@
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                style="@style/MariupolMedium.Accent.17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/change_password_current_password_title" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_password"
+                style="@style/TextInputStyleProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeColor="@color/accent"
+                app:hintTextAppearance="@style/MariupolMedium.Primary.17"
+                tools:hint="Текущий пароль">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/MariupolMedium.Primary.17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logout_button"
                 android:layout_width="match_parent"

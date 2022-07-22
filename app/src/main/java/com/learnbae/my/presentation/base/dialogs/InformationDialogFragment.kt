@@ -13,6 +13,8 @@ import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 class InformationDialogFragment() : DialogFragment() {
     private var binding by onDestroyNullable<InformationDialogLayoutBinding>()
+    private lateinit var textMessage: String
+    private var subTextMessage: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,14 +29,19 @@ class InformationDialogFragment() : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog!!.window!!.attributes.width = ViewGroup.LayoutParams.MATCH_PARENT
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        setTexts()
     }
 
+    private fun setTexts() {
+        binding.apply {
+            messageText.text = textMessage
+            messageSubText.text = subTextMessage
+        }
+    }
 
     fun show(manager: FragmentManager, tag: String?, messageText: String, messageSubText: String?) {
-        binding.apply {
-            this.messageText.text = messageText
-            messageSubText?.let { this.messageText.text = messageSubText }
-        }
+        textMessage = messageText
+        subTextMessage = messageSubText
         super.show(manager, tag)
     }
 }
