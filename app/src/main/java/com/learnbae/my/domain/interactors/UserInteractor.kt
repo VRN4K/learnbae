@@ -76,7 +76,7 @@ class UserInteractor @Inject constructor(
     override suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity) {
         updateUserEntity.apply {
             profilePhoto?.let { uploadUserProfilePhoto(Uri.parse(it)) }
-            email?.let { authRepository.updateUserEmail(it) }
+            email?.let { authRepository.updateUserEmail(it, updateUserEntity.currentPassword!!) }
         }
 
         userDBRepository.updateUserProfileInformation(userId!!, updateUserEntity)
@@ -112,6 +112,7 @@ class UserInteractor @Inject constructor(
     override suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
         val photo = storageRepository.getProfilePhoto(userId!!)
-        return userDBRepository.getUserInfo(userId)!!.toUI(resources, wordsCount.toString(), photo.toString())
+        return userDBRepository.getUserInfo(userId)!!
+            .toUI(resources, wordsCount.toString(), photo.toString())
     }
 }

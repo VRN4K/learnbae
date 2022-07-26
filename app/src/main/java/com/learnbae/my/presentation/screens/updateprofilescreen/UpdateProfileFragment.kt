@@ -20,6 +20,7 @@ import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.convertProfileBitmapToFile
 import com.learnbae.my.presentation.common.showError
+import com.learnbae.my.presentation.common.showHelper
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
@@ -49,7 +50,7 @@ class UpdateProfileFragment : BaseFragment() {
         galleryLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    showProfilePhoto(uri = result.data!!.data!!)
+                    showProfilePhoto(result.data!!.data!!)
                 }
             }
         cameraLauncher =
@@ -116,7 +117,9 @@ class UpdateProfileFragment : BaseFragment() {
                     UpdateUserEntity(
                         textUsername.editText?.text.toString(),
                         textFullName.editText?.text.toString(),
-                        textEmail.editText?.text.toString()
+                        textEmail.editText?.text.toString(),
+                        null,
+                        textPassword.editText?.text.toString()
                     )
                 )
             }
@@ -127,6 +130,9 @@ class UpdateProfileFragment : BaseFragment() {
                     resources.getString(R.string.update_screen_log_out_cancel_message),
                     viewModel::logOut
                 )
+            }
+            textEmail.editText?.setOnFocusChangeListener { view, b ->
+                viewModel.onEmailEditTextFocus(b)
             }
         }
     }
@@ -156,6 +162,16 @@ class UpdateProfileFragment : BaseFragment() {
 
                 fullNameError.observe(viewLifecycleOwner) {
                     textFullName.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+
+                passwordHelperText.observe(viewLifecycleOwner) {
+                    textPassword.showHelper(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
+
+                passwordError.observe(viewLifecycleOwner) {
+                    textPassword.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
             }

@@ -27,6 +27,10 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:background="@color/primary">
 
+<!--                <androidx.constraintlayout.widget.Guideline-->
+<!--                    android:layout_width=""-->
+<!--                    android:layout_height=""-->
+
                 <TextView
                     style="@style/MariupolMedium.PrimaryLight.30"
                     android:layout_width="wrap_content"
@@ -67,17 +71,20 @@
                         <EditText
                             android:id="@+id/search_view"
                             style="@style/MariupolRegular.Primary.20"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:hint="@string/search_word_in_english_title"
+                            android:imeOptions="actionSearch"
                             android:inputType="text"
                             android:padding="15dp"
-                            android:imeOptions="actionSearch"
                             app:queryBackground="@android:color/transparent" />
 
                         <CheckBox
                             android:id="@+id/language_checkbox"
+                            android:layout_weight="1"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="end|center_vertical"

@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import com.learnbae.my.R
 import com.learnbae.my.databinding.ButtonWithProgressBinding
 import com.learnbae.my.presentation.common.setVisibility
-import com.learnbae.my.presentation.common.toEmptyOnNullString
 
 class ButtonWithProgress @JvmOverloads constructor(
     context: Context,
@@ -33,14 +32,15 @@ class ButtonWithProgress @JvmOverloads constructor(
     }
 
     var buttonText: String
-        set(value) {
-            binding.button.text = value
-            field = value
-        }
 
     fun showLoading() {
         binding.apply {
-            button.text = buttonText.toEmptyOnNullString()
+            button.setTextColor(
+                resources.getColor(
+                    com.google.android.material.R.color.mtrl_btn_transparent_bg_color,
+                    context.theme
+                )
+            )
             buttonProgress.setVisibility(true)
             button.isEnabled = false
         }
@@ -49,12 +49,13 @@ class ButtonWithProgress @JvmOverloads constructor(
     fun hideLoading() {
         binding.apply {
             button.text = buttonText
+            button.setTextColor(resources.getColor(R.color.primary_light_text, context.theme))
             buttonProgress.setVisibility(false)
             button.isEnabled = true
         }
     }
-}
 
-interface ButtonWithProgressCallback {
-    fun onButtonClick()
+    fun setOnClickListener(action: () -> Unit) {
+        binding.button.setOnClickListener { action() }
+    }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_routes"
+    app:startDestination="@id/primaryFragment">
+
+    <fragment
+        android:id="@+id/primaryFragment"
+        android:name="com.learnbae.my.presentation.base.primaryfragment.PrimaryFragment"
+        android:label="PrimaryFragment" />
+</navigation>

@@ -14,13 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor() : BaseViewModel() {
-    @Inject lateinit var userInteractor: IUserInteractor
+    @Inject
+    lateinit var userInteractor: IUserInteractor
 
     val userError = MutableLiveData<Int?>()
     val emailError = MutableLiveData<Int?>()
     val passwordError = MutableLiveData<Int?>()
+    val showButtonLoadingStatus = MutableLiveData<Boolean>()
 
     fun singInByEmailAndPassword(email: String, password: String) {
+        showButtonLoadingStatus.postValue(true)
         val emailValidationResult = email.getValidationEmailResult()
         val passwordValidationResult = password.getValidationPasswordResult()
 
@@ -29,12 +32,15 @@ class AuthViewModel @Inject constructor() : BaseViewModel() {
                 onException(it)
                 if (it is WrongEmailOrPasswordException) {
                     userError.postValue(R.string.user_wrong_password_or_email)
+                    showButtonLoadingStatus.postValue(false)
                 }
             }) {
                 userError.postValue(null)
                 userInteractor.loginByEmailAndPassword(email, password)
                 openFragment(Screens.getProfileScreen())
             }
+        } else {
+            showButtonLoadingStatus.postValue(false)
         }
     }
 

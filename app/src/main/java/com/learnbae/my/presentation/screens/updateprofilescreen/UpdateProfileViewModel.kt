@@ -10,6 +10,7 @@ import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
 import com.learnbae.my.presentation.screens.Screens
+import com.learnbae.my.presentation.screens.registrationscreen.RegistrationViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
 import javax.inject.Inject
@@ -20,10 +21,11 @@ class UpdateProfileViewModel @Inject constructor(
 ) : BaseViewModel() {
     private lateinit var currentUserInformation: UserProfileInfoUIModel
     val usernameError = MutableLiveData<Int?>()
+    val passwordHelperText = MutableLiveData<Int?>()
     val successDialogText = MutableLiveData<Int?>()
     val emailError = MutableLiveData<Int?>()
+    val passwordError = MutableLiveData<Int?>()
     val fullNameError = MutableLiveData<Int?>()
-
 
     fun setInitParams(currentUserInfo: UserProfileInfoUIModel) {
         currentUserInformation = currentUserInfo
@@ -43,16 +45,37 @@ class UpdateProfileViewModel @Inject constructor(
                 updateUserEntity.isDataChanged()
                 updateUserEntity.username?.let {
                     if (userInteractor.isUsernameAvailable(it)) {
-                        userInteractor.updateUserInfo(updateUserEntity)
-                        navigateToPreviousScreen()
+                        updateUserEntity.email?.let {
+                            updateUserEntity.currentPassword?.let { password ->
+                                if (password.getValidationPasswordResult()) {
+                                    updateUserInfo(updateUserEntity)
+                                }
+                            } ?: passwordError.postValue(R.string.empty_input_error_text)
+                        }
+                        updateUserInfo(updateUserEntity)
                     } else {
                         usernameError.postValue(R.string.username_already_exist_error_text)
                     }
-                } ?: userInteractor.updateUserInfo(updateUserEntity)
-                    .also { navigateToPreviousScreen() }
-                successDialogText.postValue(R.string.update_screen_message_success)
+                } ?: updateUserEntity.email?.let {
+                    updateUserEntity.currentPassword?.let { password ->
+                        val isPasswordValid = password.getValidationPasswordResult()
+                        if (isPasswordValid) {
+                            updateUserInfo(updateUserEntity)
+                        }
+                    } ?: passwordError.postValue(R.string.empty_input_error_text)
+                } ?: updateUserInfo(updateUserEntity)
             }
         }
+    }
+
+    private suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity) {
+        userInteractor.updateUserInfo(updateUserEntity)
+        navigateToPreviousScreen()
+        successDialogText.postValue(R.string.update_screen_message_success)
+    }
+
+    fun onEmailEditTextFocus(isFocused: Boolean) {
+        passwordHelperText.postValue(if (isFocused) R.string.update_screen_password_message else null)
     }
 
     fun addUserProfilePhoto(uri: Uri) {
@@ -114,4 +137,19 @@ class UpdateProfileViewModel @Inject constructor(
         }
         return isValid
     }
+
+    private fun String.getValidationPasswordResult(): Boolean {
+        var isValid = true
+        when {
+            this.isEmpty() -> passwordError.postValue(R.string.empty_input_error_text)
+                .also { isValid = false }
+            !this.any { (it in 'a'..'z' || it in 'A'..'Z') || it in '0'..'9' } || this.length < RegistrationViewModel.PASSWORD_LENGTH -> passwordError.postValue(
+                R.string.password_text_error
+            ).also { isValid = false }
+            else -> passwordError.postValue(null)
+        }
+        return isValid
+    }
+
+
 }

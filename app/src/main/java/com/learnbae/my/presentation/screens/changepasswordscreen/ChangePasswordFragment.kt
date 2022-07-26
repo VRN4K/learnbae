@@ -58,7 +58,7 @@ class ChangePasswordFragment : BaseFragment() {
                         textNewPassword.editText?.text.toString()
                     )
                 )
-                textView2.setOnClickListener {
+                forgotPasswordButton.setOnClickListener {
                     viewModel.navigateToScreen(
                         Screens.getEmailSendCodeFragment()
                     )

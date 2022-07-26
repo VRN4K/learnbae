@@ -23,7 +23,6 @@ class MainActivityViewModel @Inject constructor() : BaseViewModel() {
     fun onDeeplinkDataReceive(intent: Intent) {
         if (intent.data != null) {
             Log.d("RESET PASSWORD", "get intent")
-            //router.newRootScreen(Screens.getMainFragment())
             deeplinkNavigation(intent)
         }
     }

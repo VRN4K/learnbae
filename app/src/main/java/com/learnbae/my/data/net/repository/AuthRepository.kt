@@ -148,16 +148,23 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-    override suspend fun updateUserEmail(newEmail: String) {
+    override suspend fun updateUserEmail(newEmail: String, currentPassword: String) {
         suspendCoroutine<Unit> { continuation ->
-            firebaseAuth.currentUser?.let {
-                it.updateEmail(newEmail).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("Auth", "userEmailUpdate:success")
-                        continuation.resume(Unit)
-                    } else {
-                        Log.d("Auth", "userEmailUpdate:failure", task.exception)
-                        continuation.resumeWithException(UsernameOrEmailAlreadyExistException())
+            firebaseAuth.currentUser!!.reauthenticate(
+                EmailAuthProvider.getCredential(
+                    firebaseAuth.currentUser!!.email!!,
+                    currentPassword
+                )
+            ).addOnCompleteListener {
+                firebaseAuth.currentUser?.let {
+                    it.updateEmail(newEmail).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("Auth", "userEmailUpdate:success")
+                            continuation.resume(Unit)
+                        } else {
+                            Log.d("Auth", "userEmailUpdate:failure", task.exception)
+                            continuation.resumeWithException(UsernameOrEmailAlreadyExistException())
+                        }
                     }
                 }
             }

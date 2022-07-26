@@ -151,19 +151,22 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/change_password_current_password_title" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_password"
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="@color/accent"
-                app:hintTextAppearance="@style/MariupolMedium.Primary.17"
-                tools:hint="Текущий пароль">
+                tools:helperText="Для смены почты введите пароль"
+                app:helperTextEnabled="true"
+                app:hintTextAppearance="@style/MariupolMedium.Primary.17">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/MariupolMedium.Primary.17"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/authorization_password_form"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 

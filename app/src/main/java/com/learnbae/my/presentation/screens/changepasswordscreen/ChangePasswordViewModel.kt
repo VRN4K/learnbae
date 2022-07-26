@@ -7,7 +7,7 @@ import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.exceptions.WrongCurrentPasswordException
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
-import com.learnbae.my.presentation.screens.registrationscreen.RegistrationViewModel
+import com.learnbae.my.presentation.screens.registrationscreen.RegistrationViewModel.Companion.PASSWORD_LENGTH
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ltst.nibirualert.my.domain.launchIO
 import javax.inject.Inject
@@ -16,9 +16,6 @@ import javax.inject.Inject
 class ChangePasswordViewModel @Inject constructor(
     val userInteractor: IUserInteractor
 ) : BaseViewModel() {
-    companion object {
-        private const val PASSWORD_LENGTH = 6
-    }
 
     val currentPasswordError = MutableLiveData<Int?>()
     val newPasswordError = MutableLiveData<Int?>()

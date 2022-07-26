@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.learnbae.my.R
 import com.learnbae.my.databinding.AuthorizationLayoutBinding
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.setVisibility
@@ -28,6 +29,10 @@ class AuthFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.apply {
+            logInButton.buttonText = resources.getString(R.string.authorization_login_button_text)
+            logInButton.hideLoading()
+        }
         setListeners()
         setObservers()
         setNavigationVisibility(true)
@@ -36,34 +41,46 @@ class AuthFragment : BaseFragment() {
 
     private fun setListeners() {
         binding.apply {
-            addButton.setOnClickListener {
+            logInButton.setOnClickListener {
                 viewModel.singInByEmailAndPassword(
-                    binding.textEmailField.editText!!.text.toString(),
-                    binding.textPasswordField.editText!!.text.toString()
+                    textEmailField.editText!!.text.toString(),
+                    textPasswordField.editText!!.text.toString()
                 )
             }
             forgotPasswordButton.setOnClickListener {
                 viewModel.navigateToScreen(Screens.getEmailSendCodeFragment())
             }
 
-            registrationButton.setOnClickListener { viewModel.navigateToScreen(Screens.getRegistrationScreen()) }
+            registrationButton.setOnClickListener {
+                viewModel.navigateToScreen(Screens.getRegistrationScreen())
+            }
         }
     }
 
     private fun setObservers() {
-        viewModel.apply {
-            userError.observe(viewLifecycleOwner) {
-                it?.let { showUserError(true, resources.getString(it)) } ?: showUserError(false)
-            }
+        binding.apply {
+            viewModel.apply {
+                userError.observe(viewLifecycleOwner) {
+                    it?.let { showUserError(true, resources.getString(it)) } ?: showUserError(false)
+                }
 
-            emailError.observe(viewLifecycleOwner) {
-                binding.textEmailField.showError(it?.let { textId -> resources.getString(textId) }
-                    ?: "")
-            }
+                emailError.observe(viewLifecycleOwner) {
+                    textEmailField.showError(it?.let { textId -> resources.getString(textId) }
+                        ?: "")
+                }
 
-            passwordError.observe(viewLifecycleOwner) {
-                binding.textPasswordField.showError(it?.let { textId -> resources.getString(textId) }
-                    ?: "")
+                passwordError.observe(viewLifecycleOwner) {
+                    textPasswordField.showError(it?.let { textId ->
+                        resources.getString(
+                            textId
+                        )
+                    }
+                        ?: "")
+                }
+
+                showButtonLoadingStatus.observe(viewLifecycleOwner) {
+                    if (it) logInButton.showLoading() else logInButton.hideLoading()
+                }
             }
         }
     }

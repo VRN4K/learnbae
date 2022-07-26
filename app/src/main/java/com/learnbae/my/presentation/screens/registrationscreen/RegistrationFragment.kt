@@ -33,7 +33,10 @@ class RegistrationFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setObservers()
         setListeners()
-        binding.addButton.hideLoading()
+        binding.singUpButton.apply {
+            buttonText = "Зарегистрироваться"
+            hideLoading()
+        }
         setNavigationVisibility(false)
         binding.englishLevelsDropdown.setAdapter(
             ArrayAdapter(
@@ -47,13 +50,13 @@ class RegistrationFragment : BaseFragment() {
 
     private fun setListeners() {
         binding.apply {
-            addButton.setOnClickListener {
+            singUpButton.setOnClickListener {
                 viewModel.registerNewUser(
                     RegisterRequestData(
                         UserEntity(
-                            textUserNameField.editText?.text.toString(),
-                            textFullNameField.editText?.text.toString(),
-                            dropDownEnglishLevel.editText!!.text.toString(),
+                            textUsernameField.editText?.text.toString(),
+                            textFullnameField.editText?.text.toString(),
+                            dropdownEnglishLevel.editText!!.text.toString(),
                             textEmailField.editText?.text.toString()
                         ),
                         RegisterUserInfo(
@@ -71,12 +74,12 @@ class RegistrationFragment : BaseFragment() {
         binding.apply {
             viewModel.apply {
                 usernameError.observe(viewLifecycleOwner) {
-                    textUserNameField.showError(it?.let { textId -> resources.getString(textId) }
+                    textUsernameField.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
                 fullNameError.observe(viewLifecycleOwner) {
-                    textFullNameField.showError(it?.let { textId -> resources.getString(textId) }
+                    textFullnameField.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
@@ -88,6 +91,10 @@ class RegistrationFragment : BaseFragment() {
                 passwordError.observe(viewLifecycleOwner) {
                     textPasswordField.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
+                }
+
+                showButtonLoadingState.observe(viewLifecycleOwner) {
+                    it?.let { if (it) singUpButton.showLoading() else singUpButton.hideLoading() }
                 }
             }
         }

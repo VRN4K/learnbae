@@ -10,11 +10,24 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object CiceroneModule {
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class ProfileNavHolder
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class VocabularyNavHolder
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class MainScreenNavHolder
+
     @Provides
     @Singleton
     fun getCicerone(): Cicerone<Router> = Cicerone.create()
@@ -22,6 +35,12 @@ object CiceroneModule {
     @Provides
     @Singleton
     fun provideRouter(cicerone: Cicerone<Router>): Router = cicerone.router
+
+    @Provides
+    @VocabularyNavHolder
+    @Singleton
+    fun provideVocabularyNavHolder(cicerone: Cicerone<Router>): NavigatorHolder =
+        cicerone.getNavigatorHolder()
 
     @Provides
     @Singleton

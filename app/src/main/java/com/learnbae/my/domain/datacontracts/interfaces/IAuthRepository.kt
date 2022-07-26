@@ -13,5 +13,5 @@ interface IAuthRepository {
     fun getUserId(): String?
     suspend fun isCodeValid(code: String): Boolean
     suspend fun sendEmailResetPasswordMessage(email: String)
-    suspend fun updateUserEmail(newEmail: String)
+    suspend fun updateUserEmail(newEmail: String, currentPassword: String)
 }
