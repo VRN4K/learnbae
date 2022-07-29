@@ -1,16 +1,20 @@
 package com.learnbae.my.data.storage.entities
 
+import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.net.Uri
 import com.learnbae.my.R
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.presentation.common.uriToBitmap
 
 data class UserEntity(
     val username: String,
     val userFullName: String,
     val englishLevel: String,
     val email: String,
-    var singUpDate: String? = ""
+    var singUpDate: String? = "",
+    var wordCount: String? = null
 )
 
 data class RegisterUserInfo(
@@ -24,26 +28,23 @@ data class RegisterRequestData(
 )
 
 fun UserEntity.toUI(
-    resources: Resources,
-    wordsCount: String,
-    profilePhoto: String?
+    context: Context,
+    profilePhoto: Bitmap?
 ): UserProfileInfoUIModel {
     return UserProfileInfoUIModel(
-        String.format(
-            resources.getString(R.string.profile_account_username_pattern),
+        username = context.resources.getString(
+            R.string.profile_account_username_pattern,
             this.username
         ),
-        this.userFullName,
-        this.englishLevel,
-        this.email,
-        String.format(
-            resources.getString(R.string.profile_account_register_date_pattern),
+        userFullName = this.userFullName,
+        englishLevel = this.englishLevel,
+        email = this.email,
+        singUpDate =
+        context.resources.getString(
+            R.string.profile_account_register_date_pattern,
             this.singUpDate!!
         ),
-        String.format(
-            resources.getString(R.string.profile_account_words_count_pattern),
-            wordsCount
-        ),
-        profilePhoto
+        wordsCount = wordCount,
+        profilePhoto = profilePhoto
     )
 }

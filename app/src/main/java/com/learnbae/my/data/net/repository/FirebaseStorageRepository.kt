@@ -1,10 +1,14 @@
 package com.learnbae.my.data.net.repository
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.core.graphics.drawable.toBitmap
+import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,11 +16,16 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @Singleton
-class FirebaseStorageRepository @Inject constructor(private val storage: FirebaseStorage) :
+class FirebaseStorageRepository @Inject constructor(
+    private val storage: FirebaseStorage,
+    @ApplicationContext val context: Context
+) :
     IStorageRepository {
-    override fun uploadProfilePhoto(userId: String, uri: Uri) {
+    override fun uploadProfilePhoto(userId: String, photo: Bitmap) {
+        val baos = ByteArrayOutputStream()
         with(storage.reference.child("images").child(userId).child("profile.jpg")) {
-            putFile(uri)
+            photo.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            putBytes(baos.toByteArray())
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d("Profile", "uploadPhoto:success")

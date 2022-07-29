@@ -1,7 +1,6 @@
 package com.learnbae.my.domain.interfaces
 
 import android.graphics.Bitmap
-import android.net.Uri
 import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.data.storage.entities.RegisterRequestData
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
@@ -13,12 +12,13 @@ interface IUserInteractor {
     suspend fun logout()
     suspend fun deleteAccount(): String?
     suspend fun isUsernameAvailable(username: String): Boolean
-    suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel
+    suspend fun getUserInfo(): UserProfileInfoUIModel
     suspend fun registerNewUser(registerRequestData: RegisterRequestData)
-    suspend fun uploadUserProfilePhoto(uri: Uri)
+    suspend fun uploadUserProfilePhoto(photo: Bitmap)
     suspend fun updateEnglishLevel(levelValue: String)
     fun getUserId(): String?
     suspend fun isCodeValid(code: String): Boolean
+    fun getCurrentUser(): UserProfileInfoUIModel
     suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel)
     suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity)
     suspend fun resetPassword(code: String, newPassword: String)

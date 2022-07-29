@@ -30,7 +30,7 @@
     </Toolbar>
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@drawable/line" />
@@ -39,10 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4">
+        app:layout_constraintTop_toBottomOf="@id/line">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/mail_send_text"
             style="@style/MariupolRegular.Primary.17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="50dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            app:layout_constraintTop_toBottomOf="@id/mail_send_text">
 
             <TextView
                 style="@style/MariupolMedium.PrimaryYellow.17"
@@ -76,12 +76,12 @@
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxStrokeColor="@color/primary_dark"
-                app:hintTextAppearance="@style/MariupolMedium.Primary.17"
-                tools:hint="Введите почту">
+                app:boxStrokeColor="@color/primary_dark">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/MariupolMedium.Primary.17"
+                    app:hintTextAppearance="@style/MariupolMedium.Primary.17"
+                    android:hint="@string/send_code_email_hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress" />

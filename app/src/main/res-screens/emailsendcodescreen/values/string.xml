@@ -3,4 +3,5 @@
     <string name="send_code_sub_title">На указанную почту будет высланно сообщение с инструкцией по восстановлению пароля</string>
     <string name="send_code_button">Отправить сообщение</string>
     <string name="send_code_email_send">На указанную почту было отправленно сообщение для смены пароля</string>
+    <string name="send_code_email_hint">Введите почту</string>
 </resources>

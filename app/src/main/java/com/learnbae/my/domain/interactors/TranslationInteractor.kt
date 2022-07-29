@@ -14,6 +14,7 @@ import com.learnbae.my.domain.datacontracts.model.toUI
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.presentation.common.WordOfADayParser
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class TranslationInteractor @Inject constructor(
     private val netRepository: ITranslationNetRepository,
@@ -21,6 +22,7 @@ class TranslationInteractor @Inject constructor(
     private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository,
     private val resources: Resources
 ) : ITranslationInteractor {
+    private var remoteWordsCount: Int = 0
 
     override suspend fun getWordOfADay(): WordMinicardUI {
         val wordOfADay = getWordTranslation("en", "ru", WordOfADayParser.getWordOfADay())
@@ -34,7 +36,10 @@ class TranslationInteractor @Inject constructor(
 
     override suspend fun addWordToVocabulary(userId: String?, word: VocabularyWordUI) {
         dbRepository.addWordToVocabulary(word.toEntity())
-        userId?.let { vocabularyFirebaseRepository.addNewWord(userId, word) }
+        userId?.let {
+            vocabularyFirebaseRepository.addNewWord(userId, word)
+            remoteWordsCount++
+        }
     }
 
     override suspend fun isWordAlreadyInVocabulary(userId: String?, word: String): Boolean {
@@ -59,16 +64,23 @@ class TranslationInteractor @Inject constructor(
     }
 
     override suspend fun getAllRemoteWords(userId: String): List<VocabularyWordUI> {
-        return vocabularyFirebaseRepository.getAllWords(userId)
+        return vocabularyFirebaseRepository.getAllWords(userId).also {
+            remoteWordsCount = it.count()
+        }
     }
 
     override suspend fun deleteWordByTitle(userId: String?, word: String) {
         val wordId = getWordId(userId, word)
-        wordId?.let { deleteWordById(userId, it) }
+        wordId?.let {
+            deleteWordById(userId, it)
+            remoteWordsCount--
+        }
     }
 
     override suspend fun getWordsCount(userId: String): Int {
-        return vocabularyFirebaseRepository.getWordsCount(userId)
+        return vocabularyFirebaseRepository.getWordsCount(userId).also {
+            remoteWordsCount = it
+        }
     }
 
     override suspend fun isWordsSynchronize(userId: String): Boolean {
@@ -115,5 +127,9 @@ class TranslationInteractor @Inject constructor(
         word: String
     ): SearchResultUIModel {
         return netRepository.getWordTranslation(sourceLang, targetLang, word).toUI()
+    }
+
+    override fun getRemoteWordCount(): Int {
+        return remoteWordsCount
     }
 }

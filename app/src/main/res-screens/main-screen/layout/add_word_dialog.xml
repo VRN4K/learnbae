@@ -64,12 +64,12 @@
                     style="@style/TextInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text_field_word"
                     app:hintTextAppearance="@style/MariupolMedium.Primary.17">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_word_dialog_word_hint"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -85,13 +85,13 @@
                     style="@style/TextInputStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text_field_translation"
                     app:boxStrokeColor="@color/primary_dark"
                     app:hintTextAppearance="@style/MariupolRegular.Secondary.15">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_word_dialog_translation_hint"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 

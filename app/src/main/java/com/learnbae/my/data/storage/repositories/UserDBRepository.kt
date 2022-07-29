@@ -18,7 +18,6 @@ class UserDBRepository @Inject constructor(private val database: FirebaseDatabas
     companion object {
         private const val DB_USER_REF_NAME = "USER"
     }
-
     private val dataBaseReference by lazy { database.getReference(DB_USER_REF_NAME) }
 
     override suspend fun addUser(userId: String, userInfo: UserEntity) {

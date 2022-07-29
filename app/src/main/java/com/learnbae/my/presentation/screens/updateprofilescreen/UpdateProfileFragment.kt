@@ -3,7 +3,6 @@ package com.learnbae.my.presentation.screens.updateprofilescreen
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,30 +11,20 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.databinding.UpdateProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
-import com.learnbae.my.presentation.common.convertProfileBitmapToFile
 import com.learnbae.my.presentation.common.showError
 import com.learnbae.my.presentation.common.showHelper
+import com.learnbae.my.presentation.common.uriToBitmap
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
 import dagger.hilt.android.AndroidEntryPoint
 import ltst.nibirualert.my.presentation.common.onDestroyNullable
 
 @AndroidEntryPoint
 class UpdateProfileFragment : BaseFragment() {
-    companion object {
-        private const val KEY = "PROFILE INFO"
-        fun newInstance(profileInfo: UserProfileInfoUIModel) = UpdateProfileFragment().apply {
-            arguments = Bundle().apply {
-                putString(KEY, Gson().toJson(profileInfo))
-            }
-        }
-    }
-
     private var binding by onDestroyNullable<UpdateProfileLayoutBinding>()
     private val viewModel by viewModels<UpdateProfileViewModel>()
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -50,21 +39,20 @@ class UpdateProfileFragment : BaseFragment() {
         galleryLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    showProfilePhoto(result.data!!.data!!)
+                    showProfilePhoto(result.data!!.data!!.uriToBitmap(requireContext()))
                 }
             }
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    showProfilePhoto(bitmap.convertProfileBitmapToFile(context?.filesDir?.absolutePath!!))
+                    showProfilePhoto(bitmap)
                 }
             }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setCurrentInfo()
         setListeners()
         setObservers()
         setNavigationVisibility(false)
@@ -76,20 +64,13 @@ class UpdateProfileFragment : BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun setCurrentInfo() {
-        val userInfo = Gson().fromJson(
-            requireArguments().getString(KEY),
-            UserProfileInfoUIModel::class.java
-        )
-
-        viewModel.setInitParams(userInfo)
-
+    private fun setCurrentInfo(userInfo: UserProfileInfoUIModel) {
         binding.apply {
-            textFullName.editText!!.setText(userInfo.userFullName)
-            textUsername.editText!!.setText(userInfo.username.substringAfter("@"))
-            textEmail.editText!!.setText(userInfo.email)
+            editTextFullname.editText!!.setText(userInfo.userFullName)
+            editTextUsername.editText!!.setText(userInfo.username.substringAfter("@"))
+            editTextEmail.editText!!.setText(userInfo.email)
             userInfo.profilePhoto?.let {
-                Glide.with(requireContext()).load(it).into(binding.profileImage)
+                Glide.with(requireContext()).load(it).into(profileImage)
             }
         }
     }
@@ -115,11 +96,11 @@ class UpdateProfileFragment : BaseFragment() {
             saveButton.setOnClickListener {
                 viewModel.saveChanges(
                     UpdateUserEntity(
-                        textUsername.editText?.text.toString(),
-                        textFullName.editText?.text.toString(),
-                        textEmail.editText?.text.toString(),
+                        editTextUsername.editText?.text.toString(),
+                        editTextFullname.editText?.text.toString(),
+                        editTextEmail.editText?.text.toString(),
                         null,
-                        textPassword.editText?.text.toString()
+                        editTextPassword.editText?.text.toString()
                     )
                 )
             }
@@ -131,22 +112,26 @@ class UpdateProfileFragment : BaseFragment() {
                     viewModel::logOut
                 )
             }
-            textEmail.editText?.setOnFocusChangeListener { view, b ->
+            editTextEmail.editText?.setOnFocusChangeListener { view, b ->
                 viewModel.onEmailEditTextFocus(b)
             }
         }
     }
 
-    private fun showProfilePhoto(uri: Uri) {
-        Glide.with(requireContext()).load(uri).into(binding.profileImage)
-        viewModel.addUserProfilePhoto(uri)
+    private fun showProfilePhoto(photo: Bitmap) {
+        Glide.with(requireContext()).load(photo).into(binding.profileImage)
+        viewModel.onChangePhotoButtonClick(photo)
     }
 
     private fun setObservers() {
         binding.apply {
             viewModel.apply {
+                userData.observe(viewLifecycleOwner){
+                    setCurrentInfo(it)
+                }
+
                 usernameError.observe(viewLifecycleOwner) {
-                    textUsername.showError(it?.let { textId -> resources.getString(textId) }
+                    editTextUsername.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
@@ -156,22 +141,22 @@ class UpdateProfileFragment : BaseFragment() {
                 }
 
                 emailError.observe(viewLifecycleOwner) {
-                    textEmail.showError(it?.let { textId -> resources.getString(textId) }
+                    editTextEmail.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
                 fullNameError.observe(viewLifecycleOwner) {
-                    textFullName.showError(it?.let { textId -> resources.getString(textId) }
+                    editTextFullname.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
                 passwordHelperText.observe(viewLifecycleOwner) {
-                    textPassword.showHelper(it?.let { textId -> resources.getString(textId) }
+                    editTextPassword.showHelper(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
 
                 passwordError.observe(viewLifecycleOwner) {
-                    textPassword.showError(it?.let { textId -> resources.getString(textId) }
+                    editTextPassword.showError(it?.let { textId -> resources.getString(textId) }
                         ?: "")
                 }
             }

@@ -3,8 +3,6 @@ package com.learnbae.my.presentation.screens.profilescreen
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +15,8 @@ import com.learnbae.my.R
 import com.learnbae.my.databinding.ProfileLayoutBinding
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
-import com.learnbae.my.presentation.common.convertProfileBitmapToFile
 import com.learnbae.my.presentation.common.livedata.StateData
+import com.learnbae.my.presentation.common.uriToBitmap
 import com.learnbae.my.presentation.screens.Screens
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.englishlevelpickingdialog.LevelPickingDialog
 import com.learnbae.my.presentation.screens.profilescreen.dialogs.photopickingdialog.PhotoPickingDialog
@@ -41,7 +39,7 @@ class ProfileFragment : BaseFragment() {
         galleryLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    showProfilePhoto(uri = result.data!!.data!!)
+                    showProfilePhoto(result.data!!.data!!.uriToBitmap(requireContext()))
                 }
             }
 
@@ -49,7 +47,7 @@ class ProfileFragment : BaseFragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    showProfilePhoto(bitmap.convertProfileBitmapToFile(context?.filesDir?.absolutePath!!))
+                    showProfilePhoto(bitmap)
                 }
             }
         return binding.root
@@ -139,32 +137,19 @@ class ProfileFragment : BaseFragment() {
             userFullName.text = info.userFullName
             userEmail.text = info.email
             userSingUpDate.text = info.singUpDate
-            wordsCount.text = info.wordsCount
+            wordsCount.text =
+                resources.getString(R.string.profile_account_words_count_pattern, info.wordsCount)
             info.profilePhoto?.let {
                 Glide.with(requireContext()).load(it).into(binding.profileImage)
             }
             updateProfileButton.setOnClickListener {
-                viewModel.navigateToScreen(
-                    Screens.getUpdateProfileScreen(
-                        info.apply {
-                            binding.apply {
-                                profilePhoto = Bitmap.createBitmap(
-                                    profileImage.drawable.intrinsicWidth,
-                                    profileImage.drawable.intrinsicHeight,
-                                    Bitmap.Config.ARGB_8888
-                                ).convertProfileBitmapToFile(
-                                    context?.filesDir?.absolutePath!!
-                                ).toString()
-                            }
-                        }
-                    )
-                )
+                viewModel.navigateToScreen(Screens.getUpdateProfileScreen())
             }
         }
     }
 
-    private fun showProfilePhoto(uri: Uri) {
-        viewModel.addUserProfilePhoto(uri)
-        Glide.with(requireContext()).load(uri).into(binding.profileImage)
+    private fun showProfilePhoto(photo: Bitmap) {
+        viewModel.addUserProfilePhoto(photo)
+        Glide.with(requireContext()).load(photo).into(binding.profileImage)
     }
 }

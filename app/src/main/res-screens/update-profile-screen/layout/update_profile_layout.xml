@@ -81,7 +81,7 @@
                 android:text="@string/update_profile_fullname_title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_full_name"
+                android:id="@+id/edit_text_fullname"
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:text="@string/update_profile_username_title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_username"
+                android:id="@+id/edit_text_username"
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                 android:text="@string/update_profile_email_title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_email"
+                android:id="@+id/edit_text_email"
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                 android:text="@string/change_password_current_password_title" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_password"
+                android:id="@+id/edit_text_password"
                 style="@style/TextInputStyleProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

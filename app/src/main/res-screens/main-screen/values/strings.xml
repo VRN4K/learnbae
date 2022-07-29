@@ -20,7 +20,9 @@
 
 
     <string name="add_word_dialog_word_title">Слово</string>
+    <string name="add_word_dialog_word_hint">Введите слово</string>
     <string name="add_word_dialog_translation_title">Перевод</string>
+    <string name="add_word_dialog_translation_hint">Введите перевод</string>
 
     <plurals name="words_plurals" >
         <item quantity="one">слово</item>

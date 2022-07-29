@@ -9,5 +9,6 @@
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
         <item name="errorIconDrawable">@null</item>
+        <item name="hintEnabled">false</item>
     </style>
 </resources>

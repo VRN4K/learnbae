@@ -1,8 +1,7 @@
 package com.learnbae.my.presentation.screens.profilescreen
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
-import com.learnbae.my.domain.datacontracts.interfaces.IVocabularyFirebaseRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
@@ -18,8 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     val userInteractor: IUserInteractor,
-    private val translationInteractor: ITranslationInteractor,
-    private val vocabularyFirebaseRepository: IVocabularyFirebaseRepository
+    private val translationInteractor: ITranslationInteractor
 ) : BaseViewModel() {
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
     val isSynchronizing = MutableLiveData<Boolean>()
@@ -34,13 +32,10 @@ class ProfileViewModel @Inject constructor(
         }) {
             if (userInteractor.isUserAuthorized()) {
                 userInteractor.getUserId()?.let {
-                    userInformation.postComplete(
-                        userInteractor.getUserInfo(
-                            vocabularyFirebaseRepository.getWordsCount(
-                                it
-                            )
-                        )
-                    )
+                    translationInteractor.getWordsCount(it)
+                    userInformation.postComplete(userInteractor.getUserInfo().apply {
+                        this.wordsCount = translationInteractor.getRemoteWordCount().toString()
+                    })
                 } ?: userInteractor.logout().also { isUserAuthorizedCheck() }
             } else {
                 withUI { openFragment(Screens.getAuthScreen()) }
@@ -56,8 +51,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun addUserProfilePhoto(uri: Uri) {
-        launchIO { userInteractor.uploadUserProfilePhoto(uri) }
+    fun addUserProfilePhoto(photo: Bitmap) {
+        launchIO { userInteractor.uploadUserProfilePhoto(photo) }
     }
 
     fun updateEnglishLevel(englishLevel: String) {
@@ -72,5 +67,9 @@ class ProfileViewModel @Inject constructor(
             }
             openFragment(Screens.getAuthScreen())
         }
+    }
+
+    fun onScreenResume() {
+        userInformation.postComplete(userInteractor.getCurrentUser())
     }
 }

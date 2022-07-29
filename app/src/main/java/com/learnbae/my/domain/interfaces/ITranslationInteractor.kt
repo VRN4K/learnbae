@@ -21,6 +21,7 @@ interface ITranslationInteractor {
         word: String
     ): SearchResultUIModel
 
+    fun getRemoteWordCount(): Int
     suspend fun getWordId(userId: String?, word: String): String?
     suspend fun deleteWordByTitle(userId: String?, word: String)
 }

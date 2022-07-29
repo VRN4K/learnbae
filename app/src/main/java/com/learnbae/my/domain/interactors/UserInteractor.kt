@@ -1,9 +1,11 @@
 package com.learnbae.my.domain.interactors
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
-import android.net.Uri
+import androidx.core.graphics.drawable.toBitmap
+import com.bumptech.glide.Glide
 import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.data.storage.entities.RegisterRequestData
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
@@ -14,6 +16,8 @@ import com.learnbae.my.domain.datacontracts.interfaces.IStorageRepository
 import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
+import dagger.hilt.android.qualifiers.ApplicationContext
+import ltst.nibirualert.my.domain.withIO
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -24,10 +28,11 @@ class UserInteractor @Inject constructor(
     private val authPreferenceRepository: IAuthorizationStorageRepository,
     private val storageRepository: IStorageRepository,
     private val userDBRepository: IUserDBRepository,
-    private val resources: Resources
+    @ApplicationContext val context: Context
 ) : IUserInteractor {
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     private val userId = getUserId()
+    private lateinit var userData: UserProfileInfoUIModel
 
     override suspend fun loginByEmailAndPassword(email: String, password: String) {
         val token = authRepository.loginByEmailAndPassword(email, password)
@@ -50,12 +55,14 @@ class UserInteractor @Inject constructor(
         authPreferenceRepository.saveToken(userToken)
     }
 
-    override suspend fun uploadUserProfilePhoto(uri: Uri) {
-        storageRepository.uploadProfilePhoto(userId!!, uri)
+    override suspend fun uploadUserProfilePhoto(photo: Bitmap) {
+        storageRepository.uploadProfilePhoto(userId!!, photo)
+        userData.profilePhoto = photo
     }
 
     override suspend fun updateEnglishLevel(levelValue: String) {
         userDBRepository.updateUser(userId!!, levelValue)
+        getUserInfo()
     }
 
     override fun getUserId(): String? {
@@ -64,6 +71,10 @@ class UserInteractor @Inject constructor(
 
     override suspend fun isCodeValid(code: String): Boolean {
         return authRepository.isCodeValid(code)
+    }
+
+    override fun getCurrentUser(): UserProfileInfoUIModel {
+        return userData
     }
 
     override suspend fun changeUserPassword(passwordChangeModel: PasswordChangeModel) {
@@ -75,8 +86,9 @@ class UserInteractor @Inject constructor(
 
     override suspend fun updateUserInfo(updateUserEntity: UpdateUserEntity) {
         updateUserEntity.apply {
-            profilePhoto?.let { uploadUserProfilePhoto(Uri.parse(it)) }
+            profilePhoto?.let { uploadUserProfilePhoto(it) }
             email?.let { authRepository.updateUserEmail(it, updateUserEntity.currentPassword!!) }
+            getUserInfo()
         }
 
         userDBRepository.updateUserProfileInformation(userId!!, updateUserEntity)
@@ -109,10 +121,12 @@ class UserInteractor @Inject constructor(
         return userDBRepository.isUsernameAvailable(username)
     }
 
-    override suspend fun getUserInfo(wordsCount: Int): UserProfileInfoUIModel {
+
+    override suspend fun getUserInfo(): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()
-        val photo = storageRepository.getProfilePhoto(userId!!)
-        return userDBRepository.getUserInfo(userId)!!
-            .toUI(resources, wordsCount.toString(), photo.toString())
+        val photo = Glide.with(context).asBitmap().load(storageRepository.getProfilePhoto(userId!!)).submit().get()
+        userData = userDBRepository.getUserInfo(userId)!!
+            .toUI(context, photo)
+        return userData
     }
 }

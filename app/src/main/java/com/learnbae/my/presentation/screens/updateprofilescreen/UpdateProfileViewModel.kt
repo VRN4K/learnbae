@@ -1,11 +1,12 @@
 package com.learnbae.my.presentation.screens.updateprofilescreen
 
-import android.net.Uri
+import android.graphics.Bitmap
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
+import com.learnbae.my.domain.datacontracts.model.UserUpdateInformationUI
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
@@ -19,22 +20,34 @@ import javax.inject.Inject
 class UpdateProfileViewModel @Inject constructor(
     private val userInteractor: IUserInteractor
 ) : BaseViewModel() {
-    private lateinit var currentUserInformation: UserProfileInfoUIModel
+    private val currentUserInformation: UserProfileInfoUIModel = userInteractor.getCurrentUser()
+    private var userPhoto: Bitmap? = null
+
     val usernameError = MutableLiveData<Int?>()
     val passwordHelperText = MutableLiveData<Int?>()
     val successDialogText = MutableLiveData<Int?>()
     val emailError = MutableLiveData<Int?>()
     val passwordError = MutableLiveData<Int?>()
     val fullNameError = MutableLiveData<Int?>()
+    val userData = MutableLiveData<UserProfileInfoUIModel>()
 
-    fun setInitParams(currentUserInfo: UserProfileInfoUIModel) {
-        currentUserInformation = currentUserInfo
+    init {
+        userData.postValue(currentUserInformation)
+    }
+
+    fun onChangePhotoButtonClick(photo: Bitmap) {
+        userPhoto = photo
     }
 
     fun saveChanges(updateUserEntity: UpdateUserEntity) {
         launchIO(createExceptionHandler {
             onException(it)
         }) {
+
+            userPhoto?.let {
+                updateUserEntity.profilePhoto = it
+            }
+
             val validationResult = mutableListOf(
                 updateUserEntity.email?.getValidationEmailResult() ?: false,
                 updateUserEntity.username?.getValidationUsernameResult() ?: false,
@@ -76,10 +89,6 @@ class UpdateProfileViewModel @Inject constructor(
 
     fun onEmailEditTextFocus(isFocused: Boolean) {
         passwordHelperText.postValue(if (isFocused) R.string.update_screen_password_message else null)
-    }
-
-    fun addUserProfilePhoto(uri: Uri) {
-        launchIO { userInteractor.uploadUserProfilePhoto(uri) }
     }
 
     fun logOut() {
@@ -150,6 +159,4 @@ class UpdateProfileViewModel @Inject constructor(
         }
         return isValid
     }
-
-
 }

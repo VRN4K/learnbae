@@ -71,8 +71,8 @@ class FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideStorageRepository(firebaseStorage: FirebaseStorage): IStorageRepository {
-        return FirebaseStorageRepository(firebaseStorage)
+    fun provideStorageRepository(firebaseStorage: FirebaseStorage,@ApplicationContext context: Context): IStorageRepository {
+        return FirebaseStorageRepository(firebaseStorage,context)
     }
 
     @Provides
@@ -96,7 +96,7 @@ class FirebaseModule {
             authorizationPreferenceRepository,
             storageRepository,
             userDBRepository,
-            context.resources
+            context
         )
     }
 }
