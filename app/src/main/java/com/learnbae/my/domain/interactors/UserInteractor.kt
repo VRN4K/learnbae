@@ -2,9 +2,7 @@ package com.learnbae.my.domain.interactors
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
-import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.learnbae.my.data.storage.entities.PasswordChangeModel
 import com.learnbae.my.data.storage.entities.RegisterRequestData
@@ -17,7 +15,6 @@ import com.learnbae.my.domain.datacontracts.interfaces.IUserDBRepository
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import dagger.hilt.android.qualifiers.ApplicationContext
-import ltst.nibirualert.my.domain.withIO
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -120,7 +117,6 @@ class UserInteractor @Inject constructor(
     override suspend fun isUsernameAvailable(username: String): Boolean {
         return userDBRepository.isUsernameAvailable(username)
     }
-
 
     override suspend fun getUserInfo(): UserProfileInfoUIModel {
         val userId = authRepository.getUserId()

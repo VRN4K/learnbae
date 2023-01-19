@@ -2,10 +2,8 @@ package com.learnbae.my.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.learnbae.my.data.storage.VocabularyDataBase
 import com.learnbae.my.data.storage.dao.VocabularyDao
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -2,7 +2,6 @@ package com.learnbae.my.domain.utils
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.github.terrakok.cicerone.Router
 import com.google.gson.Gson
 import com.learnbae.my.MainActivityViewModel.Companion.DATA_KEY

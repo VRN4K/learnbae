@@ -53,6 +53,7 @@ class FirebaseStorageRepository @Inject constructor(
                 if (task.result.items.size > 0) {
                     Log.d("Profile", "downloadPhoto:success")
                     storage.reference.child("images/$userId/profile.jpg").downloadUrl.addOnCompleteListener { task ->
+                        Log.d("Profile", "Получение файла фото")
                         it.resume(task.result)
                     }
                 } else {
