@@ -1,7 +1,6 @@
 package com.learnbae.my.presentation.screens.profilescreen
 
 import android.graphics.Bitmap
-import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
@@ -20,7 +19,6 @@ class ProfileViewModel @Inject constructor(
     private val translationInteractor: ITranslationInteractor
 ) : BaseViewModel() {
     val userInformation = StateLiveData<UserProfileInfoUIModel>()
-    val isSynchronizing = MutableLiveData<Boolean>()
 
     init {
         userInformation.postLoading()
@@ -44,10 +42,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun synchronizeWords() {
-        isSynchronizing.postValue(true)
         launchIO {
             translationInteractor.synchronizeWords(userInteractor.getUserId()!!)
-            isSynchronizing.postValue(false)
         }
     }
 
@@ -59,17 +55,10 @@ class ProfileViewModel @Inject constructor(
         launchIO { userInteractor.updateEnglishLevel(englishLevel) }
     }
 
-    fun deleteAccount() {
-        userInformation.postLoading()
+    fun logOut() {
         launchIO {
-            userInteractor.deleteAccount()?.let {
-                translationInteractor.deleteAllWordsFromAccount(it)
-            }
-            openFragment(Screens.getAuthScreen())
+            userInteractor.logout()
+            navigateToScreen(Screens.getAuthScreen())
         }
-    }
-
-    fun onScreenResume() {
-        userInformation.postComplete(userInteractor.getCurrentUser())
     }
 }

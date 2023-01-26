@@ -3,4 +3,34 @@
     <style name="LevelCardsStyle">
         <item name="cardCornerRadius">16dp</item>
     </style>
+
+    <style name="ProfileUserInfoTextViewTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="ProfileUserInfoTextViewValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="ProfileUserInfoBlock">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="ProfileButton" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">8dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:drawableRight">@drawable/ic_arrow_right_1_svgrepo_com__1_</item>
+        <item name="android:textAppearance">@style/MariupolRegular.Primary.20</item>
+    </style>
 </resources>

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.learnbae.my.R
 import com.learnbae.my.data.storage.entities.UpdateUserEntity
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
-import com.learnbae.my.domain.datacontracts.model.UserUpdateInformationUI
+import com.learnbae.my.domain.interfaces.ITranslationInteractor
 import com.learnbae.my.domain.interfaces.IUserInteractor
 import com.learnbae.my.presentation.base.BaseViewModel
 import com.learnbae.my.presentation.common.exceptions.createExceptionHandler
@@ -18,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateProfileViewModel @Inject constructor(
-    private val userInteractor: IUserInteractor
+    private val userInteractor: IUserInteractor,
+    private val translationInteractor: ITranslationInteractor
 ) : BaseViewModel() {
     private val currentUserInformation: UserProfileInfoUIModel = userInteractor.getCurrentUser()
     private var userPhoto: Bitmap? = null
@@ -95,6 +96,15 @@ class UpdateProfileViewModel @Inject constructor(
         launchIO {
             userInteractor.logout()
             navigateToScreen(Screens.getAuthScreen())
+        }
+    }
+
+    fun deleteAccount() {
+        launchIO {
+            userInteractor.deleteAccount()?.let {
+                translationInteractor.deleteAllWordsFromAccount(it)
+            }
+            openFragment(Screens.getAuthScreen())
         }
     }
 

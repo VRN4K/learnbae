@@ -11,8 +11,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.learnbae.my.R
 import com.learnbae.my.databinding.ProfileLayoutBinding
+
 import com.learnbae.my.domain.datacontracts.model.UserProfileInfoUIModel
 import com.learnbae.my.presentation.base.BaseFragment
 import com.learnbae.my.presentation.common.livedata.StateData
@@ -56,7 +56,6 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.isUserAuthorizedCheck()
-        showSynchronizeLoading(false)
         setListeners()
         setObservers()
     }
@@ -64,17 +63,10 @@ class ProfileFragment : BaseFragment() {
     private fun setListeners() {
         binding.apply {
             profileImage.setOnClickListener { onAddPhotoButtonClick() }
-            updateEnglishLevelButton.setOnClickListener { onChangeLevelButtonClick() }
             synchronizeWordsButton.setOnClickListener { viewModel.synchronizeWords() }
-            deleteButton.setOnClickListener {
-                showConfirmActionDialog(
-                    resources.getString(R.string.profile_account_delete_account_message),
-                    resources.getString(R.string.profile_account_confirm_delete_account_text),
-                    resources.getString(R.string.profile_account_cancel_delete_account_text),
-                    viewModel::deleteAccount,
-                )
-            }
+            logoutButton.setOnClickListener { viewModel.logOut() }
             changePasswordButton.setOnClickListener { viewModel.navigateToScreen(Screens.getChangePasswordScreen()) }
+            updateProfileButton.setOnClickListener { viewModel.navigateToScreen(Screens.getUpdateProfileScreen()) }
         }
     }
 
@@ -82,22 +74,19 @@ class ProfileFragment : BaseFragment() {
         viewModel.apply {
             userInformation.observe(viewLifecycleOwner) {
                 when (it.status) {
-                    StateData.DataStatus.LOADING -> showScreenContent(true)
+                    StateData.DataStatus.LOADING -> showLoadingScreen(true)
                     StateData.DataStatus.COMPLETE -> with(it.data!!) {
                         showProfileInfo(this)
-                        showScreenContent(false)
+                        showLoadingScreen(false)
                     }
                     else -> return@observe
                 }
-            }
-            isSynchronizing.observe(viewLifecycleOwner) {
-                showSynchronizeLoading(it)
             }
         }
     }
 
 
-    private fun showScreenContent(isShow: Boolean) {
+    private fun showLoadingScreen(isShow: Boolean) {
         binding.loadingAnimator.changeLoadingState(isShow, binding.screenContent.id)
     }
 
@@ -126,24 +115,15 @@ class ProfileFragment : BaseFragment() {
         }.show(requireActivity().supportFragmentManager, "LevelPickingDialogFragmentTag")
     }
 
-    private fun showSynchronizeLoading(isShow: Boolean) {
-        binding.synchronizationLoading.changeLoadingState(isShow, binding.synchronizeWordsButton.id)
-    }
-
     private fun showProfileInfo(info: UserProfileInfoUIModel) {
         binding.apply {
-            userName.text = info.username
             englishLevelValue.text = info.englishLevel
             userFullName.text = info.userFullName
             userEmail.text = info.email
             userSingUpDate.text = info.singUpDate
-            wordsCount.text =
-                resources.getString(R.string.profile_account_words_count_pattern, info.wordsCount)
+            wordsCount.text = info.wordsCount
             info.profilePhoto?.let {
                 Glide.with(requireContext()).load(it).into(binding.profileImage)
-            }
-            updateProfileButton.setOnClickListener {
-                viewModel.navigateToScreen(Screens.getUpdateProfileScreen())
             }
         }
     }

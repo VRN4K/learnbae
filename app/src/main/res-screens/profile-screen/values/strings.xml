@@ -3,16 +3,19 @@
     <string name="pick_photo_from_gallery">Выбрать фото из галереи</string>
     <string name="pick_photo_from_camera">Сделать фото</string>
 
+    <string name="profile_account_toolbar_text">Профиль пользователя</string>
     <string name="profile_account_info">Информация об аккаунте</string>
     <string name="profile_account_another">Другое</string>
     <string name="profile_account_level_change_button">Изменить</string>
     <string name="profile_account_logout_button">Выйти из профиля</string>
     <string name="profile_account_change_password_button">Изменить пароль</string>
     <string name="profile_account_username_pattern">\@%s</string>
-    <string name="profile_account_register_date_pattern">Дата регистрации: %s</string>
-    <string name="profile_account_words_count_pattern">Слов в словаре: %s</string>
+    <string name="profile_account_register_date">Дата регистрации</string>
+    <string name="profile_account_words_count">Слов в словаре</string>
     <string name="profile_account_change_level_pattern">Выберите ваш уровень владения английским языком</string>
-    <string name="profile_account_english_level_text">Уровень \nанглиского</string>
+    <string name="profile_account_english_level">Уровень языка</string>
+    <string name="profile_account_words_remote_button">Синхронизировать слова</string>
+    <string name="profile_account_word_of_a_day_push">Уведомление слова дня</string>
 
     <string name="a1_level_value">A1</string>
     <string name="a2_level_value">A2</string>

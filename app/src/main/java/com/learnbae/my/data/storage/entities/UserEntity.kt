@@ -39,11 +39,7 @@ fun UserEntity.toUI(
         userFullName = this.userFullName,
         englishLevel = this.englishLevel,
         email = this.email,
-        singUpDate =
-        context.resources.getString(
-            R.string.profile_account_register_date_pattern,
-            this.singUpDate!!
-        ),
+        singUpDate = this.singUpDate!!,
         wordsCount = wordCount,
         profilePhoto = profilePhoto
     )
